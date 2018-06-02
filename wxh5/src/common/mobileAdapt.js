@@ -23,7 +23,8 @@ export default function mobileAdapt () {
     v = parseFloat(v)
     return v * rem
   }
-  window.px2rem = function (v) {
+  window.px2rem = function (r) {
+    let v = r
     v = parseFloat(v)
     return v / rem
   }

@@ -8,6 +8,14 @@ Vue.config.productionTip = false;
 
 mobileAdapt()
 runApp()
+router.beforeEach((to, from, next) => {
+  if (to.meta.isShowBottomNav === false) {
+    store.dispatch('setBottomNavState', false)
+  } else {
+    store.dispatch('setBottomNavState', true)
+  }
+  next()
+})
 
 function runApp() {
   new Vue({

@@ -1,0 +1,3 @@
+export default {
+  'SET_BOTTOM_NAV_STATE': 'SET_BOTTOM_NAV_STATE'
+}

@@ -1,13 +1,22 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <div id="nav" class="flex-box" v-if="isShowBottomNav">
+      <router-link class="flex-1" to="/">Home</router-link> |
+      <router-link class="flex-1" to="/about">About</router-link>
     </div>
     <router-view/>
   </div>
 </template>
 
+<script>
+export default {
+  computed: {
+    isShowBottomNav () {
+      return this.$store.state.UIComponent.isBottomNavShow
+    }
+  }
+}
+</script>
 <style lang="scss">
 @import "./style/application.scss";
 #app {
@@ -19,7 +28,11 @@
   font-size: px2rem(24);
 }
 #nav {
-  padding: px2rem(30);
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  box-sizing:border-box;
+  padding: px2rem(20);
   a {
     font-weight: bold;
     color: #2c3e50;
