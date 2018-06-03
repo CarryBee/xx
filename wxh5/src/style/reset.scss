@@ -1,0 +1,100 @@
+//    CSS Reset
+// -------------------------------------
+body,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+ol,
+ul,
+li,
+dl,
+dd,
+input,
+button {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-weight: normal;
+}
+
+em,
+i {
+  font-weight: normal;
+  font-style: normal;
+}
+
+input[type="submit"],
+input[type="reset"],
+input[type="button"],
+input[type="search"],
+button {
+  appearance: none;
+}
+
+button,
+textarea,
+input {
+  border: 0;
+  background: none;
+}
+
+a {
+  text-decoration: none;
+  outline: none;
+  color: inherit;
+
+  blr: expression(this.onFocus=this.blur());
+
+  &:focus,
+  &:link {
+    -moz-outline: none;
+    outline: none;
+  }
+
+  &:link,
+  &:visited,
+  &:hover {
+    text-decoration: none;
+  }
+
+  &:active {
+    star: expression(this.onFocus=this.blur());
+  }
+}
+ol,ul{
+  list-style: none;
+}
+li{
+  list-style: none;
+}
+input::-webkit-input-placeholder{
+  color: #999;
+  line-height: 100%;
+}
+input::-moz-placeholder{   /* Mozilla Firefox 19+ */
+  color: #999;
+  line-height: 100%;
+}
+input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+  color: #999;
+  line-height: 100%;
+}
+input:-ms-input-placeholder{  /* Internet Explorer 10-11 */
+  color: #999;
+  line-height: 100%;
+}
