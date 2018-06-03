@@ -4,7 +4,7 @@ import router from './router'
 import store from './store'
 import mobileAdapt from './common/mobileAdapt'
 
-Vue.config.productionTip = false;
+Vue.config.productionTip = false
 
 mobileAdapt()
 runApp()
@@ -17,7 +17,7 @@ router.beforeEach((to, from, next) => {
   next()
 })
 
-function runApp() {
+function runApp () {
   new Vue({
     router,
     store,
