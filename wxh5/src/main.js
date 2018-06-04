@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
-// import router from './router'
+import router from './router'
 import store from './store'
 import mobileAdapt from './common/mobileAdapt'
 import mock from './mock/index.js'
@@ -11,18 +11,18 @@ Vue.config.productionTip = false
 
 mobileAdapt()
 runApp()
-// router.beforeEach((to, from, next) => {
-//   if (to.meta.isShowBottomNav === false) {
-//     store.dispatch('setBottomNavState', false)
-//   } else {
-//     store.dispatch('setBottomNavState', true)
-//   }
-//   next()
-// })
+router.beforeEach((to, from, next) => {
+  if (to.meta.isShowBottomNav === false) {
+    store.dispatch('setBottomNavState', false)
+  } else {
+    store.dispatch('setBottomNavState', true)
+  }
+  next()
+})
 
 function runApp () {
   let test = new Vue({
-    // router,
+    router,
     store,
     render: h => h(App)
   }).$mount('#app')
