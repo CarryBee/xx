@@ -1,20 +1,20 @@
 <template>
   <div id="app">
-    <div id="nav" class="flex-box" v-if="isShowBottomNav">
-      <router-link class="flex-1" to="/">首页</router-link> |
-      <router-link class="flex-1" to="/about">商城</router-link> |
-      <router-link class="flex-1" to="/userInfo">我的</router-link>
-    </div>
+    <bottom-nav v-if="isShowBottomNav"></bottom-nav>
     <router-view/>
   </div>
 </template>
 
 <script>
+import BottomNav from '@/components/BottomNav'
 export default {
   computed: {
     isShowBottomNav () {
       return this.$store.state.UIComponent.isBottomNavShow
     }
+  },
+  components: {
+    BottomNav
   }
 }
 </script>
@@ -32,20 +32,6 @@ export default {
     display: block;
     width: 100%;
     height: 100%;
-  }
-}
-#nav {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  box-sizing:border-box;
-  padding: px2rem(20);
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
-    }
   }
 }
 </style>
