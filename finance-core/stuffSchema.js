@@ -5,12 +5,12 @@ const stuffSchema = new mongoose.Schema({
 });
 
 stuffSchema.methods.speak = function () {
-  return this.title;
+  return this._id;
 };
 
 stuffSchema.statics.findxx = function () {
     console.log("x");
-    return this.find({"title":"zx"}).exec();
+    return this.findOne({}).exec();
 };
 
 module.exports = stuffSchema;

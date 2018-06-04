@@ -4,10 +4,14 @@
  */
 const mongoose = require('mongoose');
 const stuffSchema = require("./stuffSchema");
-let connection, Stuff;
+let connection;
+// 加载 Schema
+const stuff = mongoose.model('Stuff', stuffSchema);
+//
 class DataBaseTool {
 
 	static async start() { // return promise
+
 		if(connection) return connection;
 		else {
 			let dbt = new DataBaseTool();
@@ -17,7 +21,6 @@ class DataBaseTool {
 	}
 
     constructor() {
-		mongoose.Promise = require('bluebird');
 		let inst = mongoose.connection;
     	inst.on('error', console.error.bind(console, 'connection error:'));
 		inst.on('close', function () {
@@ -31,14 +34,11 @@ class DataBaseTool {
 		});
 		inst.once('open', function() {
 		    console.log("mongoDB connected successfully");
-		});
-		Stuff = mongoose.model('Stuff', stuffSchema)
-		
+		});	
     }
 
     async connect() {
 		try {
-			
 			await mongoose.connect('mongodb://localhost/j-finance', { 
 	    		connectTimeoutMS: 1000,
 	    		poolSize: 4,
@@ -53,10 +53,7 @@ class DataBaseTool {
     }
 }
 module.exports = {
-	DataBaseTool: DataBaseTool,
-	Stuff: Stuff
-}
-/*
-module.exports = {}
-*/
+	'DataBaseTool': DataBaseTool,
+	'Stuff': stuff
+};
 
