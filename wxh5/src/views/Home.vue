@@ -2,7 +2,7 @@
   <div class="home">
     <div class="header">
       <div class="reward-wrapper flex-box">
-        <div class="award-rule">奖励说明</div>
+        <!--<div class="award-rule">奖励说明</div>-->
         <div class="sum-award flex-box flex-direction-column flex-1 ai-c jc-ce">
           <div class="award-num">0.00</div>
           <div class="award-title">累积收益</div>
@@ -38,7 +38,7 @@
     </div>
     <div class="content">
       <div class="entry-btn-list flex-box"></div>
-      <div class="ad-full flex-box ai-c jc-ce">海报、广告位、新手须知啥的</div>
+      <div class="ad-full flex-box ai-c jc-ce">新手须知</div>
       <div class="two-column-entry-list flex-box flex-wrap jc-sb">
         <div class="entry-item flex-box ai-c jc-ce">业务入口</div>
         <div class="entry-item flex-box ai-c jc-ce">业务入口</div>

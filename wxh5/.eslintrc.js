@@ -14,7 +14,8 @@ module.exports = {
     'arrow-parens': 0,
     // allow async-await
     'generator-star-spacing': 0,
-    'comma-dangle': 0
+    'comma-dangle': 0,
+    'eol-last': 0
   },
   parserOptions: {
     parser: 'babel-eslint'
