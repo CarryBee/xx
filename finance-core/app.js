@@ -7,19 +7,21 @@ const Schema = require('mongoose').Schema;
 const app = new Koa();
 const router = new Router();
 
-const {DataBaseTool, Stuff, state} = require("./DataBaseTool");
+const {DataBaseTool, Stuff} = require("./src/DataBaseTool");
 
 router.get('/', async ctx => {
 
 	// 序列化
 	let one = await Stuff.findxx();
-	console.log(one);
+	console.log(JSON.stringify(one));
 	ctx.body = one;
 
 	// 反序列化
+	
 	let two = new Stuff(one);
-	console.log(one.speak());
+	console.log(JSON.stringify(one.speak()));
 	two.save();
+	
 	
 });
 app.use(router.routes());
