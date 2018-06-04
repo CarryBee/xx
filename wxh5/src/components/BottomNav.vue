@@ -1,7 +1,7 @@
 <template>
   <div id="nav" class="flex-box">
     <router-link class="flex-1" to="/">首页</router-link> |
-    <router-link class="flex-1" to="/about">商城</router-link> |
+    <router-link class="flex-1" to="/about">合伙人</router-link> |
     <router-link class="flex-1" to="/partner">商城</router-link> |
     <router-link class="flex-1" to="/userInfo">我的</router-link>
   </div>
