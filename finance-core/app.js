@@ -2,29 +2,42 @@
 const Koa = require("koa");
 const Router = require("koa-router");
 const serve = require("koa-static");
-const mongoose = require('mongoose');
-const Schema = require('mongoose').Schema;
+const {DataBaseTool} = require("./src/DataBaseTool");
+const jwt = require("jsonwebtoken");
+const jv = require("./src/tools/jwtcontrol");
+const session = require("./src/tools/session");
 const app = new Koa();
-const router = new Router();
+const $ = new Router();
 
-const {DataBaseTool, Stuff} = require("./src/DataBaseTool");
+const secret = 'llkaksldfjnn982jdn';
+session(app);
+// 路由
+const UserRouter = require("./src/routers/UserRouter");
 
-router.get('/', async ctx => {
 
-	// 序列化
-	let one = await Stuff.findxx();
-	console.log(JSON.stringify(one));
-	ctx.body = one;
-
-	// 反序列化
-	
-	let two = new Stuff(one);
-	console.log(JSON.stringify(one.speak()));
-	two.save();
-	
-	
+$.get('/auth', async ctx => {
+    let profile = {
+        openid: '',
+        _id: '58971e9d7661a0069c2ad608'
+    };
+    ctx.session.views = "ll";
+    let token = jwt.sign(profile, secret, { expiresIn: "50h"});
+    ctx.body = { token: token };
 });
-app.use(router.routes());
+
+$.get('/success', async ctx => {
+	console.log(ctx.session.views);
+    try {
+        const body = new jv(ctx).verify();
+        ctx.body = ERO(0, "授权成功", body);
+    }catch (err){
+        ctx.body = ERO(401, "授权失败");
+    }
+
+});
+
+$.use('/user', UserRouter);
+app.use($.routes());
 app.use(serve(`${__dirname}/static`));
 
 (async function(){

@@ -3,10 +3,12 @@
  * DataBaseTool
  */
 const mongoose = require('mongoose');
-const stuffSchema = require("./stuffSchema");
+const stuffSchema = require("./schemas/stuffSchema");
+const UserSchema = require("./schemas/UserSchema");
 let connection;
 // 加载 Schema
 const stuff = mongoose.model('Stuff', stuffSchema);
+const user = mongoose.model('User', UserSchema);
 //
 class DataBaseTool {
 
@@ -54,6 +56,7 @@ class DataBaseTool {
 }
 module.exports = {
 	'DataBaseTool': DataBaseTool,
-	'Stuff': stuff
+	'Stuff': stuff,
+	'User': user
 };
 
