@@ -11,6 +11,12 @@ Vue.config.productionTip = false
 
 mobileAdapt()
 runApp()
+
+if (router.currentRoute.meta.isShowBottomNav === false) {
+  store.dispatch('setBottomNavState', false)
+} else {
+  store.dispatch('setBottomNavState', true)
+}
 router.beforeEach((to, from, next) => {
   if (to.meta.isShowBottomNav === false) {
     store.dispatch('setBottomNavState', false)
@@ -26,8 +32,4 @@ function runApp () {
     store,
     render: h => h(App)
   }).$mount('#app')
-  reqApi.getUserInfo().then((res) => {
-    console.log(res)
-    console.log('store', test)
-  })
 }

@@ -35,7 +35,7 @@ export default new Router({
       name: 'login',
       component: Login,
       meta: {
-        needLogin: true
+        isShowBottomNav: false
       }
     }
   ],

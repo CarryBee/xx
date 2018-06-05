@@ -7,9 +7,9 @@
   </div>
 </template>
 <script>
-  export default {
-    name: 'BottomNav'
-  }
+export default {
+  name: 'BottomNav'
+}
 </script>
 <style lang="scss" scoped="">
   @import "../style/application.scss";
@@ -28,4 +28,3 @@
     }
   }
 </style>
-
