@@ -75,8 +75,8 @@ export default {
     }
     .header-nav-btn {
       padding-top: px2rem(20);
-      border-left: 1px solid #dddddd;
-      border-right: 1px solid #dddddd;
+      /*border-left: 1px solid #dddddd;*/
+      /*border-right: 1px solid #dddddd;*/
       line-height: px2rem(60);
     }
   }

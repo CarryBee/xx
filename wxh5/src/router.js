@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
-import About from './views/About.vue'
+// import About from './views/About.vue'
 import UserInfo from './views/UserInfo'
+import Partner from './views/Partner'
 import Login from './views/Login'
 
 Vue.use(Router)
@@ -15,12 +16,10 @@ export default new Router({
       component: Home,
     },
     {
-      path: '/about',
-      name: 'about',
-      component: About,
-      meta: {
-        isShowBottomNav: false
-      }
+      path: '/partner',
+      name: 'partner',
+      component: Partner,
+      meta: {}
     },
     {
       path: '/userInfo',

@@ -1,7 +1,7 @@
 <template>
   <div id="nav" class="flex-box">
     <router-link class="flex-1" to="/">首页</router-link> |
-    <router-link class="flex-1" to="/about">合伙人</router-link> |
+    <router-link class="flex-1" to="/partner">合伙人</router-link> |
     <router-link class="flex-1" to="/partner">商城</router-link> |
     <router-link class="flex-1" to="/userInfo">我的</router-link>
   </div>
@@ -19,6 +19,7 @@ export default {
     width: 100%;
     box-sizing:border-box;
     padding: px2rem(20);
+    background: #fff;
     a {
       font-weight: bold;
       color: #2c3e50;

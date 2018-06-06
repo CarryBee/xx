@@ -4,7 +4,6 @@ import router from './router'
 import store from './store'
 import mobileAdapt from './common/mobileAdapt'
 import mock from './mock/index.js'
-import * as reqApi from './common/reqApi'
 mock()
 
 Vue.config.productionTip = false
@@ -27,7 +26,7 @@ router.beforeEach((to, from, next) => {
 })
 
 function runApp () {
-  let test = new Vue({
+  new Vue({
     router,
     store,
     render: h => h(App)

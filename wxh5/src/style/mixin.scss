@@ -6,10 +6,12 @@
 }
 
 @mixin bg-image($url){
-    background-image: url($url + "@2x.png");
-    @media (-webkit-min-device-pixel-ratio: 3),(-min-device-pixel-ratio){
-        background-image: url($url + "@3x.png");
-    }
+    //background-image: url($url + "@2x.png");
+    //@media (-webkit-min-device-pixel-ratio: 3),(-min-device-pixel-ratio){
+    //    background-image: url($url + "@3x.png");
+    //}
+
+    background-image: url($url);
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
