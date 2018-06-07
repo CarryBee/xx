@@ -1,4 +1,4 @@
-const ComputeBox = require("./ComputeBox");
+const ComputeBox = require("./src/tools/ComputeBox");
 
 
 let Z = {name:'Z', level: 7, upsao:undefined, proxy: true };

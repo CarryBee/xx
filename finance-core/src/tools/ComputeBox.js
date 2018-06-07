@@ -49,6 +49,8 @@ class ComputeBox {
 		this.realTimeUser = []; // 分成用
 	}
 
+	//==================刷卡===================
+
 	/*
 		推荐链 upsao 向上查找级别关系链，修改自己的等级
 		刷卡分成用。
@@ -99,6 +101,39 @@ class ComputeBox {
 	}
 
 	/*
+		根据排好分成链，进行分配。根据比例逐级抽取各自部分
+		刷卡分成用。
+		let rates = {
+			'7': 0.14, // 0.14
+			'6': 0.12, // 0.12
+			'5': 0.1 // 0.1
+		}
+	*/
+
+	computeShukaFun01(cash, rates, remark) { 
+		let tmpobj = new Map();
+		let arruser = this.realTimeUser || [];
+		for(let i = 0; i < arruser.length; i++) {
+
+			let lnum = math.bignumber(rates[arruser[i].level+""]);
+			let rnum;
+		    if(arruser[i-1] == undefined)
+		    	rnum = 0;
+		    else
+		    	rnum = -math.bignumber(rates[arruser[i-1].level+""]);
+		    
+			let te = math.add(lnum, rnum);
+			tmpobj.set(arruser[i].name, cash * math.format(te));
+		}
+
+		return tmpobj;
+
+	}
+
+
+	//==================提现===================
+
+	/*
 		推荐链 uptixian 向上查找级别关系链（中间不可重复）
 		通过 upsao 找到最近的代理商/运营中心，挂靠上去，一般在建立扫码关系就同步建立
 		提现分成使用。
@@ -140,36 +175,6 @@ class ComputeBox {
 
 	/*
 		根据排好分成链，进行分配。根据比例逐级抽取各自部分
-		刷卡分成用。
-		let rates = {
-			'7': 0.14, // 0.14
-			'6': 0.12, // 0.12
-			'5': 0.1 // 0.1
-		}
-	*/
-
-	computeShukaFun01(cash, rates, remark) { 
-		let tmpobj = new Map();
-		let arruser = this.realTimeUser || [];
-		for(let i = 0; i < arruser.length; i++) {
-
-			let lnum = math.bignumber(rates[arruser[i].level+""]);
-			let rnum;
-		    if(arruser[i-1] == undefined)
-		    	rnum = 0;
-		    else
-		    	rnum = -math.bignumber(rates[arruser[i-1].level+""]);
-		    
-			let te = math.add(lnum, rnum);
-			tmpobj.set(arruser[i].name, cash * math.format(te));
-		}
-
-		return tmpobj;
-
-	}
-
-	/*
-		根据排好分成链，进行分配。根据比例逐级抽取各自部分
 		提现分成用。
 		let rates = {
 			'Z2-C': 0.65, // Z2分给C 0.65
@@ -202,7 +207,5 @@ class ComputeBox {
 		return tmpobj;
 
 	}
-
-
 }
 module.exports = ComputeBox;
