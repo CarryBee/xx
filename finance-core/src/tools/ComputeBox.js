@@ -69,10 +69,11 @@ class ComputeBox {
 	/*
 		推荐链 upsao 向上查找级别关系链（中间可重复，以靠下为准）
 		进行直链链绑定与分成链绑定 输入长链，变短链
+		向上找等级比自己高的，找到最高等级为止
 		刷卡分成用。
 	*/
 
-	pathShukaFun01(maxloopnum) { // 进行直链链绑定与分成链绑定 输入长链，变短链
+	pathShukaFun01(maxloopnum = 50) { // 进行直链链绑定与分成链绑定 输入长链，变短链
 		let nowUser = this.user;
 		let fatUser;
 		let level = this.user.level;
@@ -136,10 +137,11 @@ class ComputeBox {
 	/*
 		推荐链 uptixian 向上查找级别关系链（中间不可重复）
 		通过 upsao 找到最近的代理商/运营中心，挂靠上去，一般在建立扫码关系就同步建立
+		向上找有proxy标准的，找到为止
 		提现分成使用。
 	*/
 
-	bindTixianFun01(maxloopnum) { // 通过 upsao 找到最近的代理商/运营中心，挂靠上去，将 uptixian 记录
+	bindTixianFun01(maxloopnum = 50) { // 通过 upsao 找到最近的代理商/运营中心，挂靠上去，将 uptixian 记录
 		let nowUser = this.user;
 		let fatUser;
 		let countloop = 0;
@@ -207,5 +209,41 @@ class ComputeBox {
 		return tmpobj;
 
 	}
+
+	//==================推荐关系链===================
+
+
+
+	/*
+		向上查找，找到所有扫码推荐人关系链。
+		扫码关联后进行读取并且记录到用户缓存，用于权限与数据统计  （信任upsao）
+		查找完整关系链方法
+	*/
+
+	pathUpsaoFun01(maxloopnum = 50) {
+		let nowUser = this.user;
+		let countloop = 0;
+		do {
+			countloop++;
+			this.arrUser.push(nowUser.name);
+			nowUser = nowUser.upsao; // 没有上级为止
+		} while(nowUser && countloop < maxloopnum);
+		return this.arrUser;
+	}
+
+	/*
+		扫码时候向上级绑定，关联与记录链 （信任xupsao）
+	*/
+
+	bindUpsaoFun01(fatUser) {
+		if(!this.user.upsao) { // 以后生效
+			this.user.upsao = fatUser;
+			let fxupsao = fatUser.xupsao || [fatUser.name];
+			fxupsao.unshift(this.user.name);
+ 			this.user.xupsao = fxupsao; // 拿上一级的链路数组，加入自己
+			// this.user.xupsao = this.pathUpsaoFun01();
+		} else return this.user;
+	}
+
 }
 module.exports = ComputeBox;
