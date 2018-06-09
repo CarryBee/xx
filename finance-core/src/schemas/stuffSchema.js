@@ -9,7 +9,6 @@ stuffSchema.methods.speak = function () {
 };
 
 stuffSchema.statics.findxx = function () {
-    console.log("x");
     return this.findOne({}).exec();
 };
 
