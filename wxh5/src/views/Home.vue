@@ -24,10 +24,12 @@
         </div>
       </div>
       <div class="my-machine header-nav-btn flex-box flex-direction-column flex-1 ai-c jc-ce">
-        <div class="header-nav-icon flex-box ai-c jc-ce"><i class="fas fa-qrcode fa-2x"></i></div>
-        <div class="header-nav-title">
-          我的推广码
-        </div>
+        <router-link to="/myShareLink/myShareOption">
+          <div class="header-nav-icon flex-box ai-c jc-ce"><i class="fas fa-qrcode fa-2x"></i></div>
+          <div class="header-nav-title">
+            我的推广码
+          </div>
+        </router-link>
       </div>
       <div class="my-machine header-nav-btn flex-box flex-direction-column flex-1 ai-c jc-ce">
         <div class="header-nav-icon flex-box ai-c jc-ce"><i class="far fa-money-bill-alt fa-2x"></i></div>
