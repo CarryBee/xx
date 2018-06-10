@@ -13,7 +13,7 @@
         </div>
       </div>
       <div class="my-info-btns">
-        <div class="card-record my-info-btn">我的刷卡记录</div>
+        <div class="card-record my-info-btn"><router-link to="cartRecord">我的刷卡记录</router-link></div>
       </div>
     </div>
     <div class="header-nav flex-box">

@@ -5,6 +5,8 @@ import Home from './views/Home.vue'
 import UserInfo from './views/UserInfo'
 import Partner from './views/Partner'
 import Login from './views/Login'
+import cardRecord from './views/cardRecord'
+import myShareLink from './views/myShareLink'
 
 Vue.use(Router)
 
@@ -25,6 +27,22 @@ export default new Router({
       path: '/userInfo',
       name: 'userInfo',
       component: UserInfo,
+      meta: {
+        needLogin: true
+      }
+    },
+    {
+      path: '/cartRecord',
+      name: 'cardRecord',
+      component: cardRecord,
+      meta: {
+        needLogin: true
+      }
+    },
+    {
+      path: '/myShareLink/:qrInfo',
+      name: 'myShareLink',
+      component: myShareLink,
       meta: {
         needLogin: true
       }

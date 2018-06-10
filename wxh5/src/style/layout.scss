@@ -64,9 +64,6 @@
 .ai-c {
   align-items: center;
 }
-
-.f-30 {
-  font-size: px2rem(30);
+@for $i from 16 through 34 {
+  .f-#{$i} { font-size: px2rem($i); }
 }
-
-
