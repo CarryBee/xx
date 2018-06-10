@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import * as UTILS from '@/common/utils'
 
-describe('Unit', () => {
+describe('微信授权跳转链接', () => {
   it('makeAccessWXUrl should include appId，snsapiType', function () {
     let redirectUrl = UTILS.makeAccessWXUrl('testappid')
     expect(redirectUrl).to.include('testappid')
@@ -12,6 +12,10 @@ describe('Unit', () => {
 describe('getQueryString', () => {
   it('getQueryString 正常顺序参数', () => {
     let res = UTILS.getQueryString('code', 'http://localhost:8880/#/myShareLink/erqew121rwr232r.er23?code=codetest123')
+    expect(res).to.equal('codetest123')
+  })
+  it('getQueryString 正常顺序多参数', () => {
+    let res = UTILS.getQueryString('code', 'http://localhost:8880/#/myShareLink/erqew121rwr232r.er23?code=codetest123&code2=sewe2')
     expect(res).to.equal('codetest123')
   })
   it('getQueryString 非正常顺序参数', () => {

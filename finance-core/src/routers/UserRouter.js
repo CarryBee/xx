@@ -6,6 +6,8 @@ const ERO = require("../tools/Errorbody");
 const {Stuff} = require("../DataBaseTool");
 const $ = new Router();
 const UserModule = require("../modules/UserModule");
+const OAuth = require('co-wechat-oauth');
+const wxApi = new OAuth('appid', 'secret');
 
 $.get('/', async ctx => {
 
@@ -15,7 +17,7 @@ $.get('/', async ctx => {
 	ctx.body = one;
 
 	// 反序列化
-	
+
 	let two = new Stuff(one);
 	console.log(JSON.stringify(one.speak()));
 	two.save();
@@ -24,7 +26,7 @@ $.get('/', async ctx => {
 // 微信正常登陆
 $.get('/entry', async ctx => {
 	// 读取openid，并且读取用户，一起写入session
-	
+
 });
 
 // 创建用户
@@ -36,8 +38,19 @@ $.get('/create', async ctx => {
 	} catch(e) {
 		ctx.body = ERO(501, "创建用户", "失败", e.toString());
 	}
-	
+
 });
+
+$.get('/wx/getUserByCode/:code', async ctx => {
+  let code = ctx.request.query
+  try {
+    let res = await wxApi.getUserByCode(code)
+    ctx.body = res
+  } catch (err) {
+    ctx.body = err
+  }
+
+})
 
 // 绑定账户密码到openid
 $.get('/bind', async ctx => {
@@ -51,14 +64,14 @@ $.get('/bind', async ctx => {
 	} catch(e) {
 		ctx.body = ERO(501, "绑定账户密码到openid", "失败", e.toString());
 	}
-	
+
 });
 
 // 绑定账户密码到openid
 $.get('/login', async ctx => {
 	//不会读取login，通过账户密码写session
 
-	
+
 });
 
 module.exports = $.routes();

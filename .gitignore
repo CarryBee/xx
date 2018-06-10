@@ -18,3 +18,4 @@ yarn-error.log*
 
 # finance-core
 /finance-core/node_modules
+/finance-core/reptile/app.js
