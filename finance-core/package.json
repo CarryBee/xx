@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
   "author": "karonl",
   "license": "ISC",
@@ -12,6 +13,7 @@
     "bluebird": "^3.5.1",
     "chai": "^4.1.2",
     "cheerio": "^1.0.0-rc.2",
+    "co-wechat-oauth": "^2.0.1",
     "koa": "^2.5.1",
     "koa-jwt": "^3.3.2",
     "koa-router": "^7.4.0",
