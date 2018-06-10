@@ -1,0 +1,27 @@
+@mixin border-1px($color){
+    border-bottom: 1px solid $color;
+}
+@mixin border-none(){
+    border: none;
+}
+
+@mixin bg-image($url){
+    //background-image: url($url + "@2x.png");
+    //@media (-webkit-min-device-pixel-ratio: 3),(-min-device-pixel-ratio){
+    //    background-image: url($url + "@3x.png");
+    //}
+
+    background-image: url($url);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+@mixin icon($name) {
+    background-image: url("../../assets/" + $name + "@2x.png");
+    @media (-webkit-min-device-pixel-ratio: 3), (-min-device-pixel-ratio) {
+        background-image: url("../../assets/" + $name + "@3x.png");
+    }
+    background-repeat: no-repeat;
+    background-position: center;
+}
