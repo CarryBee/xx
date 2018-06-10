@@ -4,9 +4,12 @@ import router from './router'
 import store from './store'
 import mobileAdapt from './common/mobileAdapt'
 import mock from './mock/index.js'
+import * as UTILS from '@/common/utils'
 mock()
 
 Vue.config.productionTip = false
+
+Vue.prototype.UTILS = UTILS
 
 mobileAdapt()
 runApp()
