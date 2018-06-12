@@ -1,4 +1,3 @@
-'use strict'
 /*
 用户通过唯一id创建，可以是openid（唯一）或者或者账户密码登陆
 进入页面时候如果无openid则通过手机登陆，如果有openid则手机登陆时候进行绑定
@@ -20,26 +19,71 @@ account:{username: password} (方便前端调试)
 
 */
 const mongoose = require('mongoose');
-const {User} = require("../DataBaseTool");
+const {User, Unid} = require("../DataBaseTool");
 class UserModule {
 
 	constructor() {}
 
-	static create(userinfo) {
-		return new Promise((resolve, reject) => {
-			if(userinfo && userinfo.openid) {
-				let user = new User({
-					openid: userinfo.openid
-				});
-				user.initialize(); // 数据初始化
-				user.save((err, doc) => {
-					if(err) reject(err);
-					else resolve(doc);
-				});
-			} else {
-				reject(new Error("非微信进入注册"));
+	// 获取微信的用户信息
+	static async getWXUserInfo(openid) {
+		const nowUser = await User.findOne({openid: openid});
+		if(nowUser) return nowUser; // 已注册
+		else return undefined;
+	}
+
+	// 通过微信openid进行注册
+	static async createUser(userinfo) {
+		if(userinfo && userinfo.openid) {
+
+			if(await UserModule.getWXUserInfo(userinfo.openid)) throw new Error("该微信ID已注册");
+
+			let user = new User({
+				unid: await Unid.get(), // 唯一短id
+				openid: userinfo.openid
+			});
+			
+			/*
+			if(userinfo.uphone) { // 通过手机
+				const fatherUser = await User.findOne({phone: userinfo.uphone}); // 找上级
+				if(fatherUser) {
+					user.upshao = fatherUser._id; // 推荐链
+					user.uppayer = fatherUser._id; // 刷卡链
+				} else throw new Error("推荐人ID不存在");
 			}
-		});
+			*/
+
+			// upshao 推荐人  uppayer 刷卡分成人
+			if(userinfo.unid) {
+				const fatherUser = await User.findOne({unid: unid}); // 找上级
+				if(fatherUser) {
+					user.upshao = fatherUser._id; // 推荐链
+					user.uppayer = fatherUser._id; // 刷卡链
+				} else throw new Error("推荐人ID不存在");
+			}
+
+			// userinfo 每个人的免费机子数
+			userinfo.freemach = 2;
+
+			// nickname 默认名字
+			user.nickname = userinfo.nickname || '微信用户';
+
+			// headurl 默认头像
+			user.headurl = userinfo.headurl;
+
+			return await user.save();
+		} else {
+			throw new Error("非微信进入注册");
+		}
+	}
+
+	// 设置头像名字
+	static async setHeadName(userinfo, name, head) {
+		const uid = mongoose.Types.ObjectId(userinfo._id); // 自己的id
+		const one = await User.findOne({_id: uid});
+		const user = new User(one);
+		if(name) user.nickname = name;
+		if(head) user.headurl = head;
+		return await user.save();
 	}
 
 	// 绑定账户密码

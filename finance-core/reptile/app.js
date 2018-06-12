@@ -1,7 +1,7 @@
 'use strict'
 const superagent = require("superagent");
 const config = require("./config");
-const cookieMap = new Map();
+let cookieMap = new Map();
 const fs = require("fs");
 
 
@@ -18,7 +18,7 @@ function getRandamCode () {
             loopcookies(res.header['set-cookie']);
 
             const codepic = "data:image/jpeg;base64," + res.body.toString('base64');
-            console.log("获取验证码：成功");
+            //console.log("获取验证码：成功");
             
             checkRandamCode(codepic, function(err, code) {
                 if (err) console.log(err);
@@ -29,7 +29,7 @@ function getRandamCode () {
 };
 
 function checkRandamCode(codepic, callback) { 
-    console.log("识别验证码：loading..");
+    //console.log("识别验证码：loading..");
     superagent.post(config.codeVerifyUrl)
         .set("Authorization", "APPCODE " + config.appcode)
         .type('form')
@@ -69,10 +69,25 @@ function getLogin (answer) {
                 var cookie = res.header['set-cookie'];
                 loopcookies(cookie);
                 
-                console.log(res.text);
-                console.log("状态：登陆成功");
-                //getListOF2();
-                setTimeout(getListOF2, 2000);
+                //console.log(res.text);
+                //AGE_NAME
+                if(res && res.text) {
+                    let jes = JSON.parse(res.text);
+                    if(jes.RSPMSG == "校验通过") {
+                        console.log(jes.AGE_NAME,jes.RSPMSG);
+                        getListOF2();
+                    }
+                }
+
+                // RSPMSG 校验通过
+                
+                //console.log("状态：登陆成功");
+                
+
+
+                // 再来一次
+                //cookieMap = new Map();
+                //setTimeout(getRandamCode, 2000);
                 
 
         });
@@ -180,7 +195,8 @@ function getFromHtml (html) {
     repon = repon.replace(/\r/g,"");
     repon = repon.replace(/\n/g,"");
     repon = repon.replace(/\t/g,"");
-    reponarr = repon.match(/<tr[^>/]*>[\s|\S]*?<\/tr>/g);
+    let reponarr = repon.match(/<tr[^>/]*>[\s|\S]*?<\/tr>/g);
+    if(reponarr.length < 1)console.log(repon);
 
     for(let tr = 0; tr < reponarr.length; tr++) {
         let reg = new RegExp(/<td[^>/]*>(.+?)<\/td>/g);

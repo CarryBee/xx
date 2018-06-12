@@ -14,7 +14,7 @@ session(app);
 // 路由
 const UserRouter = require("./src/routers/UserRouter");
 
-
+// 授权测试
 $.get('/auth', async ctx => {
     let profile = {
         openid: '',

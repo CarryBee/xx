@@ -17,7 +17,6 @@ $.get('/', async ctx => {
 	ctx.body = one;
 
 	// 反序列化
-
 	let two = new Stuff(one);
 	console.log(JSON.stringify(one.speak()));
 	two.save();
@@ -25,20 +24,61 @@ $.get('/', async ctx => {
 
 // 微信正常登陆
 $.get('/entry', async ctx => {
-	// 读取openid，并且读取用户，一起写入session
 
+	// 通过 weixinOacth 获得 weixindata
+	let weixindata = {
+		openid: "kskdidisss",
+		nickname: "微信用户",
+		head: "微信头像"
+	} // 服务器获得
+
+	try {
+		let userinfo = UserModule.getWXUserInfo(weixindata.openid);
+		if(userinfo) { // 用户存在
+			ctx.session.openid = weixindata.openid; // 记录用户openid， 方便直接读取无需授权
+			ctx.session.userinfo = userinfo; // 将用户信息进行记录
+			ctx.body = userinfo; // 直接输出
+		} else {
+			// 用户不存在，进行注册
+			let res = await UserModule.createUser({
+				openid: weixindata.openid,
+				unid: "20000", // 上一级独立id
+				nickname: undefined,
+				headurl: undefined
+			});
+			ctx.session.openid = weixindata.openid; // 记录用户openid， 方便直接读取无需授权
+			ctx.session.userinfo = res; // 将用户信息进行记录
+			ctx.body = ERO(0, "创建用户", res);
+		}
+	} catch(e) {
+		ctx.body = ERO(501, "创建用户", "失败", e.toString());
+	}
 });
 
 // 创建用户
 $.get('/create', async ctx => {
 	//读取openid
 	try {
-		let res = await UserModule.create({});
+		let res = await UserModule.createUser({
+			openid: 'xxxccxxx'
+		});
 		ctx.body = ERO(0, "创建用户", res);
 	} catch(e) {
+		console.log(e);
 		ctx.body = ERO(501, "创建用户", "失败", e.toString());
 	}
+});
 
+// 更改头像
+$.get('/setheadname', async ctx => {
+	try {
+		let res = await UserModule.setHeadName({
+			_id: '5b20013a16515ba2bc86bcc5'
+		}, '微信用户', 'bbb');
+		ctx.body = ERO(0, "更新头像", res);
+	} catch(e) {
+		ctx.body = ERO(501, "更新头像", "失败", e.toString());
+	}
 });
 
 $.get('/wx/getUserByCode/:code', async ctx => {
