@@ -29,7 +29,7 @@ $.get('/entry', async ctx => {
 	let weixindata = {
 		openid: "kskdidisss",
 		nickname: "微信用户",
-		head: "微信头像"
+		head: "http://微信头像"
 	} // 服务器获得
 
 	try {
@@ -42,7 +42,7 @@ $.get('/entry', async ctx => {
 			// 用户不存在，进行注册
 			let res = await UserModule.createUser({
 				openid: weixindata.openid,
-				unid: "20000", // 上一级独立id
+				unid: "20000", // 上一级独立id，从二维码链接获得
 				nickname: undefined,
 				headurl: undefined
 			});

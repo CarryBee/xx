@@ -3,12 +3,12 @@
  * DataBaseTool
  */
 const mongoose = require('mongoose');
-const stuffSchema = require("./schemas/stuffSchema");
+const StuffSchema = require("./schemas/StuffSchema");
 const UserSchema = require("./schemas/UserSchema");
 const UnidSchema = require("./schemas/UnidSchema");
 let connection;
 // 加载 Schema
-const stuff = mongoose.model('Stuff', stuffSchema);
+const stuff = mongoose.model('Stuff', StuffSchema);
 const user = mongoose.model('User', UserSchema);
 const unid = mongoose.model('Unid', UnidSchema);
 //
