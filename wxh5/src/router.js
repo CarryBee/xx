@@ -7,6 +7,7 @@ import Partner from './views/Partner'
 import Login from './views/Login'
 import cardRecord from './views/cardRecord'
 import myShareLink from './views/myShareLink'
+import Wxredirect from './views/Wxredirect'
 
 Vue.use(Router)
 
@@ -51,6 +52,14 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: Login,
+      meta: {
+        isShowBottomNav: false
+      }
+    },
+    {
+      path: '/wxRedirect',
+      name: 'wxRedirect',
+      component: Wxredirect,
       meta: {
         isShowBottomNav: false
       }
