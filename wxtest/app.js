@@ -20,12 +20,12 @@ $.get('/user', async ctx => {
 		if(err.indexOf("http") >= 0) ctx.redirect(err); // 跳转
         else ctx.body = err;
 	}
-  
+
 });
 $.use('/wx', wResponse.routes()); // 路由
 
 app.use($.routes());
 app.use(serve(`${__dirname}/static`));
-app.listen(80, () => {
+app.listen(8111, () => {
   console.log("Koa Server is running");
 });
