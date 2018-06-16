@@ -1,0 +1,21 @@
+'use strict'
+const Koa = require("koa");
+const Router = require("koa-router");
+const serve = require("koa-static");
+const WOauth = require("../finance-core/src/tools/WXOauth");
+const app = new Koa();
+const $ = new Router();
+const wResponse = require("./weixinResponse");
+
+$.get('/user', async ctx => {
+  const result = await WOauth.promised(ctx);
+  // 服务器获取成功
+  ctx.body = result;
+});
+$.use('/wx', wResponse.routes()); // 路由
+
+app.use($.routes());
+app.use(serve(`${__dirname}/static`));
+app.listen(80, () => {
+  console.log("Koa Server is running");
+});
