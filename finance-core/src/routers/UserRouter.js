@@ -10,6 +10,8 @@ const UserModule = require("../modules/UserModule");
 const OAuth = require('co-wechat-oauth');
 const wxApi = new OAuth('wx6f8322dd012ed875', 'd76c5dd2f636241c6ecc99806e1943c3');
 
+const jv = require("../tools/jwtcontrol");
+
 $.get('/', async ctx => {
 
 	// 序列化
@@ -23,52 +25,39 @@ $.get('/', async ctx => {
 	two.save();
 });
 
-// 微信正常登陆
-$.get('/entry', async ctx => {
-
-	// 通过 weixinOacth 获得 weixindata
-	let weixindata = {
-		openid: "kskdidisss",
-		nickname: "微信用户",
-		head: "http://微信头像"
-	} // 服务器获得
-
+/*
+	主要登录入口
+*/
+// 通过微信，静默登录注册全流程
+async function LoginAndRegByOpenid(openid) {
 	try {
-		let userinfo = UserModule.getWXUserInfo(weixindata.openid);
-		if(userinfo) { // 用户存在
-			ctx.session.openid = weixindata.openid; // 记录用户openid， 方便直接读取无需授权
-			ctx.session.userinfo = userinfo; // 将用户信息进行记录
-			ctx.body = userinfo; // 直接输出
-		} else {
-			// 用户不存在，进行注册
-			let res = await UserModule.createUser({
-				openid: weixindata.openid,
-				unid: "20000", // 上一级独立id，从二维码链接获得
-				nickname: undefined,
-				headurl: undefined
+		let userinfo = await UserModule.getWXUserInfo(openid);
+		if(!userinfo) { // 用户不存在
+			userinfo = await UserModule.createUser({
+				openid: openid
 			});
-			ctx.session.openid = weixindata.openid; // 记录用户openid， 方便直接读取无需授权
-			ctx.session.userinfo = res; // 将用户信息进行记录
-			ctx.body = ERO(0, "创建用户", res);
 		}
+		const user = {
+			userid: userinfo._id
+		};
+		user.token = jv.sign(user); // JWT签名
+		user.unid = userinfo.unid;
+		user.openid = userinfo.openid; // 额外绑定
+		user.phone = userinfo.phone; // 额外绑定
+		
+		return user;
 	} catch(e) {
-		ctx.body = ERO(501, "创建用户", "失败", e.toString());
+		throw {message: ERO(501, "创建用户", "失败", e.toString())};
 	}
-});
+}
 
-// 创建用户
-$.get('/create', async ctx => {
-	//读取openid
-	try {
-		let res = await UserModule.createUser({
-			openid: 'xxxccxxx'
-		});
-		ctx.body = ERO(0, "创建用户", res);
-	} catch(e) {
-		console.log(e);
-		ctx.body = ERO(501, "创建用户", "失败", e.toString());
-	}
-});
+/*
+	主要登录入口
+*/
+// 通过手机，静默登录注册全流程
+async function LoginAndRegByPhone(phone) {
+	// 以后使用
+}
 
 // 更改头像
 $.get('/setheadname', async ctx => {
@@ -101,7 +90,7 @@ $.get('/loginWithCode/:code', async (ctx, next) => {
       ctx.body = HR({
         data: loginToken
       })
-      return
+      return;
     }
     // 登录失败 返回OpenID等相关信息
     ctx.body = HR({
@@ -146,8 +135,6 @@ $.get('/bind', async ctx => {
 // 绑定账户密码到openid
 $.get('/login', async ctx => {
 	//不会读取login，通过账户密码写session
-
-
 });
 
 module.exports = $.routes();

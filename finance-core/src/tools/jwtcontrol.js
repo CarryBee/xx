@@ -3,7 +3,7 @@
  * Created by karonl on 2017/1/2.
  * jwt 具体操作类
  */
-const jwt = require('koa-jwt');
+const jwt = require("jsonwebtoken");
 const secret = 'llkaksldfjnn982jdn';
 class jwtcontrol {
     constructor(ctx){
@@ -12,6 +12,10 @@ class jwtcontrol {
 
     static gsecret(){
         return secret;
+    }
+
+    static sign(content){
+        return jwt.sign(content, secret, { expiresIn: "50h"});
     }
 
     verify(){
