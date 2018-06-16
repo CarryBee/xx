@@ -96,6 +96,13 @@ $.get('/loginWithCode/:code', async (ctx, next) => {
     let wxInfo = await wxApi.getUserByCode(code)
     let openId = wxInfo.openId
     // TODO: 使用openId登录
+    let loginToken = false
+    if (loginToken) {
+      ctx.body = HR({
+        data: loginToken
+      })
+      return
+    }
     // 登录失败 返回OpenID等相关信息
     ctx.body = HR({
       data: wxInfo
