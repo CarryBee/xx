@@ -13,7 +13,7 @@
       console.log('s', utils.getQueryString('code'))
       this.code = utils.getQueryString('code') || '没有code'
       this.wxUrl = utils.makeAccessWXUrl()
-      console.log('wxUrl', wxUrl)
+      console.log('wxUrl', this.wxUrl)
     },
     data () {
       return {
