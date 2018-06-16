@@ -1,6 +1,8 @@
 <template>
   <div class="code">
-    {{code}}
+    <div class="code">{{code}}</div>
+    <div class="wxUrl">{{wxUrl}}</div>
+
   </div>
 </template>
 <script>
@@ -10,12 +12,13 @@
     created () {
       console.log('s', utils.getQueryString('code'))
       this.code = utils.getQueryString('code') || '没有code'
-      let wxUrl = utils.makeAccessWXUrl()
+      this.wxUrl = utils.makeAccessWXUrl()
       console.log('wxUrl', wxUrl)
     },
     data () {
       return {
-        code: '123'
+        code: '123',
+        wxUrl: ''
       }
     }
   }
