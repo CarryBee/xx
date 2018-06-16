@@ -3,11 +3,12 @@ const Router = require("koa-router");
 const Schema = require("mongoose").Schema;
 const mongoose = require("mongoose");
 const ERO = require("../tools/Errorbody");
+const HR = require("../tools/handleRes");
 const {Stuff} = require("../DataBaseTool");
 const $ = new Router();
 const UserModule = require("../modules/UserModule");
 const OAuth = require('co-wechat-oauth');
-const wxApi = new OAuth('appid', 'secret');
+const wxApi = new OAuth('wx6f8322dd012ed875', 'd76c5dd2f636241c6ecc99806e1943c3');
 
 $.get('/', async ctx => {
 
@@ -81,13 +82,41 @@ $.get('/setheadname', async ctx => {
 	}
 });
 
+/**
+ * 通过code获取微信用户信息，用于登录和绑定
+ * 成功返回 {loginToken: String}
+ * 登录失败返回 微信相关信息
+ */
+$.get('/loginWithCode/:code', async (ctx, next) => {
+  let code = ctx.params.code
+  if (!code) {
+    throw {message: '没有code参数'}
+  }
+  try {
+    let wxInfo = await wxApi.getUserByCode(code)
+    let openId = wxInfo.openId
+    // TODO: 使用openId登录
+    // 登录失败 返回OpenID等相关信息
+    ctx.body = HR({
+      data: wxInfo
+    })
+  } catch (err) {
+    throw {message: err}
+  }
+})
+
 $.get('/wx/getUserByCode/:code', async ctx => {
   let code = ctx.request.query
+  console.log('code', code)
   try {
     let res = await wxApi.getUserByCode(code)
-    ctx.body = res
+    ctx.body = HR({
+      data: {
+        res
+      }
+    })
   } catch (err) {
-    ctx.body = err
+    throw {message: err}
   }
 
 })

@@ -6,13 +6,41 @@ const {DataBaseTool} = require("./src/DataBaseTool");
 const jwt = require("jsonwebtoken");
 const jv = require("./src/tools/jwtcontrol");
 const session = require("./src/tools/session");
+const HR = require('./src/tools/handleRes')
 const app = new Koa();
 const $ = new Router();
 
 const secret = 'llkaksldfjnn982jdn';
 session(app);
+/**
+  * 统一返回类型：
+  * {
+  *  code:200,
+  *  message: '操作成功',
+  *  data: {
+  *    loginToken: 'loginToken'
+  *  }
+  * }
+**/
 // 路由
 const UserRouter = require("./src/routers/UserRouter");
+// 统一的处理
+let handleErr = async (ctx, next) => {
+  let errMsg = '系统异常'
+  try {
+    await next()
+    if (ctx.status !== 200) {
+      if (ctx.status === 404) {errMsg = '接口不存在'}
+      ctx.body = HR({code: ctx.status, message: errMsg})
+    }
+  } catch (err) {
+    ctx.body = HR({code: ctx.status, message: errMsg})
+  }
+  return
+}
+
+app.use(handleErr)
+// app.use(handleSuccess)
 
 // 授权测试
 $.get('/auth', async ctx => {
@@ -39,7 +67,6 @@ $.get('/success', async ctx => {
 $.use('/user', UserRouter);
 app.use($.routes());
 app.use(serve(`${__dirname}/static`));
-
 (async function(){
 	await DataBaseTool.start();
 	await app.listen(3000, () => {
