@@ -4,7 +4,7 @@
  */
 const Router = require('koa-router');
 const $ = new Router();
-const SHA = require("../tools/sha1");
+const SHA = require("./tools/sha1");
 
 /*
 const record = require('../modules/record');

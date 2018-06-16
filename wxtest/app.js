@@ -3,9 +3,13 @@ const Koa = require("koa");
 const Router = require("koa-router");
 const serve = require("koa-static");
 const WOauth = require("../finance-core/src/tools/WXOauth");
+const session = require("../finance-core/src/tools/session");
 const app = new Koa();
 const $ = new Router();
 const wResponse = require("./weixinResponse");
+
+
+session(app);
 
 $.get('/user', async ctx => {
   const result = await WOauth.promised(ctx);
