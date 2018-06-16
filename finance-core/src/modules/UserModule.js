@@ -24,37 +24,58 @@ class UserModule {
 
 	constructor() {}
 
-	// 获取微信的用户信息
+	// 登录成功获取微信的用户信息
 	static async getWXUserInfo(openid) {
 		const nowUser = await User.findOne({openid: openid});
+		// 筛选
+		if(nowUser) return nowUser; // 已注册
+		else return undefined;
+	}
+
+	// 登录成功获取微信的用户信息
+	static async getPhoneUserInfo(phone) {
+		const nowUser = await User.findOne({phone: phone});
+		console.log("phone", nowUser);
+		// 筛选
 		if(nowUser) return nowUser; // 已注册
 		else return undefined;
 	}
 
 	// 通过微信openid进行注册
 	static async createUser(userinfo) {
-		if(userinfo && userinfo.openid) {
 
-			if(await UserModule.getWXUserInfo(userinfo.openid)) throw new Error("该微信ID已注册");
+		// 支持额外字段 
+		/*
+		fatunid 上级id
+		nickname 名称
+		headurl 头像
+		uphone 电话号码
+		*/
+		if(userinfo && (userinfo.phone || userinfo.openid)) {
 
+			if(userinfo.phone && await UserModule.getPhoneUserInfo(userinfo.phone)) throw new Error("该手机已注册");
+		
+			if(userinfo.openid && await UserModule.getWXUserInfo(userinfo.openid)) throw new Error("该微信ID已注册");
+			
 			let user = new User({
 				unid: await Unid.get(), // 唯一短id
-				openid: userinfo.openid
+				openid: userinfo.openid, // 微信id
+				phone: userinfo.phone // 手机号码
 			});
 			
-			/*
-			if(userinfo.uphone) { // 通过手机
+			
+			if(userinfo.uphone && !userinfo.fatunid) { // 通过手机
 				const fatherUser = await User.findOne({phone: userinfo.uphone}); // 找上级
 				if(fatherUser) {
 					user.upshao = fatherUser._id; // 推荐链
 					user.uppayer = fatherUser._id; // 刷卡链
 				} else throw new Error("推荐人ID不存在");
 			}
-			*/
+			
 
 			// upshao 推荐人  uppayer 刷卡分成人
-			if(userinfo.unid) {
-				const fatherUser = await User.findOne({unid: unid}); // 找上级
+			if(userinfo.fatunid) {
+				const fatherUser = await User.findOne({unid: userinfo.fatunid}); // 找上级
 				if(fatherUser) {
 					user.upshao = fatherUser._id; // 推荐链
 					user.uppayer = fatherUser._id; // 刷卡链
@@ -71,8 +92,9 @@ class UserModule {
 			user.headurl = userinfo.headurl;
 
 			return await user.save();
+		
 		} else {
-			throw new Error("非微信进入注册");
+			throw new Error("非正常渠道进入注册");
 		}
 	}
 
