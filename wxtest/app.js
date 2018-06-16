@@ -12,9 +12,15 @@ const wResponse = require("./weixinResponse");
 session(app);
 
 $.get('/user', async ctx => {
-  const result = await WOauth.promised(ctx);
-  // 服务器获取成功
-  ctx.body = result;
+	try{
+		const result = await WOauth.promised(ctx);
+		// 服务器获取成功
+		ctx.body = result;
+	} catch(e) {
+		if(err.indexOf("http") >= 0) ctx.redirect(err); // 跳转
+        else ctx.body = err;
+	}
+  
 });
 $.use('/wx', wResponse.routes()); // 路由
 
