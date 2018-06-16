@@ -7,7 +7,7 @@ const UnidSchema = new mongoose.Schema({
 
 //unin id
 UnidSchema.statics.get = async function () {
-    let num = await this.findOneAndUpdate({},{$inc:{key: 1}}).exec();
+    let num = await this.findOneAndUpdate({},{$inc:{key: 1}}, {new:true}).exec();
     if(!num || !num.key) {
         num = await this.create({key: 20000});
         num.key = 20000;
