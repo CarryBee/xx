@@ -16,7 +16,7 @@ $.get('/user', async ctx => {
 		const result = await WOauth.promised(ctx);
 		// 服务器获取成功
 		ctx.body = result;
-	} catch(e) {
+	} catch(err) {
 		if(err.indexOf("http") >= 0) ctx.redirect(err); // 跳转
         else ctx.body = err;
 	}
