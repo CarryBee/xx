@@ -25,6 +25,11 @@ $.get('/', async ctx => {
 	two.save();
 });
 
+$.get('/create', async ctx => {
+	
+	ctx.body = await LoginAndRegByOpenid("zxczxczxc2");
+});
+
 /*
 	主要登录入口
 */
@@ -47,7 +52,7 @@ async function LoginAndRegByOpenid(openid) {
 
 		return user;
 	} catch(e) {
-		throw {message: ERO(501, "创建用户", "失败", e.toString())};
+		throw {message: ERO(501, "创建用户", "失败", e.message)};
 	}
 }
 
@@ -67,7 +72,22 @@ $.get('/setheadname', async ctx => {
 		}, '微信用户', 'bbb');
 		ctx.body = ERO(0, "更新头像", res);
 	} catch(e) {
-		ctx.body = ERO(501, "更新头像", "失败", e.toString());
+		ctx.body = ERO(501, "更新头像", "失败", e.message);
+	}
+});
+
+// 设置自己的扫码推荐人，刚进入时设置
+$.post('/setupshao', async ctx => {
+
+	try {
+		console.log(ctx.prb.getCurrentUser());
+		let user = await UserModule.setUpShao({
+			_id: "5b25444d4fdf2ade722ec3ab",
+			fatunid: "20002"
+		});
+		return ctx.body = user;
+	} catch(e) {
+		throw {message: ERO(501, "创建用户", "失败", e.message) };
 	}
 });
 

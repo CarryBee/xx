@@ -2,16 +2,21 @@
 const Koa = require("koa");
 const Router = require("koa-router");
 const serve = require("koa-static");
+const bodyParser = require('koa-bodyparser');
+const cors = require('koa2-cors');
 const {DataBaseTool} = require("./src/DataBaseTool");
 const jwt = require("jsonwebtoken");
 const jv = require("./src/tools/jwtcontrol");
 const session = require("./src/tools/session");
 const HR = require('./src/tools/handleRes')
+const ParamsBox = require('./src/tools/ParamsBox')
 const app = new Koa();
 const $ = new Router();
 
 const secret = 'llkaksldfjnn982jdn';
 session(app);
+app.use(bodyParser());
+app.use(cors({origin: "*"})); // 完全开放域
 /**
   * 统一返回类型：
   * {
@@ -39,7 +44,8 @@ let handleErr = async (ctx, next) => {
   return
 }
 
-app.use(handleErr)
+app.use(handleErr);
+app.use(ParamsBox.routes());
 // app.use(handleSuccess)
 
 // 授权测试

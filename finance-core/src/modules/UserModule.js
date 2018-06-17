@@ -64,23 +64,7 @@ class UserModule {
 			});
 			
 			
-			if(userinfo.uphone && !userinfo.fatunid) { // 通过手机
-				const fatherUser = await User.findOne({phone: userinfo.uphone}); // 找上级
-				if(fatherUser) {
-					user.upshao = fatherUser._id; // 推荐链
-					user.uppayer = fatherUser._id; // 刷卡链
-				} else throw new Error("推荐人ID不存在");
-			}
-			
-
-			// upshao 推荐人  uppayer 刷卡分成人
-			if(userinfo.fatunid) {
-				const fatherUser = await User.findOne({unid: userinfo.fatunid}); // 找上级
-				if(fatherUser) {
-					user.upshao = fatherUser._id; // 推荐链
-					user.uppayer = fatherUser._id; // 刷卡链
-				} else throw new Error("推荐人ID不存在");
-			}
+			user = await UserModule.findUpShao(user, userinfo);
 
 			// userinfo 每个人的免费机子数
 			userinfo.freemach = 2;
@@ -107,6 +91,42 @@ class UserModule {
 		if(head) user.headurl = head;
 		return await user.save();
 	}
+
+	// 设置自己的上级扫码（扫一扫）成员，推荐人 upshao
+	static async findUpShao(user, userinfo) {
+
+		if(user && user.upshao) throw new Error("已接受其他账户邀请");
+
+		if(userinfo && userinfo.uphone && !userinfo.fatunid) { // 通过手机
+			const fatherUser = await User.findOne({phone: userinfo.uphone}); // 找上级
+			if(fatherUser) {
+				user.upshao = fatherUser._id; // 推荐链
+				user.uppayer = fatherUser._id; // 刷卡链
+			} else throw new Error("推荐人号码不存在");
+		}
+		
+
+		// upshao 推荐人  uppayer 刷卡分成人
+		if(userinfo && userinfo.fatunid) {
+			const fatherUser = await User.findOne({unid: userinfo.fatunid}); // 找上级
+			if(fatherUser) {
+				user.upshao = fatherUser._id; // 推荐链
+				user.uppayer = fatherUser._id; // 刷卡链
+			} else throw new Error("推荐人邀请码不存在");
+		}
+
+		return user;
+	}
+
+	static async setUpShao(userinfo) {
+		const uid = mongoose.Types.ObjectId(userinfo._id); // 自己的id
+		const one = await User.findOne({_id: uid});
+		let user = new User(one);
+		user = await UserModule.findUpShao(user, userinfo);
+		const res = await user.save();
+		if(res) return {ok:1};
+		else throw new Error("更新失败");
+	} 
 
 	// 绑定账户密码
 	static async bindaccount(userinfo){
