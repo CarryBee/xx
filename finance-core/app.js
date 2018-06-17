@@ -34,7 +34,7 @@ let handleErr = async (ctx, next) => {
       ctx.body = HR({code: ctx.status, message: errMsg})
     }
   } catch (err) {
-    ctx.body = HR({code: ctx.status, message: err.message})
+    ctx.body = HR({code: ctx.status, message: err.message || errMsg, data: err.data || {}})
   }
   return
 }

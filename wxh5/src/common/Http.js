@@ -18,6 +18,7 @@ export default class Http {
     })
   }
   get (url, params) {
+    console.log('get', url, params)
     return axios({
       method: 'get',
       url: url,

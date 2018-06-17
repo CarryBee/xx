@@ -44,7 +44,7 @@ async function LoginAndRegByOpenid(openid) {
 		user.unid = userinfo.unid;
 		user.openid = userinfo.openid; // 额外绑定
 		user.phone = userinfo.phone; // 额外绑定
-		
+
 		return user;
 	} catch(e) {
 		throw {message: ERO(501, "创建用户", "失败", e.toString())};
@@ -76,8 +76,8 @@ $.get('/setheadname', async ctx => {
  * 成功返回 {loginToken: String}
  * 登录失败返回 微信相关信息
  */
-$.get('/loginWithCode/:code', async (ctx, next) => {
-  let code = ctx.params.code
+$.get('/loginWithCode', async (ctx, next) => {
+  let code = ctx.query.code
   if (!code) {
     throw {message: '没有code参数'}
   }
@@ -97,7 +97,7 @@ $.get('/loginWithCode/:code', async (ctx, next) => {
       data: wxInfo
     })
   } catch (err) {
-    throw {message: err}
+    throw {data: err}
   }
 })
 

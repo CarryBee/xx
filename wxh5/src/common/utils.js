@@ -18,9 +18,14 @@ export const getQueryString = (name, href = window.location.href) => {
  * @param snsapiType {String} snsapi_base: 静默授权 | snsapi_userinfo: 主动授权
  * @returns {string}
  */
-export function makeAccessWXUrl (appId = 'wx6f8322dd012ed875', snsapiType = 'snsapi_base') {
-  let curUrl = location.origin + '/' + window.location.hash
-  let redirectUri = encodeURIComponent(curUrl + '?wechat_redirect=1')
-  let wxRedirectUrl = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${redirectUri}&response_type=code&scope=${snsapiType}&state=redirectFromWechat&connect_redirect=1#wechat_redirect`
+export function makeAccessWXUrl (option) {
+  let urlOption = {
+    snsapiType: 'snsapi_base',
+    appId: 'wx6f8322dd012ed875',
+    reUrl:  location.origin + '/' + window.location.hash,
+    ...option
+  }
+  let redirectUri = encodeURIComponent(urlOption.reUrl + '?wechat_redirect=1')
+  let wxRedirectUrl = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${urlOption.appId}&redirect_uri=${redirectUri}&response_type=code&scope=${urlOption.snsapiType}&state=redirectFromWechat&connect_redirect=1#wechat_redirect`
   return wxRedirectUrl
 }

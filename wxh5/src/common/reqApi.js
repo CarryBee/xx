@@ -1,8 +1,16 @@
 import Http from './Http'
-import api from './api'
+import API from './api'
 let http = new Http()
 
-export function getUserInfo (data) {
-  let res = http.get(api.getUserInfo)
+export async function getUserInfo (data) {
+  let res = await http.get(API.getUserInfo)
+  return res
+}
+
+export async function loginWithCode (code) {
+  let res = await http.get(API.loginWithCode, {
+    code
+  })
+  console.log('loginWithCode', res)
   return res
 }
