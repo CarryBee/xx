@@ -24,31 +24,39 @@ class UserModule {
 
 	constructor() {}
 
-	// 登录成功获取微信的用户信息
+	// 通过微信openid获取用户信息
 	static async getWXUserInfo(openid) {
+		if(!openid) return undefined;
 		const nowUser = await User.findOne({openid: openid});
 		// 筛选
 		if(nowUser) return nowUser; // 已注册
 		else return undefined;
 	}
 
-	// 登录成功获取微信的用户信息
+	// 通过手机phone获取用户信息
 	static async getPhoneUserInfo(phone) {
+		if(!phone) return undefined;
 		const nowUser = await User.findOne({phone: phone});
 		// 筛选
 		if(nowUser) return nowUser; // 已注册
 		else return undefined;
 	}
 
-	// 通过微信openid进行注册
+	// 通过微信openid或者电话号码进行注册
 	static async createUser(userinfo) {
 
+		// 本身支持
+		/*
+		phone 电话号码注册
+		openid 微信id注册
+		*/
 		// 支持额外字段 
 		/*
 		fatunid 上级id
+		uphone 上级电话号码
 		nickname 名称
 		headurl 头像
-		uphone 电话号码
+		
 		*/
 		if(userinfo && (userinfo.phone || userinfo.openid)) {
 
@@ -62,11 +70,11 @@ class UserModule {
 				phone: userinfo.phone // 手机号码
 			});
 			
-			
+			// fatunid 上级id
 			user = await UserModule.findUpShao(user, userinfo);
 
 			// userinfo 每个人的免费机子数
-			userinfo.freemach = 2;
+			user.freemach = userinfo.freemach || 2;
 
 			// nickname 默认名字
 			user.nickname = userinfo.nickname || '微信用户';
@@ -85,13 +93,14 @@ class UserModule {
 	static async setHeadName(userinfo, name, head) {
 		const uid = mongoose.Types.ObjectId(userinfo._id); // 自己的id
 		const one = await User.findOne({_id: uid});
+		if(!one) throw new Error("用户不存在");
 		const user = new User(one);
 		if(name) user.nickname = name;
 		if(head) user.headurl = head;
 		return await user.save();
 	}
 
-	// 设置自己的上级扫码（扫一扫）成员，推荐人 upshao
+	// 搜索自己的上级扫码（扫一扫）成员，推荐人 upshao
 	static async findUpShao(user, userinfo) {
 
 		if(user && user.upshao) throw new Error("已接受其他账户邀请");
@@ -117,26 +126,46 @@ class UserModule {
 		return user;
 	}
 
+	// 设置推荐人
 	static async setUpShao(userinfo) {
 		const uid = mongoose.Types.ObjectId(userinfo._id); // 自己的id
 		const one = await User.findOne({_id: uid});
+		if(!one) throw new Error("用户不存在");
 		let user = new User(one);
+
 		user = await UserModule.findUpShao(user, userinfo);
 		const res = await user.save();
-		if(res) return {ok:1};
+		if(res) return "success";
 		else throw new Error("更新失败");
 	} 
 
+	// 设置用户级别
+	static async setUserLevel(userinfo, level) {
+		if(userinfo && userinfo._id) {
+			const uid = mongoose.Types.ObjectId(userinfo._id); // 自己的id
+			const one = await User.findOne({_id: uid});
+			if(!one) throw new Error("用户不存在");
+
+			let user = new User(one);
+			user.level = level;
+			const res = await user.save();
+			if(res) return "success";
+			else throw new Error("升级失败");
+		} else throw new Error("资料不全");
+	}
+
+	// 发生验证码
 	static async sendCode(userinfo) {
 		if(userinfo && userinfo._id && userinfo.phone) {
 			
 			let one = await Phone.addCode(userinfo.phone);
-			// 发送接口
+			// 发送接口补充
 			console.log("发送验证码：", one);
 			return "success";
 		} else throw new Error("资料不全");
 	}
 
+	// 绑定手机
 	static async bindPhone(userinfo) {
 		if(userinfo && userinfo._id && userinfo.phone && userinfo.code) { // 认验证码
 			const uid = mongoose.Types.ObjectId(userinfo._id); // 自己的id

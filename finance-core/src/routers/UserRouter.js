@@ -43,7 +43,8 @@ async function LoginAndRegByOpenid(openid) {
 			});
 		}
 		const user = {
-			userid: userinfo._id
+			userid: userinfo._id,
+			level: userinfo.level // 用户等级
 		};
 		user.token = jv.sign(user); // JWT签名
 		user.unid = userinfo.unid;
@@ -65,7 +66,7 @@ async function LoginAndRegByPhone(phone) {
 }
 
 // 更改头像
-$.get('/setheadname', async ctx => {
+$.post('/setheadname', async ctx => {
 	try {
 		let res = await UserModule.setHeadName({
 			_id: '5b20013a16515ba2bc86bcc5'
@@ -79,10 +80,10 @@ $.get('/setheadname', async ctx => {
 // 设置自己的扫码推荐人，刚进入时设置
 $.post('/setupshao', async ctx => {
 	try {
-		console.log(ctx.prb.getCurrentUser());
 		let user = await UserModule.setUpShao({
 			_id: "5b25444d4fdf2ade722ec3ab",
-			fatunid: "20002"
+			fatunid: "20002",
+			uphone: undefined // 电话号码绑定和短id绑定两个选一个
 		});
 		return ctx.body = user;
 	} catch(e) {
@@ -91,7 +92,7 @@ $.post('/setupshao', async ctx => {
 });
 
 // 发生验证码
-$.get('/getphonecode', async ctx => {
+$.post('/getphonecode', async ctx => {
 	try {
 		let res = await UserModule.sendCode({
 			_id:"bbbbb",
@@ -104,7 +105,7 @@ $.get('/getphonecode', async ctx => {
 });
 
 // 绑定手机号码到_id 校验验证码
-$.get('/bindphone', async ctx => {
+$.post('/bindphone', async ctx => {
 	try {
 
 		let res = await UserModule.bindPhone({
@@ -166,7 +167,7 @@ $.get('/wx/getUserByCode/:code', async ctx => {
 })
 
 // 绑定账户密码到_id
-$.get('/bind', async ctx => {
+$.post('/bind', async ctx => {
 	try {
 		let res = await UserModule.bindAccount({
 			_id:"bbbbb",
@@ -181,7 +182,7 @@ $.get('/bind', async ctx => {
 });
 
 // 绑定账户密码到openid
-$.get('/login', async ctx => {
+$.post('/login', async ctx => {
 	//不会读取login，通过账户密码写session
 });
 
