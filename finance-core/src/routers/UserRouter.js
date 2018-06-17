@@ -26,7 +26,7 @@ $.get('/', async ctx => {
 });
 
 $.get('/create', async ctx => {
-	
+
 	ctx.body = await LoginAndRegByOpenid("zxczxczxc2");
 });
 
@@ -104,17 +104,10 @@ $.get('/loginWithCode', async (ctx, next) => {
   try {
     let wxInfo = await wxApi.getUserByCode(code)
     let openId = wxInfo.openId
-    // TODO: 使用openId登录
-    let loginToken = false
-    if (loginToken) {
-      ctx.body = HR({
-        data: loginToken
-      })
-      return;
-    }
-    // 登录失败 返回OpenID等相关信息
+
+    let loginRes = await LoginAndRegByOpenid(openId)
     ctx.body = HR({
-      data: wxInfo
+      data: loginRes
     })
   } catch (err) {
     throw {data: err}
