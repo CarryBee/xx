@@ -1,5 +1,5 @@
 'use strict'
-// 生成订单时候生成快照并且引用
+// 生成订单时候生成快照并且引用，可供后期查询
 const mongoose = require('mongoose');
 const stuffSchema = new mongoose.Schema({
     title: String, // 商品标题

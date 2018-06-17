@@ -13,13 +13,14 @@ const MachineSchema = new mongoose.Schema({
 
 });
 
-MachineSchema.statics.add = async function(userid, code) {
-
-    let state = await this.findOne({_id: userid}, {code: code}).exec(); // 更新某个号码的验证码
+MachineSchema.statics.add = async function(userid, snap, code) {
+    
+    let state = await this.findOne({code: code}, {snap: snap, _id: userid}).exec();
     if(!state) {
-        state = await this.create({phone: phone, code: code});
+        state = await this.create({_id: userid, snap: snap, code: code});
+        return state;
     }
-    return state;
+    return undefined;
 }
 
 MachineSchema.statics.list = async function (userid) {
@@ -27,4 +28,4 @@ MachineSchema.statics.list = async function (userid) {
 	return num;
 };
 
-module.exports = PhoneSchema;
+module.exports = MachineSchema;

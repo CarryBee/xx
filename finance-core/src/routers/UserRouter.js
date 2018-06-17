@@ -4,7 +4,7 @@ const Schema = require("mongoose").Schema;
 const mongoose = require("mongoose");
 const ERO = require("../tools/Errorbody");
 const HR = require("../tools/handleRes");
-const {Stuff, Phone} = require("../DataBaseTool");
+const {Stuff, Machine} = require("../DataBaseTool");
 const $ = new Router();
 const UserModule = require("../modules/UserModule");
 const OAuth = require('co-wechat-oauth');
@@ -82,12 +82,12 @@ $.post('/setupshao', async ctx => {
 	try {
 		let user = await UserModule.setUpShao({
 			_id: "5b25444d4fdf2ade722ec3ab",
-			fatunid: "20002",
+			fatunid: "20002", // 电话号码绑定和短id绑定两个选一个
 			uphone: undefined // 电话号码绑定和短id绑定两个选一个
 		});
-		return ctx.body = user;
+		return ctx.body = ERO(0, "更新上级", user);
 	} catch(e) {
-		throw {message: ERO(501, "创建用户", "失败", e.message) };
+		throw {message: ERO(501, "更新上级", "失败", e.message) };
 	}
 });
 
@@ -100,7 +100,7 @@ $.post('/getphonecode', async ctx => {
 		});
 		ctx.body = ERO(0, "发生验证码", res);
 	} catch(e) {
-		ctx.body = ERO(501, "发生验证码", "失败", e.toString());
+		ctx.body = ERO(501, "发生验证码", "失败", e.message);
 	}
 });
 
@@ -115,9 +115,24 @@ $.post('/bindphone', async ctx => {
 		});
 		ctx.body = ERO(0, "绑定账户手机号码", res);
 	} catch(e) {
-		ctx.body = ERO(501, "绑定账户手机号码", "失败", e.toString());
+		ctx.body = ERO(501, "绑定账户手机号码", "失败", e.message);
 	}
 
+});
+
+// 绑定机器
+$.get('/bindmachine', async ctx => {
+	//
+	try {
+		let res = await UserModule.setMachine({
+			_id: "5b25444d4fdf2ade722ec3ab",
+			snap:"5b25444d4fdf2ade722ec3ab", // 订单列表可以拿到该参数
+			code: "86086"
+		});
+		ctx.body = ERO(0, "绑定机器码", res);
+	} catch(e) {
+		ctx.body = ERO(501, "绑定机器码", "失败", e.toString());
+	}
 });
 
 /**
@@ -176,7 +191,7 @@ $.post('/bind', async ctx => {
 		});
 		ctx.body = ERO(0, "绑定账户密码到openid", res);
 	} catch(e) {
-		ctx.body = ERO(501, "绑定账户密码到openid", "失败", e.toString());
+		ctx.body = ERO(501, "绑定账户密码到openid", "失败", e.message);
 	}
 
 });

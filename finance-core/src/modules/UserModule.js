@@ -19,7 +19,7 @@ account:{username: password} (方便前端调试)
 
 */
 const mongoose = require('mongoose');
-const {User, Unid, Phone} = require("../DataBaseTool");
+const {User, Unid, Phone, Machine} = require("../DataBaseTool");
 class UserModule {
 
 	constructor() {}
@@ -139,7 +139,18 @@ class UserModule {
 		else throw new Error("更新失败");
 	} 
 
-	// 设置用户级别，用户支付
+	// 绑定机器
+	static async setMachine(params) {
+		if(params && params._id && params.snap && params.code) {
+			const userid = mongoose.Types.ObjectId(params._id);
+			const snap = mongoose.Types.ObjectId(params.snap);
+			if(await Machine.add(userid, snap, params.code)) {
+				return "success";
+			} else return "无法绑定该机器";
+		} else throw new Error("缺少参数");
+	}
+
+	// 设置用户级别，用户支付后触发，暂未完善
 	static async setUserLevel(userinfo, level) {
 		if(userinfo && userinfo._id) {
 			const uid = mongoose.Types.ObjectId(userinfo._id); // 自己的id

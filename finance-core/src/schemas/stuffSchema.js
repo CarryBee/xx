@@ -2,10 +2,12 @@
 const mongoose = require('mongoose');
 const StuffSnapSchema = new mongoose.Schema({
     title: String, // 商品标题
-    price: Number, // 价格
     text: String, // 说明文字
-    mainpic: String, // 主要图片
+    price: Number, // 价格
+    
     publishtime: Date, // 发布时间
+    modifytime: Date, // 修改时间
+
     rate: Number, // 费率
     brand: String, // 厂家品牌中文名字 
     content: [{
@@ -14,8 +16,17 @@ const StuffSnapSchema = new mongoose.Schema({
     }]
 });
 
-StuffSnapSchema.methods.speak = function () {
-  return this._id;
+
+StuffSnapSchema.statics.updateStuff = function (_id, title, text, price, rate, brand) {
+    let id = mongoose.Types.ObjectId(_id);
+    const stuff = {modifytime: new Date()}
+    if(title) stuff.title = title;
+    if(text) stuff.text = text;
+    if(price) stuff.price = price;
+    if(rate) stuff.rate = rate;
+    if(brand) stuff.brand = brand;
+
+    return this.update({_id: id}, {$set: stuff}).exec();
 };
 
 StuffSnapSchema.statics.addImg = function (_id, tag, url) {
