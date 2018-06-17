@@ -23,13 +23,19 @@ if (router.currentRoute.meta.isShowBottomNav === false) {
 }
 
 router.beforeEach(async (to, from, next) => {
-  if (UTILS.getQueryString('code')) {
+  console.log('beforeEach', to)
+  let code = UTILS.getQueryString('code')
+  let isUsedCode = sessionStorage.getItem('codeUsed')
+  if (code && !isUsedCode) {
+    sessionStorage.removeItem('codeUsed')
     try {
       let loginRes = await reqApi.loginWithCode(code)
-      localStorage.setItem('loginRes', JSON.stringify(loginRes))
+      localStorage.setItem('loginRes', JSON.stringify(loginRes.data.data))
       location.href = '/#' + to.path
+      console.log('res', loginRes)
       return next({name: to.name, query: {}})
     } catch (err) {
+      console.log('err', err)
       location.href = '/#' + to.path
       return next({name: to.name})
     }
@@ -49,12 +55,14 @@ router.beforeEach(async (to, from, next) => {
 })
 
 async function runApp () {
-
+  console.log('runApp', router.currentRoute)
   let code = UTILS.getQueryString('code')
+  sessionStorage.setItem('codeUsed', true)
   if (code) {
     try {
       let loginRes = await reqApi.loginWithCode(code)
-      localStorage.setItem('loginRes', loginRes)
+      localStorage.setItem('loginRes', JSON.stringify(loginRes.data.data))
+      location.href = '/#' + router.currentRoute.path
       new Vue({
         router,
         store,

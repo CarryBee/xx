@@ -10,13 +10,11 @@
   export default {
     name: 'wxRedirect',
     created () {
-      console.log('s', utils.getQueryString('code'))
       this.code = utils.getQueryString('code') || '没有code'
       this.wxUrl = utils.makeAccessWXUrl({
         reUrl: location.origin + '/#/'
       })
       location.href = this.wxUrl
-      console.log('wxUrl', this.wxUrl)
     },
     data () {
       return {

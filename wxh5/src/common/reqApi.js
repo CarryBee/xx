@@ -11,6 +11,5 @@ export async function loginWithCode (code) {
   let res = await http.get(API.loginWithCode, {
     code
   })
-  console.log('loginWithCode', res)
   return res
 }
