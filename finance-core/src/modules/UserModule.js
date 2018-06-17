@@ -19,7 +19,7 @@ account:{username: password} (方便前端调试)
 
 */
 const mongoose = require('mongoose');
-const {User, Unid} = require("../DataBaseTool");
+const {User, Unid, Phone} = require("../DataBaseTool");
 class UserModule {
 
 	constructor() {}
@@ -35,7 +35,6 @@ class UserModule {
 	// 登录成功获取微信的用户信息
 	static async getPhoneUserInfo(phone) {
 		const nowUser = await User.findOne({phone: phone});
-		console.log("phone", nowUser);
 		// 筛选
 		if(nowUser) return nowUser; // 已注册
 		else return undefined;
@@ -128,10 +127,40 @@ class UserModule {
 		else throw new Error("更新失败");
 	} 
 
-	// 绑定账户密码
-	static async bindaccount(userinfo){
-		if(userinfo && userinfo.openid && userinfo.account && userinfo.password) {
-			let one = await User.findOne({openid: userinfo.openid});
+	static async sendCode(userinfo) {
+		if(userinfo && userinfo._id && userinfo.phone) {
+			
+			let one = await Phone.addCode(userinfo.phone);
+			// 发送接口
+			console.log("发送验证码：", one);
+			return "success";
+		} else throw new Error("资料不全");
+	}
+
+	static async bindPhone(userinfo) {
+		if(userinfo && userinfo._id && userinfo.phone && userinfo.code) { // 认验证码
+			const uid = mongoose.Types.ObjectId(userinfo._id); // 自己的id
+			const one = await User.findOne({_id: uid});
+			if(one) {
+				const user = new User(one); // 反序列化账户
+				user.phone = userinfo.phone;
+				
+				if(await User.findOne({phone: userinfo.phone})) 
+					throw new Error("该手机绑定过其他账号"); // 看是否存在这个人
+				if(!await Phone.get(userinfo.phone, userinfo.code)) 
+					throw new Error("验证码错误或已过期");// 看是否存在这个验证码
+			
+				user.save();
+				return "success";
+			} else throw new Error("账户不存在");
+		} else throw new Error("资料不全");
+	}
+
+	// 通过_id绑定账户密码
+	static async bindAccount(userinfo){
+		if(userinfo && userinfo._id && userinfo.account && userinfo.password) {
+			const uid = mongoose.Types.ObjectId(userinfo._id); // 自己的id
+			let one = await User.findOne({_id: uid});
 			if(one) {
 				let user = new User(one); // 反序列化账户
 				user.account = userinfo.account;
@@ -141,8 +170,8 @@ class UserModule {
 					user.save();
 					return "success";
 				} else throw new Error("account 账户已存在");
-			} else throw new Error("openid 账户不存在");
-		} else throw new Error("openid 账户不存在");
+			} else throw new Error("账户不存在");
+		} else throw new Error("资料不全");
 	}
 
 }

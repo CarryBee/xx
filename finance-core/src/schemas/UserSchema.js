@@ -29,6 +29,7 @@ const UserSchema = new mongoose.Schema({
     proxyopera: { type:Boolean, default:false }, // 代理商还是运营中心
     payback: { type:Boolean, default:false }, // 是否返现过
     freemach: Number, // 每个人免费两台机子
+    level: { type:Number, default:10 }, // 用户级别
 
 
     

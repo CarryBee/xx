@@ -4,7 +4,7 @@ const Schema = require("mongoose").Schema;
 const mongoose = require("mongoose");
 const ERO = require("../tools/Errorbody");
 const HR = require("../tools/handleRes");
-const {Stuff} = require("../DataBaseTool");
+const {Stuff, Phone} = require("../DataBaseTool");
 const $ = new Router();
 const UserModule = require("../modules/UserModule");
 const OAuth = require('co-wechat-oauth');
@@ -69,7 +69,7 @@ $.get('/setheadname', async ctx => {
 	try {
 		let res = await UserModule.setHeadName({
 			_id: '5b20013a16515ba2bc86bcc5'
-		}, '微信用户', 'bbb');
+		}, '微信用户', 'http://header');
 		ctx.body = ERO(0, "更新头像", res);
 	} catch(e) {
 		ctx.body = ERO(501, "更新头像", "失败", e.message);
@@ -78,7 +78,6 @@ $.get('/setheadname', async ctx => {
 
 // 设置自己的扫码推荐人，刚进入时设置
 $.post('/setupshao', async ctx => {
-
 	try {
 		console.log(ctx.prb.getCurrentUser());
 		let user = await UserModule.setUpShao({
@@ -89,6 +88,35 @@ $.post('/setupshao', async ctx => {
 	} catch(e) {
 		throw {message: ERO(501, "创建用户", "失败", e.message) };
 	}
+});
+
+// 发生验证码
+$.get('/getphonecode', async ctx => {
+	try {
+		let res = await UserModule.sendCode({
+			_id:"bbbbb",
+			phone:"123"
+		});
+		ctx.body = ERO(0, "发生验证码", res);
+	} catch(e) {
+		ctx.body = ERO(501, "发生验证码", "失败", e.toString());
+	}
+});
+
+// 绑定手机号码到_id 校验验证码
+$.get('/bindphone', async ctx => {
+	try {
+
+		let res = await UserModule.bindPhone({
+			_id: "5b25444d4fdf2ade722ec3ab",
+			phone:"123",
+			code: "86086"
+		});
+		ctx.body = ERO(0, "绑定账户手机号码", res);
+	} catch(e) {
+		ctx.body = ERO(501, "绑定账户手机号码", "失败", e.toString());
+	}
+
 });
 
 /**
@@ -137,11 +165,11 @@ $.get('/wx/getUserByCode/:code', async ctx => {
 
 })
 
-// 绑定账户密码到openid
+// 绑定账户密码到_id
 $.get('/bind', async ctx => {
 	try {
-		let res = await UserModule.bindaccount({
-			openid:"bbbbb",
+		let res = await UserModule.bindAccount({
+			_id:"bbbbb",
 			account:"123",
 			password:"123"
 		});

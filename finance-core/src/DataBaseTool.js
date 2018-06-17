@@ -6,11 +6,13 @@ const mongoose = require('mongoose');
 const StuffSchema = require("./schemas/StuffSchema");
 const UserSchema = require("./schemas/UserSchema");
 const UnidSchema = require("./schemas/UnidSchema");
+const PhoneSchema = require("./schemas/PhoneSchema");
 let connection;
 // 加载 Schema
 const stuff = mongoose.model('Stuff', StuffSchema);
 const user = mongoose.model('User', UserSchema);
 const unid = mongoose.model('Unid', UnidSchema);
+const phone = mongoose.model('Phone', PhoneSchema);
 //
 class DataBaseTool {
 
@@ -60,6 +62,7 @@ module.exports = {
 	'DataBaseTool': DataBaseTool,
 	'Stuff': stuff,
 	'User': user,
-	'Unid': unid
+	'Unid': unid,
+	'Phone': phone
 };
 
