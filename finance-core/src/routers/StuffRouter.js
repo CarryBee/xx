@@ -7,6 +7,7 @@ const StuffModule = require("../modules/StuffModule");
 
 const jv = require("../tools/jwtcontrol");
 
+// 更新或上传商品
 $.get('/upsertstuff', async ctx => {
 	
 	try {
@@ -25,6 +26,11 @@ $.get('/upsertstuff', async ctx => {
 	}
 });
 
+// 商品列表
+$.get('/liststuff', async ctx => {
+	const res = await StuffModule.list({});
+	ctx.body = res;
+});
 
 
 module.exports = $.routes();

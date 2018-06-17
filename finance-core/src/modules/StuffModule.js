@@ -5,6 +5,10 @@ class StuffModule {
 
     constructor() {}
 
+    static async list() {
+        return await Stuff.find({});
+    }
+
     static async setStuff(params) {
         if(params._id) {
             return await Stuff.updateStuff(params._id, params.title, params.text, params.price, params.rate, params.brand);
