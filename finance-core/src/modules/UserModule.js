@@ -139,7 +139,7 @@ class UserModule {
 		else throw new Error("更新失败");
 	} 
 
-	// 设置用户级别
+	// 设置用户级别，用户支付
 	static async setUserLevel(userinfo, level) {
 		if(userinfo && userinfo._id) {
 			const uid = mongoose.Types.ObjectId(userinfo._id); // 自己的id

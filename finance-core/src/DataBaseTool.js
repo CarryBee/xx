@@ -4,15 +4,19 @@
  */
 const mongoose = require('mongoose');
 const StuffSchema = require("./schemas/StuffSchema");
+const StuffSnapSchema = require("./schemas/StuffSnapSchema");
 const UserSchema = require("./schemas/UserSchema");
 const UnidSchema = require("./schemas/UnidSchema");
 const PhoneSchema = require("./schemas/PhoneSchema");
+const MachineSchema = require("./schemas/MachineSchema");
 let connection;
 // 加载 Schema
 const stuff = mongoose.model('Stuff', StuffSchema);
 const user = mongoose.model('User', UserSchema);
 const unid = mongoose.model('Unid', UnidSchema);
 const phone = mongoose.model('Phone', PhoneSchema);
+const stuffsnap = mongoose.model('StuffSnap', StuffSnapSchema);
+const machine = mongoose.model('Machine', MachineSchema);
 //
 class DataBaseTool {
 
@@ -61,8 +65,10 @@ class DataBaseTool {
 module.exports = {
 	'DataBaseTool': DataBaseTool,
 	'Stuff': stuff,
+	'StuffSnap': stuffsnap,
 	'User': user,
 	'Unid': unid,
-	'Phone': phone
+	'Phone': phone,
+	'Machine': machine
 };
 
