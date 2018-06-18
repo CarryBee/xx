@@ -20,6 +20,7 @@ account:{username: password} (方便前端调试)
 */
 const mongoose = require('mongoose');
 const {User, Unid} = require("../DataBaseTool");
+const ERO = require("../tools/Errorbody");
 class UserModule {
 
 	constructor() {}
@@ -83,7 +84,7 @@ class UserModule {
 			return await user.save();
 
 		} else {
-			throw new Error("非正常渠道进入注册");
+			throw {message: "非正常渠道进入注册"};
 		}
 	}
 
