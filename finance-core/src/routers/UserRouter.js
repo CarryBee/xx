@@ -110,7 +110,7 @@ $.get('/loginWithCode', async (ctx, next) => {
       data: loginRes
     })
   } catch (err) {
-    throw {data: err}
+    throw {message: '登陆失败' ,data: err}
   }
 })
 
