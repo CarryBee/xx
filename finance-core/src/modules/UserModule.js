@@ -32,6 +32,7 @@ class UserModule {
       if(nowUser) return nowUser; // 已注册
       else return undefined;
     } catch (err) {
+	    console.error(err)
 	    throw {message: `getWXUserInfo fail ${openid}`}
     }
 	}

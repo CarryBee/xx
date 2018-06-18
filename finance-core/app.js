@@ -31,7 +31,6 @@ app.use(cors({origin: "*"})); // 完全开放域
 const UserRouter = require("./src/routers/UserRouter");
 // 统一的处理
 let handleErr = async (ctx, next) => {
-  console.error('Error Url', ctx.originalUrl)
   let errMsg = '系统异常'
   try {
     await next()
@@ -39,8 +38,10 @@ let handleErr = async (ctx, next) => {
       if (ctx.status === 404) {errMsg = '接口不存在'}
       ctx.body = HR({code: ctx.status, message: errMsg})
     }
+    console.error('Error Url', ctx.originalUrl, ctx.body)
   } catch (err) {
     ctx.body = HR({code: ctx.status, message: err.message || errMsg, data: err.data || {}})
+    console.error('Error Url', ctx.originalUrl, ctx.body)
   }
   return
 }
