@@ -30,6 +30,7 @@ app.use(cors({origin: "*"})); // 完全开放域
 // 路由
 const UserRouter = require("./src/routers/UserRouter");
 const StuffRouter = require("./src/routers/StuffRouter");
+const OrderRouter = require("./src/routers/OrderRouter");
 // 统一的处理
 let handleErr = async (ctx, next) => {
   let errMsg = '系统异常'
@@ -72,7 +73,8 @@ $.get('/success', async ctx => {
 });
 
 $.use('/user', UserRouter);
-$.use('/order', StuffRouter);
+$.use('/stuff', StuffRouter);
+$.use('/order', OrderRouter);
 app.use($.routes());
 app.use(serve(`${__dirname}/static`));
 (async function(){

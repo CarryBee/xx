@@ -9,6 +9,7 @@ const UserSchema = require("./schemas/UserSchema");
 const UnidSchema = require("./schemas/UnidSchema");
 const PhoneSchema = require("./schemas/PhoneSchema");
 const MachineSchema = require("./schemas/MachineSchema");
+const OrderSchema = require("./schemas/OrderSchema");
 let connection;
 // 加载 Schema
 const stuff = mongoose.model('Stuff', StuffSchema);
@@ -17,6 +18,7 @@ const unid = mongoose.model('Unid', UnidSchema);
 const phone = mongoose.model('Phone', PhoneSchema);
 const stuffsnap = mongoose.model('StuffSnap', StuffSnapSchema);
 const machine = mongoose.model('Machine', MachineSchema);
+const order = mongoose.model('Order', OrderSchema);
 //
 class DataBaseTool {
 
@@ -69,6 +71,7 @@ module.exports = {
 	'User': user,
 	'Unid': unid,
 	'Phone': phone,
-	'Machine': machine
+	'Machine': machine,
+	'Order': order
 };
 
