@@ -104,7 +104,7 @@ $.get('/loginWithCode', async (ctx, next) => {
   }
   try {
     let wxInfo = await wxApi.getUserByCode(code)
-    let openId = wxInfo.openId
+    let openId = wxInfo.openid
     console.log('wxInfo' , code, wxInfo)
     let loginRes = await LoginAndRegByOpenid(openId)
     ctx.body = HR({
