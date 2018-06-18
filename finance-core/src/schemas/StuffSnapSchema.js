@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const stuffSnapSchema = new mongoose.Schema({
     title: String, // 商品标题
     price: Number, // 价格
+    actualprice: Number, // 实际支付价格
+    usefreemach: { type:Boolean, default:false }, // 是否使用优惠券
     text: String, // 说明文字
     mainpic: String, // 主要图片
     publishtime: Date, // 发布时间
@@ -25,6 +27,8 @@ stuffSnapSchema.statics.createSnap = async function (stuff) {
     stuffsnap.title = stuff.title;
     stuffsnap.text = stuff.text;
     stuffsnap.price = stuff.price;
+    stuffsnap.actualprice = stuff.actualprice;
+    stuffsnap.usefreemach = stuff.usefreemach;
     stuffsnap.rate = stuff.rate;
     stuffsnap.brand = stuff.brand;
     stuffsnap.content = stuff.content; // 图片与文字

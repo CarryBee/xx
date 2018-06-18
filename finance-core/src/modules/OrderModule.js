@@ -20,6 +20,9 @@ class OrderModule {
         this.user = await User.findOne({_id: this.user});
         if(!this.user) throw new Error("用户不存在");
 
+        let maxfreemach = this.user.freemach || 0; // 总的免费的机子数
+
+        let freemach = 0; // 免费数
         let allprice = math.bignumber(0);
 
         const stuffsnaplist = this.stuffsnaplist;
@@ -29,8 +32,14 @@ class OrderModule {
             const stuff = await Stuff.findOne({_id: stuffid});
 
             if(stuff) {
+                stuff.actualprice = stuff.price; // 创建实际价格属性
+                if(maxfreemach > 0 && maxfreemach < 10) { // 有免费额度
+                    stuff.usefreemach = true;
+                    stuff.actualprice = 0; // 创建实际价格属性
+                    freemach++; // 次数增加
+                }
                 // 计算价格
-                allprice = math.add(allprice, math.bignumber(stuff.price));
+                allprice = math.add(allprice, math.bignumber(stuff.actualprice)); // 实际价格计算
                 // 存入快照
                 stuffsnaplist.push(await StuffSnap.createSnap(stuff)); // 存起来快照
             } else throw {_id: onestuff, msg:"商品缺货"};
@@ -41,11 +50,12 @@ class OrderModule {
         const neworder = await Order.create({
             user: this.user._id,
             snap: this.stuffsnaplist,
-            allprice: allprice
+            allprice: allprice,
+            freemach: freemach
         });
         await neworder.check(); // 校验
         const res = await neworder.save();
-        res.snap = undefined;
+        //res.snap = undefined;
 
         return res;
 
