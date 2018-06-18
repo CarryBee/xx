@@ -97,6 +97,7 @@ $.post('/setupshao', async ctx => {
  * 登录失败返回 微信相关信息
  */
 $.get('/loginWithCode', async (ctx, next) => {
+  console.log('loginWithCode', ctx.query.code)
   let code = ctx.query.code
   if (!code) {
     throw {message: '没有code参数'}
