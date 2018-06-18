@@ -31,6 +31,7 @@ app.use(cors({origin: "*"})); // 完全开放域
 const UserRouter = require("./src/routers/UserRouter");
 // 统一的处理
 let handleErr = async (ctx, next) => {
+  console.error('Error Url', ctx.originalUrl)
   let errMsg = '系统异常'
   try {
     await next()

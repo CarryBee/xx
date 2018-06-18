@@ -70,6 +70,7 @@ async function runApp () {
       }).$mount('#app')
     } catch (e) {
       console.error('run App', e)
+      location.href = '/#' + router.currentRoute.path
       new Vue({
         router,
         store,

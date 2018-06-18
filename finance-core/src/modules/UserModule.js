@@ -26,10 +26,14 @@ class UserModule {
 
 	// 登录成功获取微信的用户信息
 	static async getWXUserInfo(openid) {
-		const nowUser = await User.findOne({openid: openid});
-		// 筛选
-		if(nowUser) return nowUser; // 已注册
-		else return undefined;
+	  try {
+      const nowUser = await User.findOne({openid: openid});
+      // 筛选
+      if(nowUser) return nowUser; // 已注册
+      else return undefined;
+    } catch (err) {
+	    throw {message: `getWXUserInfo fail ${openid}`}
+    }
 	}
 
 	// 登录成功获取微信的用户信息
@@ -44,7 +48,7 @@ class UserModule {
 	// 通过微信openid进行注册
 	static async createUser(userinfo) {
 
-		// 支持额外字段 
+		// 支持额外字段
 		/*
 		fatunid 上级id
 		nickname 名称
@@ -54,16 +58,16 @@ class UserModule {
 		if(userinfo && (userinfo.phone || userinfo.openid)) {
 
 			if(userinfo.phone && await UserModule.getPhoneUserInfo(userinfo.phone)) throw new Error("该手机已注册");
-		
+
 			if(userinfo.openid && await UserModule.getWXUserInfo(userinfo.openid)) throw new Error("该微信ID已注册");
-			
+
 			let user = new User({
 				unid: await Unid.get(), // 唯一短id
 				openid: userinfo.openid, // 微信id
 				phone: userinfo.phone // 手机号码
 			});
-			
-			
+
+
 			user = await UserModule.findUpShao(user, userinfo);
 
 			// userinfo 每个人的免费机子数
@@ -76,7 +80,7 @@ class UserModule {
 			user.headurl = userinfo.headurl;
 
 			return await user.save();
-		
+
 		} else {
 			throw new Error("非正常渠道进入注册");
 		}
@@ -104,7 +108,7 @@ class UserModule {
 				user.uppayer = fatherUser._id; // 刷卡链
 			} else throw new Error("推荐人号码不存在");
 		}
-		
+
 
 		// upshao 推荐人  uppayer 刷卡分成人
 		if(userinfo && userinfo.fatunid) {
@@ -126,7 +130,7 @@ class UserModule {
 		const res = await user.save();
 		if(res) return {ok:1};
 		else throw new Error("更新失败");
-	} 
+	}
 
 	// 绑定账户密码
 	static async bindaccount(userinfo){

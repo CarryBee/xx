@@ -105,12 +105,13 @@ $.get('/loginWithCode', async (ctx, next) => {
   try {
     let wxInfo = await wxApi.getUserByCode(code)
     let openId = wxInfo.openId
-
+    console.log('wxInfo' , code, wxInfo)
     let loginRes = await LoginAndRegByOpenid(openId)
     ctx.body = HR({
       data: loginRes
     })
   } catch (err) {
+    console.error(err)
     throw {message: '登陆失败' ,data: err}
   }
 })
