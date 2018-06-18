@@ -38,13 +38,14 @@ let handleErr = async (ctx, next) => {
       if (ctx.status === 404) {errMsg = '接口不存在'}
       ctx.body = HR({code: errMsg.status || ctx.status, message: errMsg})
     }
-    console.error('Error Url', ctx.originalUrl, ctx.body)
+    console.error('Error Url', ctx.originalUrl, JSON.stringify(ctx.body))
   } catch (err) {
     if (typeof err === 'string') {
-      ctx.body = HR({code: errMsg.status || ctx.status, message: err || errMsg, data: err.data || {}})
+      ctx.body = HR({code: ctx.status, message: err || errMsg, data: {}})
+    } else {
+      ctx.body = HR({code: errMsg.status || ctx.status, message: err.message || errMsg, data: err.data || {}})
     }
-    ctx.body = HR({code: ctx.status, message: err || errMsg, data: {}})
-    console.error('Error Url', ctx.originalUrl, ctx.body)
+    console.error('Error Url', ctx.originalUrl, JSON.stringify(ctx.body))
   }
   return
 }
