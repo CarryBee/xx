@@ -18,6 +18,7 @@ export default class Http {
     })
   }
   get (url, params) {
+    console.log('get', url, params)
     return axios({
       method: 'get',
       url: url,
@@ -60,7 +61,7 @@ export default class Http {
       errCodeCtrl[res.data.code](res)
       return res
     }
-    if (res.data.code === '200' && res) {
+    if (res.data.code == 200 && res) {
       // console.log('code200操作成功/code99操作失败')
       return res
     }

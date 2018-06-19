@@ -38,6 +38,8 @@ export default {
     }
   },
   created () {
+    let wxUrl = utils.makeAccessWXUrl('snsapi_userinfo')
+    location.href = wxUrl
   },
   mounted () {
   },

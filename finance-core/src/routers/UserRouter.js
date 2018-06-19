@@ -26,7 +26,7 @@ $.get('/', async ctx => {
 });
 
 $.get('/create', async ctx => {
-	
+
 	ctx.body = await LoginAndRegByOpenid("zxczxczxc2");
 });
 
@@ -50,7 +50,7 @@ async function LoginAndRegByOpenid(openid) {
 		user.unid = userinfo.unid;
 		user.openid = userinfo.openid; // 额外绑定
 		user.phone = userinfo.phone; // 额外绑定
-		
+
 		return user;
 	} catch(e) {
 		throw {message: ERO(501, "创建用户", "失败", e.message)};
@@ -140,28 +140,23 @@ $.get('/bindmachine', async ctx => {
  * 成功返回 {loginToken: String}
  * 登录失败返回 微信相关信息
  */
-$.get('/loginWithCode/:code', async (ctx, next) => {
-  let code = ctx.params.code
+$.get('/loginWithCode', async (ctx, next) => {
+  console.log('loginWithCode', ctx.query.code)
+  let code = ctx.query.code
   if (!code) {
     throw {message: '没有code参数'}
   }
   try {
     let wxInfo = await wxApi.getUserByCode(code)
-    let openId = wxInfo.openId
-    // TODO: 使用openId登录
-    let loginToken = false
-    if (loginToken) {
-      ctx.body = HR({
-        data: loginToken
-      })
-      return;
-    }
-    // 登录失败 返回OpenID等相关信息
+    let openId = wxInfo.openid
+    console.log('wxInfo' , code, wxInfo)
+    let loginRes = await LoginAndRegByOpenid(openId)
     ctx.body = HR({
-      data: wxInfo
+      data: loginRes
     })
   } catch (err) {
-    throw {message: err}
+    console.error(err)
+    throw {message: '登陆失败' ,data: err}
   }
 })
 

@@ -38,10 +38,16 @@ let handleErr = async (ctx, next) => {
     await next()
     if (ctx.status !== 200) {
       if (ctx.status === 404) {errMsg = '接口不存在'}
-      ctx.body = HR({code: ctx.status, message: errMsg})
+      ctx.body = HR({code: errMsg.code || ctx.status, message: errMsg})
     }
+    console.error('Error Url', ctx.originalUrl, JSON.stringify(ctx.body))
   } catch (err) {
-    ctx.body = HR({code: ctx.status, message: err.message})
+    if (typeof err === 'string') {
+      ctx.body = HR({code: ctx.status, message: err || errMsg, data: {}})
+    } else {
+      ctx.body = HR({code: errMsg.code || ctx.status, message: err.message || errMsg, data: err.data || {}})
+    }
+    console.error('Error Url', ctx.originalUrl, JSON.stringify(ctx.body))
   }
   return
 }
