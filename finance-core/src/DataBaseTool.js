@@ -45,7 +45,7 @@ class DataBaseTool {
 		    console.log("disconnected");
 		});
 		inst.once('open', function() {
-		    console.log("mongoDB connected successfully");
+		    console.log("MongoDB connected successfully");
 		});	
     }
 

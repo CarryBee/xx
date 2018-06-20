@@ -12,6 +12,7 @@ class FinanceBaseTool {
             connectionLimit: 10
         });
         // await FinanceBaseTool.test();
+        console.log("MySQL connected successfully");
   
         pool.on('connection', function (connection) {
             console.log('Create %d connection', connection.threadId); // 创建
