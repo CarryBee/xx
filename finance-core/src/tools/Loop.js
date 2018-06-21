@@ -40,9 +40,7 @@ module.exports = class Loop {
         }).catch(err => {
             // console.log(err, "rollback");
             ctx.conn.rollback();
-            return Promise.reject({ok:undefined, err: err});
-        }).catch(err => {
-            throw err;
+            return Promise.reject(err);
         });
         
     }
