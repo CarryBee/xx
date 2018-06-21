@@ -37,7 +37,7 @@ class FinanceBaseTool {
         });
 
         return function(callback) {
-            Promise.using(back, callback);
+            return Promise.using(back, callback);
         }
     }
 
