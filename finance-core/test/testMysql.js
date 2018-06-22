@@ -1,5 +1,6 @@
 const FinanceBaseTool = require("../src/FinanceBaseTool");
 const Loop = require("../src/tools/financebox/Loop");
+const Invoice = require("../src/tools/financebox/Invoice");
 function sleep() {
     return new Promise(resolve => {
         setTimeout(resolve, 3000);
@@ -60,6 +61,10 @@ finRouter.use("#cashback", async (ctx, next) => {
     await next();
 });
 
+let inv = new Invoice();
+inv.plusnum = "111.1666";
+console.log(inv.amount);
+
 async function b() {
     await FinanceBaseTool.start();
     try {
@@ -72,7 +77,7 @@ async function b() {
     }
     
 }
-b();
+//b();
 
 
 async function a() {
