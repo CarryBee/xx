@@ -1,5 +1,5 @@
 const FinanceBaseTool = require("../src/FinanceBaseTool");
-const Loop = require("../src/tools/Loop");
+const Loop = require("../src/tools/financebox/Loop");
 function sleep() {
     return new Promise(resolve => {
         setTimeout(resolve, 3000);
@@ -7,9 +7,10 @@ function sleep() {
 }
 
 
-let loop = new Loop();
+let finRouter = new Loop();
 
-loop.set(async (ctx, next) => {
+finRouter.set(async (ctx, next) => {
+    // 开启事务
     const dip = new FinanceBaseTool().getSqlDisposer();
     await dip(async function(conn) {
         ctx.conn = conn;
@@ -18,19 +19,29 @@ loop.set(async (ctx, next) => {
     })
     await next();
 }, ctx => {
+    // 完成事务
     ctx.conn.commit();
 }, ctx => {
+    // 回滚
+    console.log("重置");
     ctx.conn.rollback();
 });
 
 // 充值
-loop.use("ab", async (ctx, next) => {
-    await ctx.conn.query('select * from coinset where id=3 lock in share mode;');
-    await next();
+finRouter.use("#recharge", async (ctx, next) => {
+    let num = parseFloat("10.2222");
+    if(num > 0 && num < 1000000) {
+        await ctx.conn.query('select * from user_ficts where id=1 lock in share mode;');
+        const bb = await ctx.conn.query('update user_ficts set recharge = recharge + ? where id=1;', num);
+        console.log("affectedRows", bb.affectedRows);
+        const ye = await ctx.conn.query('select * from user_ficts where id=1 lock in share mode;');
+        console.log(ye[0].recharge);
+        await next();
+    } else throw new Error("is not float");
 });
 
 // 提现
-loop.use("ab", async (ctx, next) => {
+finRouter.use("#reduce", async (ctx, next) => {
     const aa = await ctx.conn.query('select * from coinset where id=3 lock in share mode;'); // 默认情况下有写入队列
     //console.log(aa[0].names);
     const len = aa[0].names + "c";
@@ -39,12 +50,21 @@ loop.use("ab", async (ctx, next) => {
     await next();
 });
 
+// 返现
+finRouter.use("#cashback", async (ctx, next) => {
+    const aa = await ctx.conn.query('select * from coinset where id=3 lock in share mode;'); // 默认情况下有写入队列
+    //console.log(aa[0].names);
+    const len = aa[0].names + "n";
+    const bb = await ctx.conn.query('update coinset set names = "'+len+'" where id=3;');;
+    console.log("affectedRows", bb.affectedRows);
+    await next();
+});
 
 async function b() {
     await FinanceBaseTool.start();
     try {
-        const res = await loop.run({
-            path: "ab"
+        const res = await finRouter.run({
+            path: "#recharge"
         });
         console.log(res.ok); // 事务状态
     } catch (e) {

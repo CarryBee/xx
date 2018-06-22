@@ -4,7 +4,7 @@ const Router = require("koa-router");
 const serve = require("koa-static");
 const bodyParser = require('koa-bodyparser');
 const cors = require('koa2-cors');
-const {DataBaseTool} = require("./src/DataBaseTool");
+const { UserdataBaseTool } = require("./src/UserdataBaseTool");
 const FinanceBaseTool = require("./src/FinanceBaseTool");
 const jwt = require("jsonwebtoken");
 const jv = require("./src/tools/jwtcontrol");
@@ -85,7 +85,7 @@ $.use('/order', OrderRouter);
 app.use($.routes());
 app.use(serve(`${__dirname}/static`));
 (async function(){
-  await DataBaseTool.start(); // 启动 MongoDB
+  await UserdataBaseTool.start(); // 启动 MongoDB
   await FinanceBaseTool.start(); // 启动 MySQL
   await app.listen(3000, () => { // 启动服务
       console.log("KoaServer started successfully");
