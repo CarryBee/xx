@@ -1,6 +1,5 @@
 'use strict'
 const compose = require("koa-compose");
-const FinanceBaseTool = require("../FinanceBaseTool");
 
 // ctx
 // mongodb 读取用户信息、计算费率、
@@ -13,33 +12,48 @@ module.exports = class Loop {
 
     constructor() {
         this.fns = [];
-        this.fns.push(this.startTransaction);
     }
 
-    use (fn) {
-        this.fns.push(fn);
+    set (fn, commit, rollback) {
+        this.fns.unshift(fn);
+        if(commit) this.commit = commit;
+        if(rollback) this.rollback = rollback;
     }
 
-    async startTransaction (ctx, next) {
-        const dip = new FinanceBaseTool().getSqlDisposer();
-        await dip(async function(conn) {
-            ctx.conn = conn;
-            await conn.beginTransaction();
-            return;
-        })
-        await next();
+    use (path, fn) {
+        // 判断
+        if(typeof path === 'string') {
+            const dip = async function(ctx, next) {
+                if(ctx.path && ctx.path == path)
+                    await Promise.resolve(fn(ctx, next)); 
+                else
+                    await next();
+            }
+            this.fns.push(dip);
+        } else console.log(fn, "use path is wrong");
+    }
+
+    setCommit(fn) {
+        this.commit = fn;
+    }
+
+    setRollback(fn) {
+        this.rollback = fn;
     }
     
     run (ctx) {
+        
         const fn = compose(this.fns);
         return fn(ctx).then(() => {
             // 判断是否准确性
             // console.log(ctx, "commit");
-            ctx.conn.commit();
+            
+            if(this.commit) this.commit(ctx);
             return Promise.resolve({ok:1, ctx: ctx});
         }).catch(err => {
             // console.log(err, "rollback");
-            ctx.conn.rollback();
+            // ctx.conn.rollback();
+            if(this.rollback) this.rollback(ctx);
             return Promise.reject(err);
         });
         
