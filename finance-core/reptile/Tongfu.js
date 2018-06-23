@@ -2,35 +2,39 @@
 const superagent = require("superagent");
 const config = require("./config");
 let cookieMap = new Map();
-const fs = require("fs");
 
 
 //getList(getcookies());
 getRandamCode();
 //ping();
-
-
-function getRandamCode () {
-    superagent.get(config.url + "/imageshow.jsp?" + Math.random())
-        .set("Cookie", getcookies())
-        .end(function(err, res){
-            if (err) throw err;
-            loopcookies(res.header['set-cookie']);
-
-            const codepic = "data:image/jpeg;base64," + res.body.toString('base64');
-            //console.log("获取验证码：成功");
-            
-            checkRandamCode(codepic, function(err, code) {
-                if (err) console.log(err);
-                console.log("验证码识别结果：" + code);
-                getLogin(code);
+module.exports = class Tongfu {
+    
+    constructor() {}
+    
+    getRandamCode () {
+        return new Promise((resolve, reject) => {
+            superagent.get(config.url + "/imageshow.jsp?" + Math.random())
+            .set("Cookie", getcookies())
+            .end(function(err, res){
+                if (err) reject(err);
+                loopcookies(res.header['set-cookie']);
+    
+                const codepic = "data:image/jpeg;base64," + res.body.toString('base64');
+                //console.log("获取验证码：成功");
+                this.checkRandamCode(codepic, function(err, code) {
+                    if (err) reject(err);
+                    console.log("验证码识别结果：" + code);
+                    // getLogin(code);
+                    resolve(code);
+                });
             });
-        })
-};
+        });
+    };
 
-function checkRandamCode(codepic, callback) { 
+    // 识别验证码
+    checkRandamCode(codepic, callback) {
     //console.log("识别验证码：loading..");
-    superagent.post(config.codeVerifyUrl)
+        superagent.post(config.codeVerifyUrl)
         .set("Authorization", "APPCODE " + config.appcode)
         .type('form')
         .send({
@@ -38,60 +42,54 @@ function checkRandamCode(codepic, callback) {
             "v_type":"ne4"
         })
         .end(function(err, res){
-            if (err) console.log(err);
-            
+            if (err) callback(err);
+                
             if(res && res.text) {
                 const body = JSON.parse(res.text);
                 console.log(body);
                 callback(undefined, body.v_code.toLowerCase());
             } else {
-                callback(err)
+                callback(err);
             }
-            
-        })
+                
+        });
+    }
+
+    getLogin () {
+        return new Promise((resolve, reject) => {
+            superagent.post(config.url + "/100101.prm?AGET_ID=13760050600&USERID=13760050600&USERPWD=3362383&RAND="+answer+"&USRIP=223.73.136.202&iSec="+ Math.random())
+            .set("Accept-Language", "zh-cn")
+            .set("Cookie", getcookies())
+            .set("user-agent", config.useragent)
+            .set("Host", config.Host)
+            .set("Origin", config.Origin)
+            .set("referer", config.referer)
+            .end(function(err, res){
+                    if (err) reject(err);
+    
+                    var cookie = res.header['set-cookie'];
+                    loopcookies(cookie);
+    
+                    if(res && res.text) {
+                        let jes = JSON.parse(res.text);
+                        if(jes.RSPMSG == "校验通过") {
+                            resolve(jes.AGE_NAME,jes.RSPMSG);
+                        }
+                    }
+            });
+        });
+       
+    }
+
 }
+
+
+
+
 
 // 登陆
 
-function getLogin (answer) {
-    superagent.post(config.url + "/100101.prm?AGET_ID=13760050600&USERID=13760050600&USERPWD=3362383&RAND="+answer+"&USRIP=223.73.136.202&iSec="+ Math.random())
-        .set("Accept-Language", "zh-cn")
-        .set("Cookie", getcookies())
-        .set("user-agent", config.useragent)
-        .set("Host", config.Host)
-        .set("Origin", config.Origin)
-        .set("referer", config.referer)
-        .end(function(err, res){
-                if (err){
-                  throw err;
-                };
 
-                var cookie = res.header['set-cookie'];
-                loopcookies(cookie);
-                
-                //console.log(res.text);
-                //AGE_NAME
-                if(res && res.text) {
-                    let jes = JSON.parse(res.text);
-                    if(jes.RSPMSG == "校验通过") {
-                        console.log(jes.AGE_NAME,jes.RSPMSG);
-                        getListOF2();
-                    }
-                }
-
-                // RSPMSG 校验通过
-                
-                //console.log("状态：登陆成功");
-                
-
-
-                // 再来一次
-                //cookieMap = new Map();
-                //setTimeout(getRandamCode, 2000);
-                
-
-        });
-}
 
 // 获取充值列表：第三方用户id与消费记录、订单号
 function getListOF (pageNum = 1) {
@@ -110,8 +108,8 @@ function getListOF (pageNum = 1) {
             "AGENT_ID":"",
             "AGENT_NAME":"",
             "PRDORDNO":"",
-            "begin_date":"20180608",
-            "end_date":"20180608",
+            "begin_date":"20180622",
+            "end_date":"20180622",
             "ORDSTATUS":"01",
             "SUB_AGENTS":"",
             "PAYMENT_TYPE":"",
@@ -127,7 +125,8 @@ function getListOF (pageNum = 1) {
             //console.log(res.body);
             //getTitles();
             //console.log(res.text);
-            getFromHtml(res.text);
+            let res2 = getFromHtml(res.text);
+            console.log(res2);
             
         })
 };
@@ -165,7 +164,8 @@ function getListOF2 (pageNum = 1) {
             //console.log(res.body);
             //getTitles();
             //console.log(res.text);
-            getFromHtml(res.text);
+            let res = getFromHtml(res.text);
+            console.log(res);
             
         })
 };
@@ -188,6 +188,7 @@ function ping () {
         })
 }
 
+// 标注表格获取
 function getFromHtml (html) {
     let repon = html.match(/<tbody>[\s|\S]*?<\/tbody>/g);
     repon = repon[0];
@@ -196,8 +197,9 @@ function getFromHtml (html) {
     repon = repon.replace(/\n/g,"");
     repon = repon.replace(/\t/g,"");
     let reponarr = repon.match(/<tr[^>/]*>[\s|\S]*?<\/tr>/g);
-    if(reponarr.length < 1)console.log(repon);
-
+    if(!reponarr || reponarr.length < 1) throw new Error("数据为空");
+    // console.log(repon);
+    let rows = [];
     for(let tr = 0; tr < reponarr.length; tr++) {
         let reg = new RegExp(/<td[^>/]*>(.+?)<\/td>/g);
         let obj = [];
@@ -207,8 +209,9 @@ function getFromHtml (html) {
                 obj.push(rep[1]);
             else break;    
         }
-        console.log(obj);
+        rows.push(obj);
     }
+    return rows;
 }
 
 function loopcookies(cooks){

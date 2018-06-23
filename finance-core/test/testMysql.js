@@ -30,7 +30,6 @@ finRouter.set(async (ctx, next) => {
 
 // 充值
 finRouter.use("#recharge", async (ctx, next) => {
-    console.log(ctx.invoices);
 
     let num = parseFloat("10.2222");
     if(num > 0 && num < 1000000) {

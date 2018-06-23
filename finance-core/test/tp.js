@@ -1,14 +1,22 @@
 let pro = new Promise((resolve, reject) => {
-
-	reject("xxx");
+	throw new Error("xxx");
+	// reject("xxx");
 }).catch(err => {
 	//throw new Error("eerr");;
-	console.log(err);
+	console.log("b", err);
 });
 
+pro.then(res => {
+	console.log("a", res);
+});
+
+
+
+/*
 let pro2 = async function() {
 	return await pro;
 }
+*/
 
 /*
 async function test(){
@@ -22,6 +30,8 @@ async function test(){
 }
 */
 
+/*
 pro2().then(function(doc) {
 	console.log(doc);
 });
+*/

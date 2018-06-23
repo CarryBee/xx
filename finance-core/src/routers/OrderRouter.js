@@ -68,5 +68,9 @@ $.get('/addorder', async ctx => {
     }
 });
 
+$.get('pay', async ctx => {
+    // 根据订单 id 进行事务的扣除
+});
+
 
 module.exports = $.routes();
