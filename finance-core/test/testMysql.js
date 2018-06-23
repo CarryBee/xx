@@ -30,6 +30,8 @@ finRouter.set(async (ctx, next) => {
 
 // 充值
 finRouter.use("#recharge", async (ctx, next) => {
+    console.log(ctx.invoices);
+
     let num = parseFloat("10.2222");
     if(num > 0 && num < 1000000) {
         await ctx.conn.query('select * from user_ficts where id=1 lock in share mode;');
@@ -61,15 +63,33 @@ finRouter.use("#cashback", async (ctx, next) => {
     await next();
 });
 
-let inv = new Invoice();
-inv.plusnum = "111.1666";
-console.log(inv.amount);
+
 
 async function b() {
     await FinanceBaseTool.start();
+    // 订单id
+    // 计算获利
+    const us = [ 
+        { userid: 'C', amount: 100 },
+        { userid: 'B', amount: 20 },
+        { userid: 'A', amount: 20 } 
+    ];
+
+    
+
     try {
+        const invoices = [];
+        // 校验格式
+        for(let one of us) {
+            let inv = new Invoice();
+            inv.userid = one.userid;
+            inv.plusnum = one.amount;
+            invoices.push(one);
+        }
+        
         const res = await finRouter.run({
-            path: "#recharge"
+            path: "#recharge",
+            invoices: invoices
         });
         console.log(res.ok); // 事务状态
     } catch (e) {
@@ -77,7 +97,7 @@ async function b() {
     }
     
 }
-//b();
+b();
 
 
 async function a() {

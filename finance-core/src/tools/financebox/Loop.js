@@ -36,7 +36,9 @@ module.exports = class Loop {
     }
     
     run (ctx) {
-        
+
+        if(!ctx || !ctx.invoices) throw new Error("ctx need invoices");
+
         const fn = compose(this.fns);
         return fn(ctx).then(() => {
             // console.log(ctx, "commit");

@@ -111,8 +111,8 @@ class ComputeBox {
 		}
 	*/
 
-	computeShukaFun01(cash, rates, remark) { 
-		let tmpobj = new Map();
+	computeShukaFun01(cash, rates, format) { 
+		let tmparray = new Array();
 		let arruser = this.realTimeUser || [];
 		for(let i = 0; i < arruser.length; i++) {
 
@@ -124,10 +124,15 @@ class ComputeBox {
 		    	rnum = -math.bignumber(rates[arruser[i-1].level+""]);
 		    
 			let te = math.add(lnum, rnum);
-			tmpobj.set(arruser[i].name, cash * math.format(te));
+
+			const amount = cash * math.format(te);
+			if(format)
+				tmparray.push(format({userid: arruser[i].name, amount: amount}));
+			else
+				tmparray.push({userid: arruser[i].name, amount: amount});
 		}
 
-		return tmpobj;
+		return tmparray;
 
 	}
 
@@ -157,7 +162,7 @@ class ComputeBox {
 
 			nowUser = fatUser;
 		} while(nowUser && countloop < maxloopnum); // 有上级就继续
-		return this.user;
+		return this.user; // 返回已经关联上级提现的用户
 	}
 
 	/*

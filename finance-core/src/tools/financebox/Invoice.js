@@ -10,10 +10,6 @@ module.exports = class Invoice {
         this.amount = 0;
     }
 
-    set userid(val) {
-        
-    }
-
     set plusnum(val = 0) {
         val = parseFloat(val).toFixed(2);
         if(val >= 0 && val < 1000000) {
