@@ -4,14 +4,13 @@ const config = require("./config");
 let cookieMap = new Map();
 
 
-//getList(getcookies());
-getRandamCode();
-//ping();
 module.exports = class Tongfu {
     
     constructor() {}
     
+    // 验证过
     getRandamCode () {
+        const that = this;
         return new Promise((resolve, reject) => {
             superagent.get(config.url + "/imageshow.jsp?" + Math.random())
             .set("Cookie", getcookies())
@@ -21,7 +20,7 @@ module.exports = class Tongfu {
     
                 const codepic = "data:image/jpeg;base64," + res.body.toString('base64');
                 //console.log("获取验证码：成功");
-                this.checkRandamCode(codepic, function(err, code) {
+                that.checkRandamCode(codepic, function(err, code) {
                     if (err) reject(err);
                     console.log("验证码识别结果：" + code);
                     // getLogin(code);
@@ -55,7 +54,8 @@ module.exports = class Tongfu {
         });
     }
 
-    getLogin () {
+    // 登录
+    getLogin (answer) {
         return new Promise((resolve, reject) => {
             superagent.post(config.url + "/100101.prm?AGET_ID=13760050600&USERID=13760050600&USERPWD=3362383&RAND="+answer+"&USRIP=223.73.136.202&iSec="+ Math.random())
             .set("Accept-Language", "zh-cn")
@@ -73,13 +73,43 @@ module.exports = class Tongfu {
                     if(res && res.text) {
                         let jes = JSON.parse(res.text);
                         if(jes.RSPMSG == "校验通过") {
-                            resolve(jes.AGE_NAME,jes.RSPMSG);
-                        }
-                    }
+                            resolve(jes.AGE_NAME + jes.RSPMSG);
+                        } else reject(new Error("校验不通过"));
+                    } else reject(new Error("登录失败"));
             });
         });
        
     }
+
+
+    // 获取充值列表：第三方用户id与消费记录、订单号
+    getListOF (pageNum = 1, begin, end) {
+        return new Promise((resolve, reject) => {
+            superagent.post(config.url + "/100131t.prms")
+                .timeout(3000)
+                .set("Accept-Language", "zh-cn")
+                .set("Cookie", getcookies())
+                .set("user-agent", config.useragent)
+                .set("Host", config.Host)
+                .set("Origin", config.Origin)
+                .set("referer", config.referer)
+                .type('form')
+                .send({
+                    "pageNum": pageNum,"CUST_ID":"","CUST_NAME":"","AGENT_ID":"","AGENT_NAME":"","PRDORDNO":"","begin_date":begin,"end_date":end,"ORDSTATUS":"01","SUB_AGENTS":"","PAYMENT_TYPE":"","BANKNO":"","FEE_TYPE":"","CARD_TYPE":"","DTEL":""})
+                .end(function(err, res){
+                    if (err) reject(err);
+                    if (res) {
+                        let cookie = res.header['set-cookie'];
+                        loopcookies(cookie);
+                        let res2 = getFromHtml(res.text);
+                        resolve(res2);
+                    } else {
+                        resolve(res);
+                    }
+                    
+                });
+        });
+    };
 
 }
 
@@ -91,45 +121,6 @@ module.exports = class Tongfu {
 
 
 
-// 获取充值列表：第三方用户id与消费记录、订单号
-function getListOF (pageNum = 1) {
-    superagent.post(config.url + "/100131t.prms")
-        .set("Accept-Language", "zh-cn")
-        .set("Cookie", getcookies())
-        .set("user-agent", config.useragent)
-        .set("Host", config.Host)
-        .set("Origin", config.Origin)
-        .set("referer", config.referer)
-        .type('form')
-        .send({
-            "pageNum": pageNum,
-            "CUST_ID":"",
-            "CUST_NAME":"",
-            "AGENT_ID":"",
-            "AGENT_NAME":"",
-            "PRDORDNO":"",
-            "begin_date":"20180622",
-            "end_date":"20180622",
-            "ORDSTATUS":"01",
-            "SUB_AGENTS":"",
-            "PAYMENT_TYPE":"",
-            "BANKNO":"",
-            "FEE_TYPE":"",
-            "CARD_TYPE":"",
-            "DTEL":""})
-        .end(function(err, res){
-            if (err) throw err;
-            var cookie = res.header['set-cookie'];
-
-            loopcookies(cookie);
-            //console.log(res.body);
-            //getTitles();
-            //console.log(res.text);
-            let res2 = getFromHtml(res.text);
-            console.log(res2);
-            
-        })
-};
 
 //获取第三方用户id与机器的关系表
 function getListOF2 (pageNum = 1) {
@@ -197,7 +188,9 @@ function getFromHtml (html) {
     repon = repon.replace(/\n/g,"");
     repon = repon.replace(/\t/g,"");
     let reponarr = repon.match(/<tr[^>/]*>[\s|\S]*?<\/tr>/g);
-    if(!reponarr || reponarr.length < 1) throw new Error("数据为空");
+    if(!reponarr || reponarr.length < 1) {
+        return [];
+    }
     // console.log(repon);
     let rows = [];
     for(let tr = 0; tr < reponarr.length; tr++) {
