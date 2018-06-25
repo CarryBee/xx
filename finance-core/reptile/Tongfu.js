@@ -86,10 +86,10 @@ module.exports = class Tongfu {
 
 
     // 获取充值列表：第三方用户id与消费记录、订单号
-    getListOF (pageNum = 1, begin, end) {
+    getListOfCash (pageNum = 1, begin, end) {
         return new Promise((resolve, reject) => {
-            superagent.post(config.url + "/100131t.prms")
-                .timeout(6000)
+            
+            superagent.post(config.url + "/100131t.prms").timeout(6000)
                 .set("Accept-Language", "zh-cn")
                 .set("Cookie", getcookies())
                 .set("user-agent", config.useragent)
@@ -97,8 +97,7 @@ module.exports = class Tongfu {
                 .set("Origin", config.Origin)
                 .set("referer", config.referer)
                 .type('form')
-                .send({
-                    "pageNum": pageNum,"CUST_ID":"","CUST_NAME":"","AGENT_ID":"","AGENT_NAME":"","PRDORDNO":"","begin_date":begin,"end_date":end,"ORDSTATUS":"01","SUB_AGENTS":"","PAYMENT_TYPE":"","BANKNO":"","FEE_TYPE":"","CARD_TYPE":"","DTEL":""})
+                .send({"pageNum": pageNum,"CUST_ID":"","CUST_NAME":"","AGENT_ID":"","AGENT_NAME":"","PRDORDNO":"","begin_date":begin,"end_date":end,"ORDSTATUS":"01","SUB_AGENTS":"","PAYMENT_TYPE":"","BANKNO":"","FEE_TYPE":"","CARD_TYPE":"","DTEL":""})
                 .end(function(err, res){
                     if (err) reject(err);
                     if (res) {
@@ -114,55 +113,39 @@ module.exports = class Tongfu {
         });
     };
 
+    //获取第三方用户id与机器的关系表
+    getListOfUser (pageNum = 1, begin, end) {
+        return new Promise((resolve, reject) => {
+            superagent.post(config.url + "/serveFeeUsrList.prm").timeout(6000)
+            .set("Accept-Language", "zh-cn")
+            .set("Cookie", getcookies())
+            .set("user-agent", config.useragent)
+            .set("Host", config.Host)
+            .set("Origin", config.Origin)
+            .set("referer", config.referer)
+            .type('form')
+            .send({"pageNum": pageNum,"CUST_ID":"", "CUST_NAME": "","BEGIN_DATE": begin,"END_DATE": end,"FEE_NAME": "", "AGET_ID": "","AGE_NAME": "","TERNO": "","ISVALID": "","ACT_STATE": "","START_DATE": "","FIN_DATE": "","SUB_AGENTS":"" })
+            .end(function(err, res){
+                if (err) reject(err);
+                if (res) {
+                    let cookie = res.header['set-cookie'];
+                    loopcookies(cookie);
+                    let res2 = getFromHtml(res.text);
+                    resolve(res2);
+                } else {
+                    resolve(res);
+                }
+            });
+        });
+    };
+
 }
 
 
 
 
 
-// 登陆
 
-
-
-
-//获取第三方用户id与机器的关系表
-function getListOF2 (pageNum = 1) {
-    superagent.post(config.url + "/serveFeeUsrList.prm")
-        .set("Accept-Language", "zh-cn")
-        .set("Cookie", getcookies())
-        .set("user-agent", config.useragent)
-        .set("Host", config.Host)
-        .set("Origin", config.Origin)
-        .set("referer", config.referer)
-        .type('form')
-        .send({
-            "pageNum": pageNum,
-            "CUST_ID":"", 
-            "CUST_NAME": "",
-            "BEGIN_DATE": "20180501",
-            "END_DATE": "20180610",
-            "FEE_NAME": "", 
-            "AGET_ID": "",
-            "AGE_NAME": "",
-            "TERNO": "",
-            "ISVALID": "",
-            "ACT_STATE": "",
-            "START_DATE": "",
-            "FIN_DATE": "",
-            "SUB_AGENTS":"" })
-        .end(function(err, res){
-            if (err) throw err;
-            var cookie = res.header['set-cookie'];
-
-            loopcookies(cookie);
-            //console.log(res.body);
-            //getTitles();
-            //console.log(res.text);
-            let res = getFromHtml(res.text);
-            console.log(res);
-            
-        })
-};
 
 // 最后行为检测
 function ping () {
