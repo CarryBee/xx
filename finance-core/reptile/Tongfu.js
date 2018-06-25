@@ -13,13 +13,14 @@ module.exports = class Tongfu {
         const that = this;
         return new Promise((resolve, reject) => {
             superagent.get(config.url + "/imageshow.jsp?" + Math.random())
+            .timeout(6000)
             .set("Cookie", getcookies())
             .end(function(err, res){
                 if (err) reject(err);
                 loopcookies(res.header['set-cookie']);
     
                 const codepic = "data:image/jpeg;base64," + res.body.toString('base64');
-                //console.log("获取验证码：成功");
+                console.log("获取验证码：成功");
                 that.checkRandamCode(codepic, function(err, code) {
                     if (err) reject(err);
                     console.log("验证码识别结果：" + code);
@@ -34,6 +35,7 @@ module.exports = class Tongfu {
     checkRandamCode(codepic, callback) {
     //console.log("识别验证码：loading..");
         superagent.post(config.codeVerifyUrl)
+        .timeout(12000)
         .set("Authorization", "APPCODE " + config.appcode)
         .type('form')
         .send({
@@ -58,6 +60,7 @@ module.exports = class Tongfu {
     getLogin (answer) {
         return new Promise((resolve, reject) => {
             superagent.post(config.url + "/100101.prm?AGET_ID=13760050600&USERID=13760050600&USERPWD=3362383&RAND="+answer+"&USRIP=223.73.136.202&iSec="+ Math.random())
+            .timeout(6000)
             .set("Accept-Language", "zh-cn")
             .set("Cookie", getcookies())
             .set("user-agent", config.useragent)
@@ -86,7 +89,7 @@ module.exports = class Tongfu {
     getListOF (pageNum = 1, begin, end) {
         return new Promise((resolve, reject) => {
             superagent.post(config.url + "/100131t.prms")
-                .timeout(3000)
+                .timeout(6000)
                 .set("Accept-Language", "zh-cn")
                 .set("Cookie", getcookies())
                 .set("user-agent", config.useragent)
