@@ -70,14 +70,14 @@ $.get('/addorder', async ctx => {
     }
 });
 
-$.get('/payorder', async ctx => {
+$.get('/payorder', async ctx => {  // (正常模式)
     // 根据订单 id 进行事务并对钱包的扣除
 
     // 并且标志订单为完成
 });
 
 
-$.get('/payvip', async ctx => {
+$.get('/payvip', async ctx => {  // (正常模式)
     // 根据身份计算价格进行事务并对钱包的扣除
 
     // 并且改变用户标志
@@ -91,19 +91,19 @@ $.get('/payvip', async ctx => {
  * 三个入口
  * 
  */
-$.get('/rechange', async ctx => {
+$.get('/rechange', async ctx => {// (充值正常模式) 额外驱动 
 
-    // 拿到回调后增加对应钱包的钱，（+）
+    // 拿到回调后增加对应钱包的钱，（+）{userid:"karonl", event:"rechange", params:"xxxx", amount:100}
 
-    // 如果有订单编号，则执行 payorder 的扣款逻辑
+    // 如果有订单编号，则执行 payorder 的扣款逻辑 {userid:"karonl", event:"order", params:"xxxx", amount:100}
 
-    // 如果有升级编号，则执行 payvip 的扣款逻辑操作
+    // 如果有升级编号，则执行 payvip 的扣款逻辑操作 {userid:"karonl", event:"vip", params:"xxxx", amount:100}
 
 });
 
 /**
  * 
- * 扣费测试
+ * 充值/扣费测试
  */
 $.get('/testpay', async ctx => {
     try {
@@ -113,16 +113,14 @@ $.get('/testpay', async ctx => {
         inv.userid = "one.userid5";
         inv.minus = -12.23;
         invoices.push(inv);
-
-        inv = new Invoice();
-        inv.userid = "one.userid4";
-        inv.plusnum = 12.23;
-        invoices.push(inv);
         
+        let begin = new Date().getTime();
         const res = await finRouter.run({
             path: "#testrecharge",
             invoices: invoices
         });
+        let end = new Date().getTime();
+        console.log("花费："+(end-begin)/1000+"秒");
         // console.log(res.ok); // 事务状态
         // ctx.body = res.ok;
         ctx.body = res.ok;

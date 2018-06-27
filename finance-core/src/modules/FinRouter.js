@@ -1,6 +1,7 @@
+'use strict'
 // 金融模块，控制钱包的充值与花费
+
 const Loop = require("../tools/financebox/Loop");
-const Invoice = require("../tools/financebox/Invoice");
 const FinanceBaseTool = require("../FinanceBaseTool");
 const finRouter = new Loop();
 
@@ -33,9 +34,12 @@ finRouter.use("#testrecharge", async (ctx, next) => {
         else
             pakcsql = 'set recharge = recharge + ' + invo.amount;
 
-        aa = await ctx.conn.query('update user_ficts '+pakcsql+' where userid = ?;', invo.userid);
+        let aa = await ctx.conn.query('update user_ficts '+pakcsql+' where userid = ?;', invo.userid);
         console.log(aa);
 
+        const cc = await ctx.conn.query('select * from user_ficts where userid = ?;', invo.userid);
+        let am = cc[0].recharge + cc[0].reduce;
+        if(am < 0) throw new Error("余额不足"); 
     }
     
     await next();
