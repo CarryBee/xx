@@ -1,8 +1,13 @@
 
 const FinanceBaseTool = require("../src/FinanceBaseTool");
 const TongfuFlow = require("./TongfuFlow");
-// 运行
-async function run() {
+/**
+ * 
+ * TongfuFlowRun
+ * Tongfu版本爬虫与数据获取
+ * 
+ */
+async function TongfuFlowRun() {
     try {
         await FinanceBaseTool.start(); // 启动 MySQL
         const dip = new FinanceBaseTool().getSqlDisposer();
@@ -31,10 +36,10 @@ async function run() {
          * 启动分成，对每条数据事务处理
          */
 
-
+        // ????
 
     } catch(e) {
-        console.log(e);
+        console.log("Tongfu版本爬虫过程：" + e);
     }
 }
-run();
+TongfuFlowRun();

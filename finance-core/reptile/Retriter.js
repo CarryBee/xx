@@ -23,7 +23,7 @@ module.exports = class Retriter {
 	async run() {
 		let res;
 		const name = this.name;
-	    if(this.time > this.maxtime) throw new Error(name + " 超过重试次数");
+	    if(this.time > this.maxtime) throw new Error(name + " 超过重试次数"); // 对外抛
 
 	    try {
 	        res = await this.pms(); // 执行

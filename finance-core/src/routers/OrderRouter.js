@@ -4,6 +4,8 @@ const ERO = require("../tools/Errorbody");
 const HR = require("../tools/handleRes");
 const $ = new Router();
 const OrderModule = require("../modules/OrderModule");
+const finRouter = require("../modules/FinRouter");
+const Invoice = require("../tools/financebox/Invoice");
 
 const jv = require("../tools/jwtcontrol");
 
@@ -68,9 +70,66 @@ $.get('/addorder', async ctx => {
     }
 });
 
-$.get('pay', async ctx => {
-    // 根据订单 id 进行事务的扣除
+$.get('/payorder', async ctx => {
+    // 根据订单 id 进行事务并对钱包的扣除
+
+    // 并且标志订单为完成
 });
 
+
+$.get('/payvip', async ctx => {
+    // 根据身份计算价格进行事务并对钱包的扣除
+
+    // 并且改变用户标志
+});
+
+
+// 微信支付通知，回调函数
+/**
+ * 
+ * 微信支付回调
+ * 三个入口
+ * 
+ */
+$.get('/rechange', async ctx => {
+
+    // 拿到回调后增加对应钱包的钱，（+）
+
+    // 如果有订单编号，则执行 payorder 的扣款逻辑
+
+    // 如果有升级编号，则执行 payvip 的扣款逻辑操作
+
+});
+
+/**
+ * 
+ * 扣费测试
+ */
+$.get('/testpay', async ctx => {
+    try {
+        const invoices = [];
+        // 校验格式
+        let inv = new Invoice();
+        inv.userid = "one.userid5";
+        inv.minus = -12.23;
+        invoices.push(inv);
+
+        inv = new Invoice();
+        inv.userid = "one.userid4";
+        inv.plusnum = 12.23;
+        invoices.push(inv);
+        
+        const res = await finRouter.run({
+            path: "#testrecharge",
+            invoices: invoices
+        });
+        // console.log(res.ok); // 事务状态
+        // ctx.body = res.ok;
+        ctx.body = res.ok;
+    } catch (e) {
+        console.log("err2:", e);
+        ctx.body = "xxx";
+    }
+});
 
 module.exports = $.routes();

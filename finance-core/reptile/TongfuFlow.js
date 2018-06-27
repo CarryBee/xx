@@ -55,5 +55,5 @@ const rt = new Retriter(async function() {
 rt.setname("程序启动");
 rt.settime(10); // 重试次数
 rt.errcall(obj => console.log("[" + obj.name + "失败] 第"+obj.time+"次重试", "原因：" + obj.err.message));
-
+// 第三次错误会向外抛出错误
 module.exports = rt;

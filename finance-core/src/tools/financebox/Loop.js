@@ -46,7 +46,7 @@ module.exports = class Loop {
             return Promise.resolve({ok:1, ctx: ctx});
         }).catch(err => {
             // ctx.conn.rollback();
-            if(this.rollback) this.rollback(ctx);
+            if(this.rollback) this.rollback(err, ctx);
             return Promise.reject(err);
         });
         
