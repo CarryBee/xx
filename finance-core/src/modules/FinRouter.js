@@ -1,31 +1,44 @@
-const FinanceBaseTool = require("../src/FinanceBaseTool");
-const Loop = require("../src/tools/financebox/Loop");
-const Invoice = require("../src/tools/financebox/Invoice");
-function sleep() {
-    return new Promise(resolve => {
-        setTimeout(resolve, 3000);
-    });
-}
-
-
-let finRouter = new Loop();
+// 金融模块，控制钱包的充值与花费
+const Loop = require("../tools/financebox/Loop");
+const Invoice = require("../tools/financebox/Invoice");
+const FinanceBaseTool = require("../FinanceBaseTool");
+const finRouter = new Loop();
 
 finRouter.set(async (ctx, next) => {
-    // 开启事务
     const dip = new FinanceBaseTool().getSqlDisposer();
     await dip(async function(conn) {
         ctx.conn = conn;
-        await conn.beginTransaction();
-        return;
-    })
+        await conn.beginTransaction();  // 开启事务
+    });
     await next();
 }, ctx => {
-    // 完成事务
-    ctx.conn.commit();
-}, ctx => {
-    // 回滚
+    ctx.conn.commit(); // 完成事务
+}, (err, ctx) => {
+    ctx.conn.rollback(); // 回滚
+    console.log("FinRouter: " + err);
     console.log("重置");
-    ctx.conn.rollback();
+});
+
+// 测试充值
+finRouter.use("#testrecharge", async (ctx, next) => {
+  
+    for(let invo of ctx.invoices) {
+        const bb = await ctx.conn.query('select * from user_ficts where userid = ? for update;', invo.userid);
+        if(!bb || bb.length < 1)
+            await ctx.conn.query('insert into user_ficts (userid) values (?);', invo.userid);
+            
+        let pakcsql;
+        if(invo.amount < 0)
+            pakcsql = 'set reduce = reduce ' + invo.amount;
+        else
+            pakcsql = 'set recharge = recharge + ' + invo.amount;
+
+        aa = await ctx.conn.query('update user_ficts '+pakcsql+' where userid = ?;', invo.userid);
+        console.log(aa);
+
+    }
+    
+    await next();
 });
 
 // 充值
@@ -62,53 +75,4 @@ finRouter.use("#cashback", async (ctx, next) => {
     await next();
 });
 
-
-
-async function b() {
-    await FinanceBaseTool.start();
-    // 订单id
-    // 计算获利
-    const us = [ 
-        { userid: 'C', amount: 100 },
-        { userid: 'B', amount: 20 },
-        { userid: 'A', amount: 20 } 
-    ];
-
-    
-
-    try {
-        const invoices = [];
-        // 校验格式
-        for(let one of us) {
-            let inv = new Invoice();
-            inv.userid = one.userid;
-            inv.plusnum = one.amount;
-            invoices.push(one);
-        }
-        
-        const res = await finRouter.run({
-            path: "#recharge",
-            invoices: invoices
-        });
-        console.log(res.ok); // 事务状态
-    } catch (e) {
-        console.log("err:", e);
-    }
-    
-}
-b();
-
-
-async function a() {
-    await FinanceBaseTool.start();
-    select();
-    select();
-    const dip = new FinanceBaseTool().getSqlDisposer();
-    dip(async function(conn) {
-        const aa = await conn.query('select * from coinset where id = 3;');
-        console.log(aa[0].names);
-    });
-    select();
-    
-}
-// a();
+module.exports = finRouter;

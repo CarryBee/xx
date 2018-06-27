@@ -20,13 +20,13 @@ const stuffsnap = mongoose.model('StuffSnap', StuffSnapSchema);
 const machine = mongoose.model('Machine', MachineSchema);
 const order = mongoose.model('Order', OrderSchema);
 //
-class DataBaseTool {
+class UserdataBaseTool {
 
 	static async start() { // return promise
 
 		if(connection) return connection;
 		else {
-			let dbt = new DataBaseTool();
+			let dbt = new UserdataBaseTool();
 			connection = await dbt.connect();
 			return connection;
 		}
@@ -65,7 +65,7 @@ class DataBaseTool {
     }
 }
 module.exports = {
-	'DataBaseTool': DataBaseTool,
+	'UserdataBaseTool': UserdataBaseTool,
 	'Stuff': stuff,
 	'StuffSnap': stuffsnap,
 	'User': user,

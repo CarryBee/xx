@@ -4,7 +4,7 @@ const Router = require("koa-router");
 const serve = require("koa-static");
 const bodyParser = require('koa-bodyparser');
 const cors = require('koa2-cors');
-const {DataBaseTool} = require("./src/DataBaseTool");
+const { UserdataBaseTool } = require("./src/UserdataBaseTool");
 const FinanceBaseTool = require("./src/FinanceBaseTool");
 const jwt = require("jsonwebtoken");
 const jv = require("./src/tools/jwtcontrol");
@@ -40,8 +40,9 @@ let handleErr = async (ctx, next) => {
     if (ctx.status !== 200) {
       if (ctx.status === 404) {errMsg = '接口不存在'}
       ctx.body = HR({code: errMsg.code || ctx.status, message: errMsg})
+      console.error('Error Url', ctx.originalUrl, JSON.stringify(ctx.body))
     }
-    console.error('Error Url', ctx.originalUrl, JSON.stringify(ctx.body))
+    
   } catch (err) {
     if (typeof err === 'string') {
       ctx.body = HR({code: ctx.status, message: err || errMsg, data: {}})
@@ -85,7 +86,7 @@ $.use('/order', OrderRouter);
 app.use($.routes());
 app.use(serve(`${__dirname}/static`));
 (async function(){
-  await DataBaseTool.start(); // 启动 MongoDB
+  await UserdataBaseTool.start(); // 启动 MongoDB
   await FinanceBaseTool.start(); // 启动 MySQL
   await app.listen(3000, () => { // 启动服务
       console.log("KoaServer started successfully");

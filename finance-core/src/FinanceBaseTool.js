@@ -8,7 +8,7 @@ class FinanceBaseTool {
             host: 'localhost',
             user: 'root',
             password: '920589656',
-            database: 'btcauto',
+            database: 'j-finance',
             connectionLimit: 10
         });
         // await FinanceBaseTool.test();

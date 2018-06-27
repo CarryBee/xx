@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const {User, Stuff, Phone, Machine} = require("../DataBaseTool");
+const {User, Stuff, Phone, Machine} = require("../UserdataBaseTool");
 // 关于商品的管理
 class StuffModule {
 
