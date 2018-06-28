@@ -22,7 +22,7 @@ export function makeAccessWXUrl (option) {
   let urlOption = {
     snsapiType: 'snsapi_base',
     appId: 'wx6f8322dd012ed875',
-    reUrl:  location.origin + '/' + window.location.hash,
+    reUrl: location.origin + '/' + window.location.hash,
     ...option
   }
   let redirectUri = encodeURIComponent(urlOption.reUrl + '?wechat_redirect=1')

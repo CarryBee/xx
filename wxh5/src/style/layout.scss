@@ -67,3 +67,13 @@
 @for $i from 16 through 34 {
   .f-#{$i} { font-size: px2rem($i); }
 }
+
+.ta-c {
+  text-align: center;
+}
+.ta-l {
+  text-align: left;
+}
+.ta-r {
+  text-align: right;
+}

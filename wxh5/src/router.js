@@ -7,7 +7,10 @@ import Partner from './views/Partner'
 import Login from './views/Login'
 import cardRecord from './views/cardRecord'
 import myShareLink from './views/myShareLink'
+import ShopIndex from './views/ShopIndex'
 import Wxredirect from './views/Wxredirect'
+import ShopProductDetail from './views/ShopProductDetail'
+import OrderConfirm from './views/order/orderConfirm'
 
 Vue.use(Router)
 
@@ -47,6 +50,21 @@ export default new Router({
       meta: {
         needLogin: true
       }
+    },
+    {
+      path: '/shopIndex',
+      name: 'shopIndex',
+      component: ShopIndex
+    },
+    {
+      path: '/shopProductDetail',
+      name: 'shopProductDetail',
+      component: ShopProductDetail
+    },
+    {
+      path: '/order/orderConfirm',
+      name: 'orderConfirm',
+      component: OrderConfirm
     },
     {
       path: '/login',

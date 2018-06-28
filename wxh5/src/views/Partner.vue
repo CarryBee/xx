@@ -18,6 +18,14 @@
           </div>
         </router-link>
       </div>
+      <div class="my-machine header-nav-btn flex-box flex-direction-column flex-1 ai-c jc-ce">
+        <div class="header-nav-icon flex-box ai-c jc-ce"><i class="fas fa-qrcode fa-2x"></i></div>
+        <router-link to="/myShareLink/myShareOption2">
+          <div class="header-nav-title">
+            升级身份
+          </div>
+        </router-link>
+      </div>
     </div>
     <div class="banner-ad-list">
       <div class="item">

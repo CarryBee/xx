@@ -12,7 +12,7 @@
           <div class="award-title">实际收益</div>
         </div>
       </div>
-      <div class="my-info-btns">
+      <div class="my-info-btns ta-c">
         <div class="card-record my-info-btn"><router-link to="cartRecord">我的刷卡记录</router-link></div>
       </div>
     </div>
