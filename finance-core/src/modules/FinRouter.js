@@ -45,6 +45,10 @@ finRouter.use("#testrecharge", async (ctx, next) => {
     await next();
 });
 
+finRouter.use("#payorder", async (ctx, next) => {
+    
+});
+
 // 充值
 finRouter.use("#recharge", async (ctx, next) => {
 

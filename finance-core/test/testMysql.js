@@ -22,7 +22,7 @@ finRouter.set(async (ctx, next) => {
 }, ctx => {
     // 完成事务
     ctx.conn.commit();
-}, ctx => {
+}, (err, ctx) => {
     // 回滚
     console.log("重置");
     ctx.conn.rollback();
