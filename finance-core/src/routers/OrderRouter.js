@@ -75,7 +75,7 @@ $.get('/payorder', async ctx => {  // (正常模式)
     try {
         const userid = "one.userid5";
         const orderid = "5b27e08d1e3410194300f462"; // 订单预付单的ID
-        const order = await OrderModule.getUnpaidOrderByID(orderid);
+        const order = await OrderModule.getUnpaidOrderByID(orderid); // 获取未支付订单
         
         let inv = new Invoice();// 校验格式
         inv.userid = userid;
@@ -128,7 +128,7 @@ $.get('/testpay', async ctx => {
         // 校验格式
         let inv = new Invoice();
         inv.userid = "one.userid5";
-        inv.minus = -12.23;
+        inv.minus = 12.23;
         invoices.push(inv);
         
         let begin = new Date().getTime();

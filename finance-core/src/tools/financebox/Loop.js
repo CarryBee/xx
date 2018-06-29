@@ -42,32 +42,32 @@ module.exports = class Loop {
         return async (allctx, next) => {
             // allctx 全局的
             allctx.req = ctx; // 绑定
-            const res = await groupfn(allctx);
-            await next(); 
-            return res;
+            ctx.res = await groupfn(allctx);
+            return await next(); // 空的, 主调用线
         }
     }
     
     run (ctx) {
         let fn;
-        if(Array.isArray(ctx)) { // 是数组没错
+        if(Array.isArray(ctx)) {
             const zfns = [];
-            const groupfn = compose(this.fns); // use function 组
+            const groupfn = compose(this.fns); // use function 整组
             
             for(let one of ctx) {
                 if(!one || !one.invoices) throw new TypeError("ctx need invoices");
                 zfns.push(this.transfn(one, groupfn)); // 每个组增加
             }
             zfns.unshift(this.shift);
-            fn = compose(zfns); ctx = {};
+            fn = compose(zfns); ctx = {resp:ctx};
         } else {
             if(!ctx || !ctx.invoices) throw new TypeError("ctx need invoices");
             this.fns.unshift(this.shift);
             fn = compose(this.fns); // 原生
-            ctx = {req: ctx};
+            ctx = {req: ctx, resp:[ctx]};
         }
         
         return fn(ctx).then(() => {
+            ctx.req = undefined;
             // console.log(ctx, "commit");
             if(this.commit) this.commit(ctx);
             return Promise.resolve({ok:1, ctx: ctx});

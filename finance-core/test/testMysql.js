@@ -18,9 +18,10 @@ finRouter.set(async (ctx, next) => {
         await conn.beginTransaction();
         return;
     })
-    await next();
+    await next(); // 主调用线
 }, ctx => {
     // 完成事务
+    console.log(ctx);
     ctx.conn.commit();
 }, (err, ctx) => {
     // 回滚
@@ -58,7 +59,7 @@ finRouter.use("#reduce", async (ctx, next) => {
     const num = 1;
     const bb = await ctx.conn.query('update user_ficts set reduce = reduce - ? where id=1;', num);
     console.log("affectedRows", bb.affectedRows);
-    
+ 
     await next();
     return "b";
 });
