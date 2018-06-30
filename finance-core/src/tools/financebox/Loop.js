@@ -43,6 +43,7 @@ module.exports = class Loop {
             // allctx 全局的
             allctx.req = ctx; // 绑定
             ctx.res = await groupfn(allctx);
+            allctx.req = undefined; // 注销当前上下文
             return await next(); // 空的, 主调用线
         }
     }
@@ -67,7 +68,6 @@ module.exports = class Loop {
         }
         
         return fn(ctx).then(() => {
-            ctx.req = undefined;
             // console.log(ctx, "commit");
             if(this.commit) this.commit(ctx);
             return Promise.resolve({ok:1, ctx: ctx});

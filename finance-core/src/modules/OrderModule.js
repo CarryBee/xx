@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const {User, Stuff, StuffSnap, Order} = require("../UserdataBaseTool");
+const FinanceBaseTool = require("../FinanceBaseTool");
 const math = require("mathjs");
 math.config({
     number: 'BigNumber',
@@ -8,7 +9,8 @@ math.config({
 class OrderModule {
 
     constructor(user, stufflist) {
-        this.user = mongoose.Types.ObjectId(user); // 会校验
+        this.userid = user;
+        this.user = mongoose.Types.ObjectId(this.userid); // 会校验
         this.stufflist = stufflist;
         this.stuffsnaplist = [];
     }
@@ -26,14 +28,25 @@ class OrderModule {
         return order;
     }
 
+
+    // 读取用户拥有的免费额度
+    static async getFreemach(userid) {
+        const dip = new FinanceBaseTool().getSqlDisposer();
+        return await dip(async function(connection) {
+            let res = await connection.query('select * from user_ficts where userid = ?;', userid);
+            if(res && res[0]) return res[0].freemach;
+            else undefined;
+        });
+    }
+
     // 通过商品id创建订单
     async createByList() {
         // 检测商品是否存在，并且创建快照
         // 
+        let maxfreemach = await OrderModule.getFreemach(this.userid) || 0; // 总的免费的机子数
+
         this.user = await User.findOne({_id: this.user});
         if(!this.user) throw new Error("用户不存在");
-
-        let maxfreemach = this.user.freemach || 0; // 总的免费的机子数
 
         let freemach = 0; // 免费数
         let allprice = math.bignumber(0);

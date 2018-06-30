@@ -1,5 +1,11 @@
-const Tongfu = require("./Tongfu");
-const tf = new Tongfu();
+'use strict'
+/**
+ * 
+ * 通刷的一系列爬取流程
+ * 
+ */
+const TongShua = require("./TongShua");
+const tf = new TongShua();
 const Retriter = require("./Retriter");
 
 // 通付两个抓取
@@ -20,7 +26,7 @@ const rt = new Retriter(async function() {
         page2++;
 
         const rt = new Retriter(async function() {
-            return await tf.getListOfUser(page2, "20180622", "20180624");
+            return await tf.getListOfUser(page2, "20180222", "20180630");
         });
         rt.setname("抓取激活"+page2+"页");
         rt.errcall(obj => console.log("[" + obj.name + "失败] 第"+obj.time+"次重试", "原因：" + obj.err.message));
@@ -40,7 +46,7 @@ const rt = new Retriter(async function() {
         page++;
 
         const rt = new Retriter(async function() {
-            return await tf.getListOfCash(page, "20180625", "20180625");
+            return await tf.getListOfCash(page, "20180625", "20180630");
         });
         rt.setname("抓取刷卡"+page+"页");
         rt.errcall(obj => console.log("[" + obj.name + "失败] 第"+obj.time+"次重试", "原因：" + obj.err.message));

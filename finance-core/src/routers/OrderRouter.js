@@ -70,7 +70,7 @@ $.get('/addorder', async ctx => {
     }
 });
 
-$.get('/payorder', async ctx => {  // (正常模式)
+$.get('/payorder', async ctx => {  // (正常模式) 钱包有余额，购物直接扣
     // 根据订单 id 进行事务并对钱包的扣除
     try {
         const userid = "one.userid5";
@@ -79,7 +79,7 @@ $.get('/payorder', async ctx => {  // (正常模式)
         
         let inv = new Invoice();// 校验格式
         inv.userid = userid;
-        inv.minus = order.allprice * -1;
+        inv.minus = order.allprice;
         const invoices = [inv];
         
         await finRouter.run({
@@ -94,7 +94,7 @@ $.get('/payorder', async ctx => {  // (正常模式)
 });
 
 
-$.get('/payvip', async ctx => {  // (正常模式)
+$.get('/payvip', async ctx => {  // (正常模式) 钱包有余额，升级直接扣
     // 根据身份计算价格进行事务并对钱包的扣除
 
     // 并且改变用户标志，执行到此证明扣费正常

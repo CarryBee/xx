@@ -4,7 +4,7 @@ const config = require("./config");
 let cookieMap = new Map();
 
 
-module.exports = class Tongfu {
+module.exports = class TongShua {
     
     constructor() {}
     

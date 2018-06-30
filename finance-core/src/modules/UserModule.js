@@ -74,7 +74,7 @@ class UserModule {
 			user = await UserModule.findUpShao(user, userinfo);
 
 			// userinfo 每个人的免费机子数
-			user.freemach = userinfo.freemach || 2;
+			// user.freemach = userinfo.freemach || 2;
 
 			// nickname 默认名字
 			user.nickname = userinfo.nickname || '微信用户';
