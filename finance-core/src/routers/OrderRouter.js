@@ -70,6 +70,8 @@ $.get('/addorder', async ctx => {
     }
 });
 
+// 发起支付 订单 与 升级 与 充值
+
 $.get('/payorder', async ctx => {  // (正常模式) 钱包有余额，购物直接扣
     // 根据订单 id 进行事务并对钱包的扣除
     try {
@@ -79,7 +81,8 @@ $.get('/payorder', async ctx => {  // (正常模式) 钱包有余额，购物直
         
         let inv = new Invoice();// 校验格式
         inv.userid = userid;
-        inv.minus = order.allprice;
+        inv.minus = order.allprice; // 扣费用
+        inv.freemach = order.freemach; // 扣额度
         const invoices = [inv];
         
         await finRouter.run({
@@ -93,11 +96,29 @@ $.get('/payorder', async ctx => {  // (正常模式) 钱包有余额，购物直
     }
 });
 
-
+// 无需创建升级单，直接传目标级别过来计算即可
 $.get('/payvip', async ctx => {  // (正常模式) 钱包有余额，升级直接扣
-    // 根据身份计算价格进行事务并对钱包的扣除
+    try {
+        const useridlevel = 2;
+        const aimlevel = 3;
+        const diff = 12; // 得到差价
+        const userid = "one.userid5";
 
-    // 并且改变用户标志，执行到此证明扣费正常
+        let inv = new Invoice();// 校验格式
+        inv.userid = userid;
+        inv.minus = diff; // 扣费用
+        const invoices = [inv];
+        // 根据身份计算价格进行事务并对钱包的扣除
+        await finRouter.run({
+            path: "#testrecharge",
+            invoices: invoices
+        });
+        // 并且改变用户标志，执行到此证明扣费正常
+        const res = await UserModule.setUserLevel({_id:userid}, aimlevel);
+        ctx.body = ERO(0, "升级账户", res);
+    } catch(e) {
+        ctx.body = ERO(501, "升级账户", "升级失败", e.message);
+    }
 });
 
 
@@ -112,9 +133,9 @@ $.get('/rechange', async ctx => {// (充值正常模式) 额外驱动
 
     // 拿到回调后增加对应钱包的钱，（+）{userid:"karonl", event:"rechange", params:"xxxx", amount:100}
 
-    // 如果有订单编号，则执行 payorder 的扣款逻辑 {userid:"karonl", event:"order", params:"xxxx", amount:100}
+    // 如果有订单编号，则执行 payorder 的扣款逻辑 {userid:"karonl", event:"payorder", params:"xxxx", amount:100}
 
-    // 如果有升级编号，则执行 payvip 的扣款逻辑操作 {userid:"karonl", event:"vip", params:"xxxx", amount:100}
+    // 如果有升级编号，则执行 payvip 的扣款逻辑操作 {userid:"karonl", event:"payvip", params:"xxxx", amount:100}
 
 });
 

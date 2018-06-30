@@ -23,7 +23,7 @@ finRouter.set(async (ctx, next) => {
 // 测试充值
 finRouter.use("#testrecharge", async (ctx, next) => {
   
-    for(let invo of ctx.invoices) {
+    for(let invo of ctx.req.invoices) { // 当前上下文
         const bb = await ctx.conn.query('select * from user_ficts where userid = ? for update;', invo.userid);
         if(!bb || bb.length < 1)
             await ctx.conn.query('insert into user_ficts (userid) values (?);', invo.userid);
@@ -46,7 +46,7 @@ finRouter.use("#testrecharge", async (ctx, next) => {
 });
 
 finRouter.use("#payorder", async (ctx, next) => {
-    
+
 });
 
 // 充值
