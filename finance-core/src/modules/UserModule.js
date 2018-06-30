@@ -158,7 +158,8 @@ class UserModule {
 			if(!one) throw new Error("用户不存在");
 
 			let user = new User(one);
-			user.level = level;
+			if(user.level && level <= user.level) throw new Error("无需升级" + level);
+			user.level = level; // 从普通人升级
 			const res = await user.save();
 			if(res) return "success";
 			else throw new Error("升级失败");

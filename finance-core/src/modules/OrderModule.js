@@ -15,11 +15,13 @@ class OrderModule {
         this.stuffsnaplist = [];
     }
 
+    // 设置订单支付状态
     static async setPayOrder(orderid) {
         orderid = mongoose.Types.ObjectId(orderid);
         return await Order.update({_id: orderid}, {$set: {pay: true}}, {new: true});
     }
 
+    // 获取指定未支付的单
     static async getUnpaidOrderByID(orderid) {
         orderid = mongoose.Types.ObjectId(orderid);
         const order = await Order.findOne({_id: orderid});
@@ -27,7 +29,6 @@ class OrderModule {
         if(order.pay) throw new Error("该订单无需重复付款");
         return order;
     }
-
 
     // 读取用户拥有的免费额度
     static async getFreemach(userid) {
