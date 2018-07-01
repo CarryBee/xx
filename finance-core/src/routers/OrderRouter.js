@@ -155,16 +155,24 @@ $.get('/payvip', async ctx => {  // (正常模式) 钱包有余额，升级直�
  */
 $.get('/rechange', async ctx => {// (充值正常模式) 额外驱动 
 
-    // 拿到回调后增加对应钱包的钱，（+）{userid:"karonl", event:"rechange", params:undefined, amount:100}
+    const body = {
+        rechange: "ok",
+        payorder: "ok",
+        payvip: "ok"
+    }
 
+    // 拿到回调后增加对应钱包的钱，（+）{userid:"karonl", event:"rechange", params:undefined, amount:100}
+    ctx.body.rechange = "ok";
     // 如果有订单编号，则执行 payorder 的扣款逻辑 {userid:"karonl", event:"payorder", params:{orderid:"222sfasdf"}, amount:100}
     let event = "";
     if(event == "payorder") {
         payorder();
+        ctx.body.payorder = "ok";
     }
     // 如果有升级编号，则执行 payvip 的扣款逻辑 {userid:"karonl", event:"payvip", params:{aimlevel:12}, amount:100}
     if(event == "payvip") {
         payvip();
+        ctx.body.payvip = "ok";
     }
 });
 

@@ -30,14 +30,16 @@ $.get('/create', async ctx => {
 	ctx.body = await LoginAndRegByOpenid("zxczxczxc2");
 });
 
-/*
-	主要登录入口
+/**
+ * 
+ * 主要登录入口，带注册
+ * 
 */
 // 通过微信，静默登录注册全流程
 async function LoginAndRegByOpenid(openid) {
 	try {
 		let userinfo = await UserModule.getWXUserInfo(openid);
-		if(!userinfo) { // 用户不存在
+		if(!userinfo) { // 用户不存在, 可以 openid 与 电话号码注册
 			userinfo = await UserModule.createUser({
 				openid: openid
 			});
@@ -57,12 +59,23 @@ async function LoginAndRegByOpenid(openid) {
 	}
 }
 
-/*
-	主要登录入口
+/**
+ * 
+ * 主要登录入口，带注册
+ * 
 */
 // 通过手机，静默登录注册全流程
 async function LoginAndRegByPhone(phone) {
 	// 以后使用
+}
+
+/**
+ * 
+ *  主要登录入口，不带注册
+ * 
+ */
+async function LoginByQRCode(scancode) {
+	// 检测到二维码关联的账户，并且读取进行登录
 }
 
 // 更改头像
