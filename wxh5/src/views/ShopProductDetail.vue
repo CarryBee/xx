@@ -1,14 +1,8 @@
 <template>
   <div class="product-detail">
     <div class="img-list-wrapper">
-      <div class="img-item">
-        <img src="//img13.360buyimg.com/imgzone/jfs/t22165/348/1390079210/299594/432e1052/5b274900N486ff3f7.jpg.dpg" alt="" class="product-img">
-      </div>
-      <div class="img-item">
-        <img src="//img13.360buyimg.com/imgzone/jfs/t22165/348/1390079210/299594/432e1052/5b274900N486ff3f7.jpg.dpg" alt="" class="product-img">
-      </div>
-      <div class="img-item">
-        <img src="//img13.360buyimg.com/imgzone/jfs/t22165/348/1390079210/299594/432e1052/5b274900N486ff3f7.jpg.dpg" alt="" class="product-img">
+      <div class="img-item" v-for="(item, index) in productDetail.productDetailImg" :key="index">
+        <img :src="item" alt="" class="product-img">
       </div>
     </div>
     <div class="product-ctrl">
@@ -17,13 +11,25 @@
   </div>
 </template>
 <script>
-  export default {
-    methods: {
-      goToBuy() {
-        this.$router.push({name: 'orderConfirm'})
-      }
+export default {
+  data () {
+    return {
+      productDetail: {}
     }
+  },
+  methods: {
+    goToBuy () {
+      this.$store.dispatch('setOrderProduct', this.productDetail)
+      this.$router.push({name: 'orderConfirm'})
+    }
+  },
+  async created () {
+    let productId = this.$route.params.productId
+    let res = await this.REQAPI.getProductDetail({productId})
+    this.productDetail = res.data.data
+    console.log('this.productDetail', this.productDetail)
   }
+}
 </script>
 <style lang="scss" scoped="">
 @import "../style/application.scss";

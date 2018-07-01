@@ -11,6 +11,7 @@ import ShopIndex from './views/ShopIndex'
 import Wxredirect from './views/Wxredirect'
 import ShopProductDetail from './views/ShopProductDetail'
 import OrderConfirm from './views/order/orderConfirm'
+import Recharge from './views/recharge'
 
 Vue.use(Router)
 
@@ -57,7 +58,7 @@ export default new Router({
       component: ShopIndex
     },
     {
-      path: '/shopProductDetail',
+      path: '/shopProductDetail/:productId',
       name: 'shopProductDetail',
       component: ShopProductDetail
     },
@@ -81,6 +82,11 @@ export default new Router({
       meta: {
         isShowBottomNav: false
       }
+    },
+    {
+      path: '/recharge',
+      name: 'recharge',
+      component: Recharge
     }
   ],
 })

@@ -27,11 +27,17 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   font-size: px2rem(24);
+  box-sizing: border-box;
   padding-bottom: px2rem(80);
+  min-height: 100vh;
   img {
     display: block;
     width: 100%;
     height: 100%;
   }
+
+}
+.adapt-toast .mint-toast-text{
+  font-sise: px2rem(20);
 }
 </style>

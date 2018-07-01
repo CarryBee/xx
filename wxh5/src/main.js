@@ -2,16 +2,37 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+// import FastClick from 'fastclick'
 import mobileAdapt from './common/mobileAdapt'
+
 import mock from './mock/index.js'
 import * as UTILS from '@/common/utils'
 import * as reqApi from '@/common/reqApi'
+
+import {Toast} from 'mint-ui'
+import 'mint-ui/lib/style.css'
 mock()
+
+Vue.use(Toast)
+// FastClick.attach(document.body)
 
 Vue.config.productionTip = false
 
 Vue.prototype.UTILS = UTILS
 Vue.prototype.REQAPI = reqApi
+// Vue.prototype.$toast = Toast
+Vue.prototype.$toast = (option) => {
+  if (typeof option === 'string') {
+    return Toast({
+      message: option,
+      className: 'adapt-toast',
+    })
+  }
+  Toast({
+    className: 'adapt-toast',
+    ...option
+  })
+}
 
 mobileAdapt()
 runApp()
@@ -49,10 +70,10 @@ router.beforeEach(async (to, from, next) => {
     store.dispatch('setBottomNavState', true)
   }
   if (to.meta.needLogin) {
-    let loginToken = localStorage.getItem('loginRes')
-    if (!loginToken) {
-      location.href = '/#/login'
-    }
+    // let loginToken = localStorage.getItem('loginRes')
+    // if (!loginToken) {
+    //   location.href = '/#/login'
+    // }
   }
   next()
 })

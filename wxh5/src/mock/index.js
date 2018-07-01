@@ -1,7 +1,9 @@
 import user from './user'
+import shop from './shop'
 let mockInit = () => {
   let mockApiList = {
-    ...user
+    ...user,
+    ...shop
   }
   for (let index in mockApiList) {
     if (mockApiList[index].isMock) {

@@ -13,3 +13,17 @@ export async function loginWithCode (code) {
   })
   return res
 }
+
+export async function getProductDetail (productId) {
+  let res = await http.post(API.getProductDetail, {
+    productId
+  })
+  return res
+}
+
+export async function confirmOrder (orderDetail) {
+  let res = await http.post(API.confirmOrder, {
+    orderDetail
+  })
+  return res
+}

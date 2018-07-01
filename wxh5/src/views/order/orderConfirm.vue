@@ -2,28 +2,68 @@
   <div class="order-confirm flex-box flex-direction-column f-28">
     <div class="buyer-info">
       <div class="input-wrapper flex-box">
-        <input type="text" class="f-28" placeholder="收货人"/>
+        <input type="text" class="f-28" placeholder="请填写 收货人"/>
       </div>
       <div class="input-wrapper">
-        <input type="text" class="f-28" placeholder="联系电话"/>
+        <input type="text" class="f-28" placeholder="请填写 联系电话"/>
       </div>
       <div class="input-wrapper">
-        <input type="text" class="f-28" placeholder="详细地址"/>
+        <input type="text" class="f-28" placeholder="请填写 详细地址"/>
       </div>
     </div>
-    <div class="product-info flex-box ai-c">
-      <div class="product-img">
-        <img src="//img14.360buyimg.com/mobilecms/s270x270_jfs/t7240/290/2826787234/247803/2c5675eb/59b5eafaNfed39f07.jpg.dpg" alt="">
-      </div>
-      <div class="product-detail">
-        <div class="product-name">通刷刷卡机 v123</div>
-        <div class="product-detail">通刷刷卡机 押金100 激活返100</div>
-      </div>
-    </div>
-    <div class="confirm-btn ta-c">确认购买</div>
+    <product-list-item :item="orderProduct" @click="goToProduct(orderProduct)"></product-list-item>
+    <div class="confirm-btn ta-c" @click="confirmOrder">确认购买</div>
   </div>
 </template>
-<script></script>
+<script>
+import productListItem from '@/components/productListItem'
+export default {
+  data () {
+    return {
+      buyerName: '',
+      buyerMobile: '',
+      buyerAddress: ''
+    }
+  },
+  computed: {
+    orderProduct () {
+      return this.$store.state.shop.orderProduct || {}
+    }
+  },
+  methods: {
+    goToProduct (item) {
+      this.$router.push({name: 'shopProductDetail', params: {productId: item.productId}})
+    },
+    async confirmOrder (orderDetail) {
+      try {
+        let res = await this.REQAPI.confirmOrder({
+          buyerName: this.buyerName,
+          buyerMobile: this.buyerMobile,
+          buyerAddress: this.buyerAddress,
+          ...this.orderProduct
+        })
+        // 支付成功
+        console.log('res', res)
+      } catch (err) {
+        console.log(err)
+        if (err.data.code === '200') {
+          // TODO: 拉起支付 或跳去收银台
+          return true
+        }
+        if (err.data.code === '40040') {
+          this.$router.push({
+            name: 'recharge'
+          })
+          // 余额不足 跳去充值页
+        }
+      }
+    }
+  },
+  components: {
+    productListItem
+  }
+}
+</script>
 <style lang="scss" scoped="">
   @import "../../style/application.scss";
   .order-confirm {
@@ -45,6 +85,10 @@
       height: px2rem(170);
       margin-right: px2rem(20);
     }
+  }
+  .input-wrapper {
+    padding: px2rem(20) 0;
+    border-bottom: 1px solid #ddd;
   }
   .confirm-btn {
     position: fixed;
