@@ -27,3 +27,8 @@ export async function confirmOrder (orderDetail) {
   })
   return res
 }
+
+export async function getMyProduct () {
+  let res = await http.post(API.getMyProduct, {})
+  return res
+}

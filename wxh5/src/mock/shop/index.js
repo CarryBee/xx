@@ -2,6 +2,24 @@ import API from '@/common/api'
 import Mock from 'mockjs'
 
 let apiList = {
+  [API.getMyProduct]: {
+    isMock: true,
+    mock () {
+      Mock.mock(/getMyProduct/, {
+        'success': true,
+        'code': '200',
+        'message': '操作成功',
+        'data|1-5': [{
+          productId: '1',
+          productName: '通刷 V12,2018韩国chic春夏季新款简约高腰长裤k091',
+          price: '120',
+          returnPrice: '130',
+          productSid: 'sewe122',
+          productDetailImg: ['//yddhhoss.rfyiding.com/566432321642_Main_8643861286_1042280853?x-oss-process=style/productPic_thumbnail']
+        }]
+      })
+    }
+  },
   [API.getProductDetail]: {
     isMock: true,
     mock () {

@@ -30,6 +30,7 @@ export default {
   box-sizing: border-box;
   padding-bottom: px2rem(80);
   min-height: 100vh;
+  background: #f5f5f5;
   img {
     display: block;
     width: 100%;

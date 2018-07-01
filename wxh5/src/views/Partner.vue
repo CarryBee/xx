@@ -16,7 +16,7 @@
     <div class="header-nav flex-box">
       <div class="my-machine header-nav-btn flex-box flex-direction-column flex-1 ai-c jc-ce">
         <router-link to="/myShareLink/myShareOption">
-          <div class="header-nav-icon flex-box ai-c jc-ce"><i class="fas fa-money-bill-alt fa-2x"></i></div>
+          <div class="header-nav-icon flex-box ai-c jc-ce"><i class="iconfont icon-money f-55"></i></div>
           <div class="header-nav-title">
             我的收益
           </div>
@@ -24,7 +24,7 @@
       </div>
       <div class="my-machine header-nav-btn flex-box flex-direction-column flex-1 ai-c jc-ce">
         <router-link to="/myShareLink/myShareOption">
-          <div class="header-nav-icon flex-box ai-c jc-ce"><i class="fas fa-qrcode fa-2x"></i></div>
+          <div class="header-nav-icon flex-box ai-c jc-ce"><i class="iconfont icon-qrcode f-55"></i></div>
           <div class="header-nav-title">
             我的推广码
           </div>

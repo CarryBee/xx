@@ -13,7 +13,6 @@ import {Toast} from 'mint-ui'
 import 'mint-ui/lib/style.css'
 mock()
 
-Vue.use(Toast)
 // FastClick.attach(document.body)
 
 Vue.config.productionTip = false

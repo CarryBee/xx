@@ -12,6 +12,8 @@ import Wxredirect from './views/Wxredirect'
 import ShopProductDetail from './views/ShopProductDetail'
 import OrderConfirm from './views/order/orderConfirm'
 import Recharge from './views/recharge'
+import myProduct from './views/myProduct'
+import Cashier from './views/Cashier'
 
 Vue.use(Router)
 
@@ -87,6 +89,16 @@ export default new Router({
       path: '/recharge',
       name: 'recharge',
       component: Recharge
+    },
+    {
+      path: '/myProduct',
+      name: 'myProduct',
+      component: myProduct
+    },
+    {
+      path: '/cashier',
+      name: 'cashier',
+      component: Cashier
     }
   ],
 })
