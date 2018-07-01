@@ -4,7 +4,7 @@ const Schema = require("mongoose").Schema;
 const mongoose = require("mongoose");
 const ERO = require("../tools/Errorbody");
 const HR = require("../tools/handleRes");
-const {Stuff} = require("../DataBaseTool");
+const {Stuff, Machine} = require("../UserdataBaseTool");
 const $ = new Router();
 const UserModule = require("../modules/UserModule");
 const OAuth = require('co-wechat-oauth');
@@ -43,7 +43,8 @@ async function loginAndRegByOpenid(openid) {
 			});
 		}
 		const user = {
-			userid: userinfo._id
+			userid: userinfo._id,
+			level: userinfo.level // 用户等级
 		};
 		user.token = jv.sign(user); // JWT签名
 		user.unid = userinfo.unid;
@@ -65,11 +66,11 @@ async function LoginAndRegByPhone(phone) {
 }
 
 // 更改头像
-$.get('/setheadname', async ctx => {
+$.post('/setheadname', async ctx => {
 	try {
 		let res = await UserModule.setHeadName({
 			_id: '5b20013a16515ba2bc86bcc5'
-		}, '微信用户', 'bbb');
+		}, '微信用户', 'http://header');
 		ctx.body = ERO(0, "更新头像", res);
 	} catch(e) {
 		ctx.body = ERO(501, "更新头像", "失败", e.message);
@@ -78,16 +79,59 @@ $.get('/setheadname', async ctx => {
 
 // 设置自己的扫码推荐人，刚进入时设置
 $.post('/setupshao', async ctx => {
-
 	try {
-		console.log(ctx.prb.getCurrentUser());
 		let user = await UserModule.setUpShao({
 			_id: "5b25444d4fdf2ade722ec3ab",
-			fatunid: "20002"
+			fatunid: "20002", // 电话号码绑定和短id绑定两个选一个
+			uphone: undefined // 电话号码绑定和短id绑定两个选一个
 		});
-		return ctx.body = user;
+		return ctx.body = ERO(0, "更新上级", user);
 	} catch(e) {
-		throw {message: ERO(501, "创建用户", "失败", e.message) };
+		throw {message: ERO(501, "更新上级", "失败", e.message) };
+	}
+});
+
+// 发生验证码
+$.post('/getphonecode', async ctx => {
+	try {
+		let res = await UserModule.sendCode({
+			_id:"bbbbb",
+			phone:"123"
+		});
+		ctx.body = ERO(0, "发生验证码", res);
+	} catch(e) {
+		ctx.body = ERO(501, "发生验证码", "失败", e.message);
+	}
+});
+
+// 绑定手机号码到_id 校验验证码
+$.post('/bindphone', async ctx => {
+	try {
+
+		let res = await UserModule.bindPhone({
+			_id: "5b25444d4fdf2ade722ec3ab",
+			phone:"123",
+			code: "86086"
+		});
+		ctx.body = ERO(0, "绑定账户手机号码", res);
+	} catch(e) {
+		ctx.body = ERO(501, "绑定账户手机号码", "失败", e.message);
+	}
+
+});
+
+// 绑定机器
+$.get('/bindmachine', async ctx => {
+	//
+	try {
+		let res = await UserModule.setMachine({
+			_id: "5b25444d4fdf2ade722ec3ab",
+			snap:"5b25444d4fdf2ade722ec3ab", // 订单列表可以拿到该参数
+			code: "86086"
+		});
+		ctx.body = ERO(0, "绑定机器码", res);
+	} catch(e) {
+		ctx.body = ERO(501, "绑定机器码", "失败", e.toString());
 	}
 });
 
@@ -130,23 +174,23 @@ $.get('/wx/getUserByCode/:code', async ctx => {
 
 })
 
-// 绑定账户密码到openid
-$.get('/bind', async ctx => {
+// 绑定账户密码到_id
+$.post('/bind', async ctx => {
 	try {
-		let res = await UserModule.bindaccount({
-			openid:"bbbbb",
+		let res = await UserModule.bindAccount({
+			_id:"bbbbb",
 			account:"123",
 			password:"123"
 		});
 		ctx.body = ERO(0, "绑定账户密码到openid", res);
 	} catch(e) {
-		ctx.body = ERO(501, "绑定账户密码到openid", "失败", e.toString());
+		ctx.body = ERO(501, "绑定账户密码到openid", "失败", e.message);
 	}
 
 });
 
 // 绑定账户密码到openid
-$.get('/login', async ctx => {
+$.post('/login', async ctx => {
 	//不会读取login，通过账户密码写session
 });
 

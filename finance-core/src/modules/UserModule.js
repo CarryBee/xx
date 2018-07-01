@@ -19,60 +19,62 @@ account:{username: password} (方便前端调试)
 
 */
 const mongoose = require('mongoose');
-const {User, Unid} = require("../DataBaseTool");
+const {User, Unid, Phone, Machine} = require("../UserdataBaseTool");
 class UserModule {
 
 	constructor() {}
 
-	// 登录成功获取微信的用户信息
+	// 通过微信openid获取用户信息
 	static async getWXUserInfo(openid) {
-	  try {
-      const nowUser = await User.findOne({openid: openid});
-      // 筛选
-      if(nowUser) return nowUser; // 已注册
-      else return undefined;
-    } catch (err) {
-	    console.error(err)
-	    throw {message: `getWXUserInfo fail ${openid}`}
-    }
-	}
-
-	// 登录成功获取微信的用户信息
-	static async getPhoneUserInfo(phone) {
-		const nowUser = await User.findOne({phone: phone});
-		console.log("phone", nowUser);
+		if(!openid) return undefined;
+		const nowUser = await User.findOne({openid: openid});
 		// 筛选
 		if(nowUser) return nowUser; // 已注册
 		else return undefined;
 	}
 
-	// 通过微信openid进行注册
+	// 通过手机phone获取用户信息
+	static async getPhoneUserInfo(phone) {
+		if(!phone) return undefined;
+		const nowUser = await User.findOne({phone: phone});
+		// 筛选
+		if(nowUser) return nowUser; // 已注册
+		else return undefined;
+	}
+
+	// 通过微信openid或者电话号码进行注册
 	static async createUser(userinfo) {
 
-		// 支持额外字段
+		// 本身支持
+		/*
+		phone 电话号码注册
+		openid 微信id注册
+		*/
+		// 支持额外字段 
 		/*
 		fatunid 上级id
+		uphone 上级电话号码
 		nickname 名称
 		headurl 头像
-		uphone 电话号码
+		
 		*/
 		if(userinfo && (userinfo.phone || userinfo.openid)) {
 
 			if(userinfo.phone && await UserModule.getPhoneUserInfo(userinfo.phone)) throw new Error("该手机已注册");
-
+		
 			if(userinfo.openid && await UserModule.getWXUserInfo(userinfo.openid)) throw new Error("该微信ID已注册");
-
+			
 			let user = new User({
 				unid: await Unid.get(), // 唯一短id
 				openid: userinfo.openid, // 微信id
 				phone: userinfo.phone // 手机号码
 			});
-
-
+			
+			// fatunid 上级id
 			user = await UserModule.findUpShao(user, userinfo);
 
 			// userinfo 每个人的免费机子数
-			userinfo.freemach = 2;
+			// user.freemach = userinfo.freemach || 2;
 
 			// nickname 默认名字
 			user.nickname = userinfo.nickname || '微信用户';
@@ -81,7 +83,7 @@ class UserModule {
 			user.headurl = userinfo.headurl;
 
 			return await user.save();
-
+		
 		} else {
 			throw new Error("非正常渠道进入注册");
 		}
@@ -91,13 +93,14 @@ class UserModule {
 	static async setHeadName(userinfo, name, head) {
 		const uid = mongoose.Types.ObjectId(userinfo._id); // 自己的id
 		const one = await User.findOne({_id: uid});
+		if(!one) throw new Error("用户不存在");
 		const user = new User(one);
 		if(name) user.nickname = name;
 		if(head) user.headurl = head;
 		return await user.save();
 	}
 
-	// 设置自己的上级扫码（扫一扫）成员，推荐人 upshao
+	// 搜索自己的上级扫码（扫一扫）成员，推荐人 upshao
 	static async findUpShao(user, userinfo) {
 
 		if(user && user.upshao) throw new Error("已接受其他账户邀请");
@@ -109,7 +112,7 @@ class UserModule {
 				user.uppayer = fatherUser._id; // 刷卡链
 			} else throw new Error("推荐人号码不存在");
 		}
-
+		
 
 		// upshao 推荐人  uppayer 刷卡分成人
 		if(userinfo && userinfo.fatunid) {
@@ -123,20 +126,82 @@ class UserModule {
 		return user;
 	}
 
+	// 设置推荐人
 	static async setUpShao(userinfo) {
 		const uid = mongoose.Types.ObjectId(userinfo._id); // 自己的id
 		const one = await User.findOne({_id: uid});
+		if(!one) throw new Error("用户不存在");
 		let user = new User(one);
+
 		user = await UserModule.findUpShao(user, userinfo);
 		const res = await user.save();
-		if(res) return {ok:1};
+		if(res) return "success";
 		else throw new Error("更新失败");
+	} 
+
+	// 绑定机器
+	static async setMachine(params) {
+		if(params && params._id && params.snap && params.code) {
+			const userid = mongoose.Types.ObjectId(params._id);
+			const snap = mongoose.Types.ObjectId(params.snap);
+			if(await Machine.add(userid, snap, params.code)) {
+				return "success";
+			} else return "无法绑定该机器";
+		} else throw new Error("缺少参数");
 	}
 
-	// 绑定账户密码
-	static async bindaccount(userinfo){
-		if(userinfo && userinfo.openid && userinfo.account && userinfo.password) {
-			let one = await User.findOne({openid: userinfo.openid});
+	// 设置用户级别，用户支付后触发，暂未完善
+	static async setUserLevel(userinfo, level) {
+		if(userinfo && userinfo._id) {
+			const uid = mongoose.Types.ObjectId(userinfo._id); // 自己的id
+			const one = await User.findOne({_id: uid});
+			if(!one) throw new Error("用户不存在");
+
+			let user = new User(one);
+			if(user.level && level <= user.level) throw new Error("无需升级" + level);
+			user.level = level; // 从普通人升级
+			const res = await user.save();
+			if(res) return "success";
+			else throw new Error("升级失败");
+		} else throw new Error("资料不全");
+	}
+
+	// 发生验证码
+	static async sendCode(userinfo) {
+		if(userinfo && userinfo._id && userinfo.phone) {
+			
+			let one = await Phone.addCode(userinfo.phone);
+			// 发送接口补充
+			console.log("发送验证码：", one);
+			return "success";
+		} else throw new Error("资料不全");
+	}
+
+	// 绑定手机
+	static async bindPhone(userinfo) {
+		if(userinfo && userinfo._id && userinfo.phone && userinfo.code) { // 认验证码
+			const uid = mongoose.Types.ObjectId(userinfo._id); // 自己的id
+			const one = await User.findOne({_id: uid});
+			if(one) {
+				const user = new User(one); // 反序列化账户
+				user.phone = userinfo.phone;
+				
+				if(await User.findOne({phone: userinfo.phone})) 
+					throw new Error("该手机绑定过其他账号"); // 看是否存在这个人
+				if(!await Phone.get(userinfo.phone, userinfo.code)) 
+					throw new Error("验证码错误或已过期");// 看是否存在这个验证码
+			
+				user.save();
+				return "success";
+			} else throw new Error("账户不存在");
+		} else throw new Error("资料不全");
+	}
+
+	// 通过_id绑定账户密码
+	static async bindAccount(userinfo){
+		if(userinfo && userinfo._id && userinfo.account && userinfo.password) {
+			const uid = mongoose.Types.ObjectId(userinfo._id); // 自己的id
+			let one = await User.findOne({_id: uid});
 			if(one) {
 				let user = new User(one); // 反序列化账户
 				user.account = userinfo.account;
@@ -146,8 +211,8 @@ class UserModule {
 					user.save();
 					return "success";
 				} else throw new Error("account 账户已存在");
-			} else throw new Error("openid 账户不存在");
-		} else throw new Error("openid 账户不存在");
+			} else throw new Error("账户不存在");
+		} else throw new Error("资料不全");
 	}
 
 }

@@ -31,7 +31,8 @@
 export default {
   methods: {
     charge () {
-      this.$toast('Hello world!')
+      this.$toast('充值')
+      // TODO: 创建充值订单，拉起微信支付, 应该接入两个接口
     }
   }
 }

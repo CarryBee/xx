@@ -4,7 +4,8 @@ const Router = require("koa-router");
 const serve = require("koa-static");
 const bodyParser = require('koa-bodyparser');
 const cors = require('koa2-cors');
-const {DataBaseTool} = require("./src/DataBaseTool");
+const { UserdataBaseTool } = require("./src/UserdataBaseTool");
+const FinanceBaseTool = require("./src/FinanceBaseTool");
 const jwt = require("jsonwebtoken");
 const jv = require("./src/tools/jwtcontrol");
 const session = require("./src/tools/session");
@@ -29,6 +30,8 @@ app.use(cors({origin: "*"})); // 完全开放域
 **/
 // 路由
 const UserRouter = require("./src/routers/UserRouter");
+const StuffRouter = require("./src/routers/StuffRouter");
+const OrderRouter = require("./src/routers/OrderRouter");
 // 统一的处理
 // 非业务接口code：{200: 操作成功，404 接口不存在, -1: token 过期或校验失败, '500': '其他错误'}
 let handleCode = {'200': '操作成功','404': '接口不存在', '-1': 'token过期或校验失败', '500': '系统异常'}
@@ -54,10 +57,11 @@ let handleErr = async (ctx, next) => {
   let errMsg = '系统异常'
   try {
     await next()
-    if (ctx.status === 404) {
-      return ctx.body = handleErrData({code: '404'})
+    if (ctx.status !== 200) {
+      if (ctx.status === 404) {errMsg = '接口不存在'}
+      ctx.body = HR({code: errMsg.code || ctx.status, message: errMsg})
+      console.error('Error Url', ctx.originalUrl, JSON.stringify(ctx.body))
     }
-    return ctx.body = handleErrData({code: '500'})
   } catch (err) {
     ctx.body = handleErrData(err)
     console.error('Error Url', ctx.originalUrl, JSON.stringify(ctx.body))
@@ -92,11 +96,15 @@ $.get('/success', async ctx => {
 });
 
 $.use('/user', UserRouter);
+$.use('/stuff', StuffRouter);
+$.use('/order', OrderRouter);
 app.use($.routes());
 app.use(serve(`${__dirname}/static`));
 (async function(){
-	await DataBaseTool.start();
-	await app.listen(3000, () => {
-	    console.log("Koa Server is running");
+  await UserdataBaseTool.start(); // 启动 MongoDB
+  await FinanceBaseTool.start(); // 启动 MySQL
+  await app.listen(3000, () => { // 启动服务
+      console.log("KoaServer started successfully");
+	    console.log("server running...");
 	});
 })();

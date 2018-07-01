@@ -4,21 +4,29 @@
  */
 const mongoose = require('mongoose');
 const StuffSchema = require("./schemas/StuffSchema");
+const StuffSnapSchema = require("./schemas/StuffSnapSchema");
 const UserSchema = require("./schemas/UserSchema");
 const UnidSchema = require("./schemas/UnidSchema");
+const PhoneSchema = require("./schemas/PhoneSchema");
+const MachineSchema = require("./schemas/MachineSchema");
+const OrderSchema = require("./schemas/OrderSchema");
 let connection;
 // 加载 Schema
 const stuff = mongoose.model('Stuff', StuffSchema);
 const user = mongoose.model('User', UserSchema);
 const unid = mongoose.model('Unid', UnidSchema);
+const phone = mongoose.model('Phone', PhoneSchema);
+const stuffsnap = mongoose.model('StuffSnap', StuffSnapSchema);
+const machine = mongoose.model('Machine', MachineSchema);
+const order = mongoose.model('Order', OrderSchema);
 //
-class DataBaseTool {
+class UserdataBaseTool {
 
 	static async start() { // return promise
 
 		if(connection) return connection;
 		else {
-			let dbt = new DataBaseTool();
+			let dbt = new UserdataBaseTool();
 			connection = await dbt.connect();
 			return connection;
 		}
@@ -37,7 +45,7 @@ class DataBaseTool {
 		    console.log("disconnected");
 		});
 		inst.once('open', function() {
-		    console.log("mongoDB connected successfully");
+		    console.log("MongoDB connected successfully");
 		});	
     }
 
@@ -57,9 +65,13 @@ class DataBaseTool {
     }
 }
 module.exports = {
-	'DataBaseTool': DataBaseTool,
+	'UserdataBaseTool': UserdataBaseTool,
 	'Stuff': stuff,
+	'StuffSnap': stuffsnap,
 	'User': user,
-	'Unid': unid
+	'Unid': unid,
+	'Phone': phone,
+	'Machine': machine,
+	'Order': order
 };
 
