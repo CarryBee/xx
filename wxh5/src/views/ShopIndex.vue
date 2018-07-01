@@ -56,7 +56,10 @@ export default {
   @import "../style/application.scss";
   .user-header {
     position: relative;
-    background: #f8ea00;
+    color: #fff;
+    background-image: url("https://jjb-static.com/Public/image/Index/bg.png");
+    background-size: cover;
+    background-position: center;
     box-shadow: px2rem(-1) px2rem(-7) px2rem(20) px2rem(5) #888888;
     width: 100%;
     height: px2rem(220);

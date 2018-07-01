@@ -1,39 +1,40 @@
 <template>
   <div class="userinfo page">
-    <div class="user-header flex-box jc-ce ai-c">
-      <div class="head">
-        <img src="http://thirdwx.qlogo.cn/mmopen/QZH5X1HZYwYlLy5M2qkib5sLmIUqW6bG2oYnY3lkXiaUA6Clj4qpRyJxUphfsaWo5y6jrB9jKb44BGIxZ5cibyamrOR0SXzREgM/132" alt="">
+    <div class="header">
+      <div class="user-header flex-box jc-ce ai-c">
+        <div class="head">
+          <img src="http://thirdwx.qlogo.cn/mmopen/QZH5X1HZYwYlLy5M2qkib5sLmIUqW6bG2oYnY3lkXiaUA6Clj4qpRyJxUphfsaWo5y6jrB9jKb44BGIxZ5cibyamrOR0SXzREgM/132" alt="">
+        </div>
+        <div class="user-info">
+          <div class="name">chao (ง •̀_•́)ง ✧</div>
+          <div class="id">ID:34787(186*****102)</div>
+        </div>
       </div>
-      <div class="user-info">
-        <div class="name">chao (ง •̀_•́)ง ✧</div>
-        <div class="id">ID:34787(186*****102)</div>
-      </div>
-    </div>
-
-    <div class="header-nav flex-box">
-      <div class="my-machine header-nav-btn flex-box flex-direction-column flex-1 ai-c jc-ce">
-        <router-link to="/myProduct">
-          <div class="header-nav-icon flex-box ai-c jc-ce"><i class="iconfont icon-machine f-55"></i></div>
-          <div class="header-nav-title">
-            我的机器
-          </div>
-        </router-link>
-      </div>
-      <div class="my-machine header-nav-btn flex-box flex-direction-column flex-1 ai-c jc-ce">
-        <router-link to="/myShareLink/myShareOption">
-          <div class="header-nav-icon flex-box ai-c jc-ce"><i class="iconfont icon-qrcode f-55"></i></div>
-          <div class="header-nav-title">
-            我的推广码
-          </div>
-        </router-link>
-      </div>
-      <div class="my-machine header-nav-btn flex-box flex-direction-column flex-1 ai-c jc-ce">
-        <router-link to="/cashier">
-          <div class="header-nav-icon flex-box ai-c jc-ce"><i class="iconfont icon-recharge f-55"></i></div>
-          <div class="header-nav-title">
-            充值/提现
-          </div>
-        </router-link>
+      <div class="header-nav flex-box">
+        <div class="my-machine header-nav-btn flex-box flex-direction-column flex-1 ai-c jc-ce">
+          <router-link to="/myProduct">
+            <div class="header-nav-icon flex-box ai-c jc-ce"><i class="iconfont icon-machine f-55"></i></div>
+            <div class="header-nav-title">
+              我的机器
+            </div>
+          </router-link>
+        </div>
+        <div class="my-machine header-nav-btn flex-box flex-direction-column flex-1 ai-c jc-ce">
+          <router-link to="/myShareLink/myShareOption">
+            <div class="header-nav-icon flex-box ai-c jc-ce"><i class="iconfont icon-qrcode f-55"></i></div>
+            <div class="header-nav-title">
+              我的推广码
+            </div>
+          </router-link>
+        </div>
+        <div class="my-machine header-nav-btn flex-box flex-direction-column flex-1 ai-c jc-ce">
+          <router-link to="/cashier">
+            <div class="header-nav-icon flex-box ai-c jc-ce"><i class="iconfont icon-recharge f-55"></i></div>
+            <div class="header-nav-title">
+              充值/提现
+            </div>
+          </router-link>
+        </div>
       </div>
     </div>
 
@@ -83,6 +84,9 @@ export default {
   .userinfo.page {
     background: #f5f5f5;
     height: 100%;
+  }
+  .header {
+    background: #fff;
   }
   .user-header {
     position: relative;

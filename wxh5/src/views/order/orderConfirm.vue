@@ -68,6 +68,7 @@ export default {
   @import "../../style/application.scss";
   .order-confirm {
     padding: px2rem(20);
+    background: #fff;
     .input-wrapper {
       margin-bottom: px2rem(20);
     }

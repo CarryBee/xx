@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="home page">
     <div class="header-banner">
       <img :src="headerBannerList[0].img" alt="">
       <div class="title position-center f-40 t-white">合伙人广告</div>
@@ -73,6 +73,9 @@ export default {
 </script>
 <style scoped="" lang="scss">
   @import "../style/application.scss";
+  .home.page {
+    background: #fff;
+  }
   .header-banner {
     position: relative;
   }

@@ -1,6 +1,6 @@
 <template>
   <div class="my-machine page">
-    <div class="item flex-box jc-sb f-26" @click="goToProduct" v-for="(item, index) in productList">
+    <div class="item flex-box jc-sb f-26" @click="goToProduct" v-for="(item, index) in productList" :key="index">
       <div class="product-img-wrapper">
         <img :src="item.productDetailImg[0]" alt="">
       </div>
@@ -28,7 +28,7 @@ export default {
     this.productList = res.data.data
   },
   methods: {
-    goToProduct() {
+    goToProduct () {
       this.$router.push({name: 'shopProductDetail', params: {productId: this.item.productId}})
     }
   }

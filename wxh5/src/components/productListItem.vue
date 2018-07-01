@@ -32,6 +32,7 @@ export default {
   height: px2rem(150);
   padding: px2rem(10) px2rem(20);
   border-bottom: 1px solid #f8f8f8;
+  background: #fff;
   .product-info {
     margin-left: px2rem(20);
   }

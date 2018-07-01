@@ -55,7 +55,10 @@ export default {
   .header {
     position: relative;
     height: px2rem(320);
-    background: #f8ea00;
+    color: #fff;
+    background-image: url("https://jjb-static.com/Public/image/Index/bg.png");
+    background-size: cover;
+    background-position: center;
     box-shadow: px2rem(-1) px2rem(-7) px2rem(20) px2rem(5) #888888;
   }
   .header-nav {
