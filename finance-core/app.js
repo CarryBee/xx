@@ -46,12 +46,7 @@ let handleErrData = (obj) => {
     resObj.message = obj
     return HR(resObj)
   }
-  return HR({
-    code: obj.code || obj.errCode || '500',
-    message: obj.message || obj.errmsg || handleCode[obj.code || obj.errCode] || '系统异常',
-    name: obj.name || '',
-    data: obj.data || {}
-  })
+  return HR(resObj)
 }
 let handleErr = async (ctx, next) => {
   let errMsg = '系统异常'

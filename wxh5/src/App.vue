@@ -36,9 +36,15 @@ export default {
     width: 100%;
     height: 100%;
   }
-
 }
-.adapt-toast .mint-toast-text{
-  font-sise: px2rem(20);
+.primary.toast-style{
+  font-size: 0.4rem !important;
+  padding: 0.2rem !important;
+  border-radius: 10px;
+  opacity: 0.7 !important;
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}
+.toasted-container.bottom-center{
+  bottom: 10% !important;
 }
 </style>

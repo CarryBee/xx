@@ -5,33 +5,28 @@ import store from './store'
 // import FastClick from 'fastclick'
 import mobileAdapt from './common/mobileAdapt'
 
+import Toasted from 'vue-toasted'
 import mock from './mock/index.js'
 import * as UTILS from '@/common/utils'
 import * as reqApi from '@/common/reqApi'
 
-import {Toast} from 'mint-ui'
-import 'mint-ui/lib/style.css'
 mock()
 
 // FastClick.attach(document.body)
 
 Vue.config.productionTip = false
 
+let Options = {
+  position: 'bottom-center',
+  duration: '2000',
+  fitToScreen: true,
+  singleton: true,
+  className: 'toast-style'
+}
+Vue.use(Toasted, Options)
+
 Vue.prototype.UTILS = UTILS
 Vue.prototype.REQAPI = reqApi
-// Vue.prototype.$toast = Toast
-Vue.prototype.$toast = (option) => {
-  if (typeof option === 'string') {
-    return Toast({
-      message: option,
-      className: 'adapt-toast',
-    })
-  }
-  Toast({
-    className: 'adapt-toast',
-    ...option
-  })
-}
 
 mobileAdapt()
 runApp()
