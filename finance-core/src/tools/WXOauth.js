@@ -137,6 +137,10 @@ function getinfo(openid, callback) {
 */
 function getInfoFromDB(openid, callback) { // 数据库拿的
 
+    callback(false);
+
+    // 阻断
+
     // 从数据库读取用户信息
     /*
     new User().getInfoByWX(openid).then(doc => { // 已经创建了
