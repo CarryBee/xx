@@ -16,6 +16,7 @@ $.get('/bindcode', async ctx => {
 		console.log(inst.map);
 		ctx.body = result;
 	} catch(err) {
+		console.loh("x",err);
 		if(err.indexOf("http") >= 0) ctx.redirect(err); // 跳转
 		throw err;
 	}
