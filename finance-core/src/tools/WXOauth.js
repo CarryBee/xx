@@ -8,7 +8,7 @@ const OAuth = require('wechat-oauth');
 const config = require('../config');
 const localhost = config.wxurl;
 const objdb = {};
-const client = new OAuth(config.wxapp, config.wxsecret, function (openid, callback) {
+const client = new OAuth(config.wxapp,  config.wxsecret, function (openid, callback) {
     callback(null, objdb[openid]);
 },function (openid, token, callback) {
     objdb[openid] = token;
@@ -150,7 +150,7 @@ function getInfoFromDB(openid, callback) { // 数据库拿的
     async function runbot() {
        return await readFromDB();
     }
-    runbot().then(function(doc) {
+    runbot(openid).then(function(doc) {
 	    if(doc) callback(doc);
         else callback(undefined); // 设置为读取不到
     });
@@ -178,7 +178,7 @@ function getInfoFromWX(openid, callback) {
             callback(undefined);
         } else {
             // 从微信获得个人资料后更新到数据库，并且增加字段
-            saveToDB();
+            saveToDB(openid, result);
             // 从微信获取到高级信息
             callback(doc); 
         }

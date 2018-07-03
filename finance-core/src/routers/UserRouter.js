@@ -78,6 +78,10 @@ async function LoginByQRCode(scancode) {
 	// 检测到二维码关联的账户，并且读取进行登录
 }
 
+$.get('/loginbycode', async ctx => {
+	
+});
+
 // 更改头像
 $.post('/setheadname', async ctx => {
 	try {

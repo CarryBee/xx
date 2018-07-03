@@ -4,6 +4,7 @@ const Router = require("koa-router");
 const serve = require("koa-static");
 const bodyParser = require('koa-bodyparser');
 const cors = require('koa2-cors');
+const IO = require('koa-socket');
 const { UserdataBaseTool } = require("./src/UserdataBaseTool");
 const FinanceBaseTool = require("./src/FinanceBaseTool");
 const jwt = require("jsonwebtoken");
@@ -12,10 +13,13 @@ const session = require("./src/tools/session");
 const HR = require('./src/tools/handleRes')
 const ParamsBox = require('./src/tools/ParamsBox')
 const app = new Koa();
+const sock = new IO();
 const $ = new Router();
+
 
 const secret = 'llkaksldfjnn982jdn';
 session(app);
+sock.attach(app); // socket监听
 app.use(bodyParser());
 app.use(cors({origin: "*"})); // 完全开放域
 /**
@@ -32,6 +36,7 @@ app.use(cors({origin: "*"})); // 完全开放域
 const UserRouter = require("./src/routers/UserRouter");
 const StuffRouter = require("./src/routers/StuffRouter");
 const OrderRouter = require("./src/routers/OrderRouter");
+const QcodeRouter = require("./src/routers/QcodeRouter");
 // 统一的处理
 let handleErr = async (ctx, next) => {
   let errMsg = '系统异常'
@@ -83,6 +88,7 @@ $.get('/success', async ctx => {
 $.use('/user', UserRouter);
 $.use('/stuff', StuffRouter);
 $.use('/order', OrderRouter);
+$.use('/qcode', QcodeRouter);
 app.use($.routes());
 app.use(serve(`${__dirname}/static`));
 (async function(){
