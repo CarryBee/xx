@@ -138,7 +138,7 @@ function getinfo(openid, callback) {
 function getInfoFromDB(openid, callback) { // 数据库拿的
 
     callback(false);
-
+    return;
     // 阻断
 
     // 从数据库读取用户信息
@@ -151,6 +151,7 @@ function getInfoFromDB(openid, callback) { // 数据库拿的
         }
     });
     */
+    /*
     async function runbot() {
        return await readFromDB();
     }
@@ -158,6 +159,7 @@ function getInfoFromDB(openid, callback) { // 数据库拿的
 	    if(doc) callback(doc);
         else callback(undefined); // 设置为读取不到
     });
+    */
    
    
 }
@@ -184,7 +186,7 @@ function getInfoFromWX(openid, callback) {
             // 从微信获得个人资料后更新到数据库，并且增加字段
             saveToDB(openid, result);
             // 从微信获取到高级信息
-            callback(doc); 
+            callback(result); 
         }
     });
 }
