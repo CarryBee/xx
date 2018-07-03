@@ -4,12 +4,12 @@ const WOauth = require("../tools/WXOauth");
 const QcodeMoudle = require("../modules/QcodeModule");
 const $ = new Router();
 
-$.get('/bindcode/:code', async ctx => {
+$.get('/bindcode', async ctx => {
 	try { 
-		if(!ctx.params || !ctx.params.code) throw new Error("code is null");
+		if(!ctx.query || !ctx.query.hashcode) throw new Error("code is null");
 		const result = await WOauth.promised(ctx);
 		const userinfo = await UserModule.getWXUserInfo(result.openid || "000");
-		const hashcode = ctx.params.code;
+		const hashcode = ctx.query.hashcode;
 
 		const inst = QcodeMoudle.instace();
 		inst.verity(hashcode, userinfo._id);
