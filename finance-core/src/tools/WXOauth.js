@@ -5,7 +5,7 @@
 const result = await WOauth.promised(ctx);
 */
 const OAuth = require('wechat-oauth');
-const config = require('../config');
+const config = require('./config');
 const localhost = config.wxurl;
 const objdb = {};
 const client = new OAuth(config.wxapp,  config.wxsecret, function (openid, callback) {
