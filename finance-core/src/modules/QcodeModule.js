@@ -1,11 +1,18 @@
 'use strict'
 const qr = require('qr-image');
 const crypto = require('crypto');
+let inst;
 module.exports = class QcodeMoudle {
     constructor() {
         this.map = new Map();
         this.save = this.map.set;
         this.read = this.map.get;
+    }
+
+    static instance() {
+        if(inst) return inst;
+        else 
+            inst = new QcodeMoudle();
     }
     
     setDB(save, read) {
@@ -23,7 +30,7 @@ module.exports = class QcodeMoudle {
 
     // 手机端确认
     verity(code, token) {
-        this.save(code, {token:token, create:new Date().getTime()});
+        return this.save(code, {token:token, create:new Date().getTime()});
     }
 
     // PC端认证
