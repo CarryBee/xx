@@ -11,8 +11,10 @@ module.exports = class QcodeMoudle {
 
     static instance() {
         if(inst) return inst;
-        else 
+        else {
             inst = new QcodeMoudle();
+            return inst;
+        }
     }
     
     setDB(save, read) {
