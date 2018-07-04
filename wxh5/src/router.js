@@ -14,6 +14,7 @@ import OrderConfirm from './views/order/orderConfirm'
 import Recharge from './views/recharge'
 import myProduct from './views/myProduct'
 import Cashier from './views/Cashier'
+import PartnerIncome from './views/PartnerIncome'
 
 Vue.use(Router)
 
@@ -99,6 +100,11 @@ export default new Router({
       path: '/cashier',
       name: 'cashier',
       component: Cashier
+    },
+    {
+      path: '/income',
+      name: 'income',
+      component: PartnerIncome
     }
   ],
 })
