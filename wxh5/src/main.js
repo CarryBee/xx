@@ -45,29 +45,37 @@ async function loginWithCode (code) {
 }
 
 router.beforeEach(async (to, from, next) => {
-  let code = UTILS.getQueryString('code')
+  // let code = UTILS.getQueryString('code')
   let isUsedCode = sessionStorage.getItem('codeUsed')
-  if (code && !isUsedCode) {
-    sessionStorage.removeItem('codeUsed')
-    try {
-      await loginWithCode(code)
-      location.href = '/#' + to.path
-      return next({name: to.name, query: {}})
-    } catch (err) {
-      location.href = '/#' + to.path
-      return next({name: to.name})
-    }
-  }
+  // if (code && !isUsedCode) {
+  //   sessionStorage.removeItem('codeUsed')
+  //   try {
+  //     await loginWithCode(code)
+  //     location.href = '/#' + to.path
+  //     return next({name: to.name, query: {}})
+  //   } catch (err) {
+  //     location.href = '/#/'
+  //     return next({name: 'home'})
+  //   }
+  // }
   if (to.meta.isShowBottomNav === false) {
     store.dispatch('setBottomNavState', false)
   } else {
     store.dispatch('setBottomNavState', true)
   }
-  if (to.meta.needLogin) {
-    // let loginToken = localStorage.getItem('loginRes')
-    // if (!loginToken) {
-    //   location.href = '/#/login'
-    // }
+  if (to.meta.needLogin && !isUsedCode) {
+    let loginResStr = localStorage.getItem('loginRes')
+    let loginRes = JSON.parse(loginResStr)
+    console.log('needLogin', loginResStr)
+    if (!loginRes) {
+      // 微信授权
+      // location.href = '/#/login'
+      let wxUrl = UTILS.makeAccessWXUrl({
+        reUrl: location.origin + '/#' + to.path
+      })
+      location.href = wxUrl
+      return false
+    }
   }
   next()
 })
@@ -79,14 +87,16 @@ async function runApp () {
     try {
       await loginWithCode(code)
       location.href = '/#' + router.currentRoute.path
+      console.log('location.href', location.href)
       new Vue({
         router,
         store,
         render: h => h(App)
       }).$mount('#app')
     } catch (e) {
-      console.error('e', e)
+      console.error('e', JSON.stringify(e))
       location.href = '/#' + router.currentRoute.path
+      console.log('location.href', location.href)
       new Vue({
         router,
         store,

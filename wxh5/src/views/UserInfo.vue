@@ -76,6 +76,28 @@ export default {
   name: 'userInfo',
   data () {
     return {}
+  },
+  async created () {
+    // let loginResStr = localStorage.getItem('loginRes')
+    // let loginRes = JSON.parse(loginResStr)
+    // if (!loginRes) {
+    //   // 微信授权
+    //   let wxUrl = this.UTILS.makeAccessWXUrl({
+    //     reUrl: location.href
+    //   })
+    //   location.href = wxUrl
+    //   return false
+    // }
+    // let code = UTILS.getQueryString('code')
+    // if (code) {
+    //   try {
+    //     await loginWithCode(code)
+    //     console.log(this.$router.path)
+    //     location.href = '/#' + this.$router.path
+    //   } catch (err) {
+    //     console.log('err loginWithCode', code, err)
+    //   }
+    // }
   }
 }
 </script>

@@ -32,9 +32,9 @@ $.get('/create', async ctx => {
 });
 
 /**
- * 
+ *
  * 主要登录入口，带注册
- * 
+ *
 */
 // 通过微信，静默登录注册全流程
 async function loginAndRegByOpenid(openid) {
@@ -64,9 +64,9 @@ async function loginAndRegByOpenid(openid) {
 }
 
 /**
- * 
+ *
  * 主要登录入口，带注册
- * 
+ *
 */
 // 通过手机，静默登录注册全流程
 async function LoginAndRegByPhone(phone) {
@@ -74,16 +74,16 @@ async function LoginAndRegByPhone(phone) {
 }
 
 /**
- * 
+ *
  *  主要登录入口，不带注册
- * 
+ *
  */
 async function LoginByQRCode(scancode) {
 	// 检测到二维码关联的账户，并且读取进行登录
 }
 
 $.get('/loginbycode', async ctx => {
-	
+
 });
 
 // 更改头像
@@ -179,9 +179,12 @@ $.get('/loginWithCode', async (ctx, next) => {
     let wxInfo = await wxApi.getUserByCode(code)
     let openId = wxInfo.openid
     console.log('wxInfo' , code, wxInfo)
-    let loginRes = await LoginAndRegByOpenid(openId)
+    let loginRes = await loginAndRegByOpenid(openId)
     ctx.body = HR({
-      data: loginRes
+      data: {
+        loginRes,
+        ...wxInfo
+      }
     })
   } catch (err) {
     throw {message: '登陆失败' ,data: err}
