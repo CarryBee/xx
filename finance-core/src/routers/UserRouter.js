@@ -7,6 +7,7 @@ const HR = require("../tools/handleRes");
 const {Stuff, Machine} = require("../UserdataBaseTool");
 const $ = new Router();
 const UserModule = require("../modules/UserModule");
+const ParamsBox = require("../tools/ParamsBox");
 const OAuth = require('co-wechat-oauth');
 const wxApi = new OAuth('wx6f8322dd012ed875', 'd76c5dd2f636241c6ecc99806e1943c3');
 
@@ -53,6 +54,9 @@ async function loginAndRegByOpenid(openid) {
 		user.openid = userinfo.openid; // 额外绑定
 		user.phone = userinfo.phone; // 额外绑定
 
+		user.nickname = userinfo.nickname; // 微信名称
+		user.headurl = userinfo.headurl; // 头像
+
 		return user;
 	} catch(e) {
 		throw {message: ERO(501, "创建用户", "失败", e.message)};
@@ -83,11 +87,20 @@ $.get('/loginbycode', async ctx => {
 });
 
 // 更改头像
+/**
+ * post
+ * @param 'nickname headurl 两个，有传就更新'
+ * @return ''
+ */
 $.post('/setheadname', async ctx => {
 	try {
+		const entity = new ParamsBox(ctx);
+		const user = entity.getCurrentUser().userid;
+		const post = entity.post();
+
 		let res = await UserModule.setHeadName({
-			_id: '5b20013a16515ba2bc86bcc5'
-		}, '微信用户', 'http://header');
+			_id: user
+		}, post.nickname, post.headurl);
 		ctx.body = ERO(0, "更新头像", res);
 	} catch(e) {
 		ctx.body = ERO(501, "更新头像", "失败", e.message);
