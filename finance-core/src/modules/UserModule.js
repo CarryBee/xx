@@ -97,7 +97,12 @@ class UserModule {
 		const user = new User(one);
 		if(name) user.nickname = name;
 		if(head) user.headurl = head;
-		return await user.save();
+		const res = await user.save();
+		return {
+			ok: 1,
+			nickname: res.nickname,
+			headurl: res.headurl
+		}
 	}
 
 	// 搜索自己的上级扫码（扫一扫）成员，推荐人 upshao
