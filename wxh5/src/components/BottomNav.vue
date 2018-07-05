@@ -1,8 +1,8 @@
 <template>
   <div id="nav" class="flex-box">
-    <router-link class="flex-1" to="/">首页</router-link> |
+    <router-link class="flex-1" to="/">我的刷卡</router-link> |
     <router-link class="flex-1" to="/partner">合伙人</router-link> |
-    <router-link class="flex-1" to="/shopIndex">商城</router-link> |
+    <router-link class="flex-1" to="/shopIndex">Pos商城</router-link> |
     <router-link class="flex-1" to="/userInfo">我的</router-link>
   </div>
 </template>
@@ -18,7 +18,7 @@ export default {
     z-index: 10;
     bottom: 0;
     width: 100%;
-    height: px2rem(80);
+    height: px2rem(90);
     text-align: center;
     box-sizing:border-box;
     padding: px2rem(20);

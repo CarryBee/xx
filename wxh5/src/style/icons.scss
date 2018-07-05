@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'sihui';  /* project id 728294 */
-  src: url('//at.alicdn.com/t/font_728294_up8cvjnbc3.eot');
-  src: url('//at.alicdn.com/t/font_728294_up8cvjnbc3.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_728294_up8cvjnbc3.woff') format('woff'),
-  url('//at.alicdn.com/t/font_728294_up8cvjnbc3.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_728294_up8cvjnbc3.svg#sihui') format('svg');
+  src: url('//at.alicdn.com/t/font_728294_4cl3o6pj2vo.eot');
+  src: url('//at.alicdn.com/t/font_728294_4cl3o6pj2vo.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_728294_4cl3o6pj2vo.woff') format('woff'),
+  url('//at.alicdn.com/t/font_728294_4cl3o6pj2vo.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_728294_4cl3o6pj2vo.svg#sihui') format('svg');
 }
 
 .iconfont{
@@ -13,6 +13,24 @@
   -webkit-font-smoothing: antialiased;
   -webkit-text-stroke-width: 0.2px;
   -moz-osx-font-smoothing: grayscale;
+}
+.icon-custserv:before {
+  content: '\e647';
+}
+.icon-prog:before {
+  content: '\e6be';
+}
+.icon-money2:before {
+  content: '\e628';
+}
+.icon-qrcode2:before {
+  content: '\e600';
+}
+.icon-machine2:before {
+  content: '\e604';
+}
+.icon-commend:before {
+  content: '\e60e';
 }
 .icon-more:before {
   content: '\e6a7';
