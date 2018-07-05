@@ -28,7 +28,7 @@ $.get('/', async ctx => {
 
 $.get('/create', async ctx => {
 
-	ctx.body = await loginAndRegByOpenid("zxczxczxc2");
+	ctx.body = await loginAndRegByOpenid("obsnanfksds-asdf-asfdasdfs");
 });
 
 /**
