@@ -18,7 +18,6 @@
   </div>
 </template>
 <script>
-import { makeAccessWXUrl } from '../common/utils'
 export default {
   name: 'login',
   data () {
@@ -38,10 +37,7 @@ export default {
       smsRequestTimes: 0
     }
   },
-  created () {
-    let wxUrl = makeAccessWXUrl('snsapi_userinfo')
-    location.href = wxUrl
-  },
+  created () {},
   mounted () {
   },
   methods: {

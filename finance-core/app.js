@@ -38,6 +38,21 @@ const StuffRouter = require("./src/routers/StuffRouter");
 const OrderRouter = require("./src/routers/OrderRouter");
 const QcodeRouter = require("./src/routers/QcodeRouter");
 // 统一的处理
+// 非业务接口code：{200: 操作成功，404 接口不存在, -1: token 过期或校验失败, '500': '其他错误'}
+let handleCode = {'200': '操作成功','404': '接口不存在', '-1': 'token过期或校验失败', '500': '系统异常'}
+let handleErrData = (obj) => {
+  let resObj = {
+    code: obj.code || obj.errCode || '500',
+    message: obj.message || obj.errmsg || handleCode[obj.code || obj.errCode] || '系统异常',
+    name: obj.name || '',
+    data: obj.data || {}
+  }
+  if (typeof obj === 'string') {
+    resObj.message = obj
+    return HR(resObj)
+  }
+  return HR(resObj)
+}
 let handleErr = async (ctx, next) => {
   let errMsg = '系统异常'
   try {
@@ -47,13 +62,8 @@ let handleErr = async (ctx, next) => {
       ctx.body = HR({code: errMsg.code || ctx.status, message: errMsg})
       console.error('Error Url', ctx.originalUrl, JSON.stringify(ctx.body))
     }
-    
   } catch (err) {
-    if (typeof err === 'string') {
-      ctx.body = HR({code: ctx.status, message: err || errMsg, data: {}})
-    } else {
-      ctx.body = HR({code: errMsg.code || ctx.status, message: err.message || errMsg, data: err.data || {}})
-    }
+    ctx.body = handleErrData(err)
     console.error('Error Url', ctx.originalUrl, JSON.stringify(ctx.body))
   }
   return

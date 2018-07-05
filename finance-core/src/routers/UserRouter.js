@@ -28,16 +28,16 @@ $.get('/', async ctx => {
 
 $.get('/create', async ctx => {
 
-	ctx.body = await LoginAndRegByOpenid("zxczxczxc2");
+	ctx.body = await loginAndRegByOpenid("zxczxczxc2");
 });
 
 /**
- * 
+ *
  * 主要登录入口，带注册
- * 
+ *
 */
 // 通过微信，静默登录注册全流程
-async function LoginAndRegByOpenid(openid) {
+async function loginAndRegByOpenid(openid) {
 	try {
 		let userinfo = await UserModule.getWXUserInfo(openid);
 		if(!userinfo) { // 用户不存在, 可以 openid 与 电话号码注册
@@ -64,9 +64,9 @@ async function LoginAndRegByOpenid(openid) {
 }
 
 /**
- * 
+ *
  * 主要登录入口，带注册
- * 
+ *
 */
 // 通过手机，静默登录注册全流程
 async function LoginAndRegByPhone(phone) {
@@ -74,16 +74,16 @@ async function LoginAndRegByPhone(phone) {
 }
 
 /**
- * 
+ *
  *  主要登录入口，不带注册
- * 
+ *
  */
 async function LoginByQRCode(scancode) {
 	// 检测到二维码关联的账户，并且读取进行登录
 }
 
 $.get('/loginbycode', async ctx => {
-	
+
 });
 
 // 更改头像
@@ -171,7 +171,6 @@ $.get('/bindmachine', async ctx => {
  * 登录失败返回 微信相关信息
  */
 $.get('/loginWithCode', async (ctx, next) => {
-  console.log('loginWithCode', ctx.query.code)
   let code = ctx.query.code
   if (!code) {
     throw {message: '没有code参数'}
@@ -180,12 +179,14 @@ $.get('/loginWithCode', async (ctx, next) => {
     let wxInfo = await wxApi.getUserByCode(code)
     let openId = wxInfo.openid
     console.log('wxInfo' , code, wxInfo)
-    let loginRes = await LoginAndRegByOpenid(openId)
+    let loginRes = await loginAndRegByOpenid(openId)
     ctx.body = HR({
-      data: loginRes
+      data: {
+        loginRes,
+        ...wxInfo
+      }
     })
   } catch (err) {
-    console.error(err)
     throw {message: '登陆失败' ,data: err}
   }
 })

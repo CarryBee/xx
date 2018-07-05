@@ -12,48 +12,42 @@
           <div class="award-title">实际收益</div>
         </div>
       </div>
-      <div class="my-info-btns">
+      <div class="my-info-btns ta-c">
         <div class="card-record my-info-btn"><router-link to="cartRecord">我的刷卡记录</router-link></div>
       </div>
     </div>
-    <div class="header-nav flex-box">
-      <div class="my-machine header-nav-btn flex-box flex-direction-column flex-1 ai-c jc-ce">
-        <div class="header-nav-icon flex-box ai-c jc-ce"><i class="far fa-hdd fa-2x"></i></div>
-        <div class="header-nav-title">
-          我的机器
-        </div>
-      </div>
-      <div class="my-machine header-nav-btn flex-box flex-direction-column flex-1 ai-c jc-ce">
-        <router-link to="/myShareLink/myShareOption">
-          <div class="header-nav-icon flex-box ai-c jc-ce"><i class="fas fa-qrcode fa-2x"></i></div>
-          <div class="header-nav-title">
-            我的推广码
-          </div>
-        </router-link>
-      </div>
-      <div class="my-machine header-nav-btn flex-box flex-direction-column flex-1 ai-c jc-ce">
-        <div class="header-nav-icon flex-box ai-c jc-ce"><i class="far fa-money-bill-alt fa-2x"></i></div>
-        <div class="header-nav-title">
-          充值/提现
-        </div>
-      </div>
-    </div>
+
     <div class="content">
       <div class="entry-btn-list flex-box"></div>
-      <div class="ad-full flex-box ai-c jc-ce">新手须知</div>
-      <div class="two-column-entry-list flex-box flex-wrap jc-sb">
-        <div class="entry-item flex-box ai-c jc-ce">业务入口</div>
-        <div class="entry-item flex-box ai-c jc-ce">业务入口</div>
-        <div class="entry-item flex-box ai-c jc-ce">业务入口</div>
-        <div class="entry-item flex-box ai-c jc-ce">业务入口</div>
-      </div>
+      <banner-ad-list :adList="bannerAdList"></banner-ad-list>
     </div>
   </div>
 </template>
 
 <script>
+import bannerAdList from '@/components/bannerAdList'
 export default {
-  name: 'home'
+  name: 'home',
+  data () {
+    return {
+      bannerAdList: [{
+        img: 'https://jjb-static.com/Public/image/Index/bg.png',
+        title: '新手须知'
+      }, {
+        img: 'https://jjb-static.com/Public/image/Index/bg.png',
+        title: '囤刷卡机'
+      }, {
+        img: 'https://jjb-static.com/Public/image/Index/bg.png',
+        title: '成为合伙人'
+      }, {
+        img: 'https://jjb-static.com/Public/image/Index/bg.png',
+        title: '业务质询'
+      }]
+    }
+  },
+  components: {
+    bannerAdList
+  }
 }
 </script>
 <style scoped="" lang="scss">
@@ -61,7 +55,10 @@ export default {
   .header {
     position: relative;
     height: px2rem(320);
-    background: #f8ea00;
+    color: #fff;
+    background-image: url("https://jjb-static.com/Public/image/Index/bg.png");
+    background-size: cover;
+    background-position: center;
     box-shadow: px2rem(-1) px2rem(-7) px2rem(20) px2rem(5) #888888;
   }
   .header-nav {

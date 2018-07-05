@@ -6,14 +6,18 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "test:unit": "vue-cli-service test:unit"
+    "test:unit": "vue-cli-service test:unit",
+    "syncDist": "npm run build && scp -r dist root@120.78.207.97:/root/www/xx/wxh5"
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "fastclick": "^1.0.6",
     "qrcode": "^1.2.0",
     "vue": "^2.5.16",
     "vue-router": "^3.0.1",
+    "vue-toasted": "^1.1.24",
     "vuex": "^3.0.1",
+    "vux": "^2.9.2",
     "wechat-oauth": "^1.4.2"
   },
   "devDependencies": {
@@ -30,6 +34,8 @@
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.8.0",
     "eslint-plugin-standard": "^3.1.0",
+    "less": "^3.0.4",
+    "less-loader": "^4.1.0",
     "mockjs": "^1.0.1-beta3",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.0.1",

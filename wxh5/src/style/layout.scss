@@ -64,6 +64,30 @@
 .ai-c {
   align-items: center;
 }
-@for $i from 16 through 34 {
+@for $i from 16 through 100 {
   .f-#{$i} { font-size: px2rem($i); }
+}
+
+.ta-c {
+  text-align: center;
+}
+.ta-l {
+  text-align: left;
+}
+.ta-r {
+  text-align: right;
+}
+
+.t-red {
+  color: #ff4141;
+}
+.t-white {
+  color: #fff;
+}
+
+.position-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
