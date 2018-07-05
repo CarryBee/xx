@@ -77,14 +77,16 @@ async function runApp () {
     render: h => h(App)
   }).$mount('#app')
 
-  let loginResStr = localStorage.getItem('loginRes') || '{}'
-  let loginRes = false
-  try {
-    loginRes = JSON.parse(loginResStr)
-    store.dispatch('setUserInfo', loginRes)
-  } catch (err) {}
-
-  axios.defaults.headers.common['loginToken'] = loginRes.auth || ''
+  let loginResStr = localStorage.getItem('loginRes')
+  let loginRes
+  if (loginResStr) {
+    try {
+      loginRes = JSON.parse(loginResStr)
+      store.dispatch('setUserInfo', loginRes)
+      axios.defaults.headers.common['loginToken'] = loginRes.auth || ''
+      return false
+    } catch (err) {}
+  }
 
   let code = UTILS.getQueryString('code')
 
@@ -94,11 +96,9 @@ async function runApp () {
     try {
       await loginWithCode(code)
       location.href = '/#' + router.currentRoute.path
-      console.log('location.href', location.href)
     } catch (e) {
       console.error('e', JSON.stringify(e))
       location.href = '/#' + router.currentRoute.path
-      console.log('location.href', location.href)
     }
     return true
   }
