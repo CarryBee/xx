@@ -11,7 +11,7 @@
       <div class="reward-wrapper flex-box">
         <!--<div class="award-rule">奖励说明</div>-->
         <div class="real-award flex-box flex-1 ai-c jc-ce">
-          <div class="award-title">刷卡收益</div>
+          <div class="award-title">返现收益</div>
           <div class="award-num">100.00</div>
         </div>
         <div class="button-award flex-box ai-c jc-ce">
@@ -97,15 +97,16 @@ export default {
     box-shadow: px2rem(-1) px2rem(-7) px2rem(20) px2rem(5) #888888;
   }
   .banner {
-    height: px2rem(280);
+    height: px2rem(300);
   }
   .tips-banner {
     height: auto;
     color: #000000;
+    background: #fff8d7;
     padding: px2rem(6);
-    font-size: px2rem(26);
+    font-size: px2rem(28);
     .horn {
-      font-size: px2rem(30);
+      font-size: px2rem(40);
       color: #ff5722
     }
   }
