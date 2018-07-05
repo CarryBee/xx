@@ -1,19 +1,22 @@
 <template>
   <div class="home">
     <div class="header">
+      <div class="banner">
+        <img src="@/assets/banner.png" />
+      </div>
+      <div class="tips-banner flex-box">
+        <i class="iconfont icon-horn horn"></i>
+        <marquee class="flex-1">账户 1552****727 返现100元</marquee>
+      </div>
       <div class="reward-wrapper flex-box">
         <!--<div class="award-rule">奖励说明</div>-->
-        <div class="sum-award flex-box flex-direction-column flex-1 ai-c jc-ce">
-          <div class="award-num">0.00</div>
-          <div class="award-title">累计收益</div>
+        <div class="real-award flex-box flex-1 ai-c jc-ce">
+          <div class="award-title">刷卡收益</div>
+          <div class="award-num">100.00</div>
         </div>
-        <div class="real-award flex-box flex-direction-column flex-1 ai-c jc-ce">
-          <div class="award-num">0.00</div>
-          <div class="award-title">实际收益</div>
+        <div class="button-award flex-box ai-c jc-ce">
+          <div class="card-record my-info-btn"><router-link to="cartRecord"><div class="record-font">我的刷卡记录</div></router-link></div>
         </div>
-      </div>
-      <div class="my-info-btns ta-c">
-        <div class="card-record my-info-btn"><router-link to="cartRecord"><div class="record-font">我的刷卡记录</div></router-link></div>
       </div>
     </div>
 
@@ -34,18 +37,26 @@
         </div>
       </div>
       <div class="operation-row flex-box">
-        <div class="operation-cell ope-bottom ope-right flex-1">
+        <div class="operation-cell ope-right flex-1">
           <i class="iconfont icon-money2 ope-icon" style="color:#ff9800"></i>
           <span class="ope-text">收益明细</span>
         </div>
-        <div class="operation-cell ope-bottom ope-right flex-1">
+        <div class="operation-cell ope-right flex-1">
           <i class="iconfont icon-prog ope-icon" style="color:#4caf50"></i>
           <span class="ope-text">进度查询</span>
         </div>
-        <div class="operation-cell ope-bottom flex-1">
+        <div class="operation-cell flex-1">
           <i class="iconfont icon-custserv ope-icon" style="color:#ef5b50"></i>
           <span class="ope-text">在线客服</span>
         </div>
+      </div>
+      <div class="operation-row flex-box">
+        <div class="operation-cell ope-right flex-1">
+          <i class="iconfont icon-cards ope-icon" style="color:#607d8b"></i>
+          <span class="ope-text">办卡指引</span>
+        </div>
+        <div class="operation-cell flex-1"></div>
+        <div class="operation-cell flex-1"></div>
       </div>
     </div>
 
@@ -80,12 +91,23 @@ export default {
   @import "../style/application.scss";
   .header {
     position: relative;
-    padding-bottom: px2rem(40);
     color: #fff;
-    background-image: url("https://jjb-static.com/Public/image/Index/bg.png");
     background-size: cover;
     background-position: center;
     box-shadow: px2rem(-1) px2rem(-7) px2rem(20) px2rem(5) #888888;
+  }
+  .banner {
+    height: px2rem(280);
+  }
+  .tips-banner {
+    height: auto;
+    color: #000000;
+    padding: px2rem(6);
+    font-size: px2rem(26);
+    .horn {
+      font-size: px2rem(30);
+      color: #ff5722
+    }
   }
   .header-nav {
     padding: px2rem(10) px2rem(50);
@@ -106,9 +128,18 @@ export default {
     }
   }
   .reward-wrapper {
-    padding: px2rem(80) px2rem(40) px2rem(50) px2rem(40);
+    background-image: url("https://jjb-static.com/Public/image/Index/bg.png");
+    padding: px2rem(30);
+    .award-title {
+      display: inline;
+    }
+    .button-award {
+      width: px2rem(200)
+    }
     .award-num {
-      font-size: px2rem(70);
+      padding-left: px2rem(20);
+      display: inline;
+      font-size: px2rem(60);
     }
     .award-rule {
       position: absolute;
@@ -127,33 +158,34 @@ export default {
   .operation-buttons {
     margin-top: px2rem(20);
     background: #fff;
+    border-bottom: px2rem(2) solid #eaeaea;
     .operation-title {
-      font-size: px2rem(30);
+      font-size: px2rem(34);
       color: #000;
-      padding: px2rem(12) px2rem(22);
+      padding: px2rem(12) px2rem(24);
     }
     .operation-row {
       height: auto;
     }
     .operation-cell {
-      height: px2rem(180);
+      height: px2rem(210);
       text-align: center;
-      border-top: px2rem(3) solid #eaeaea;
+      border-top: px2rem(2) solid #eaeaea;
     }
     .ope-icon {
       display: block;
       font-size: px2rem(70);
-      margin-top: px2rem(25);
+      margin-top: px2rem(38);
     }
     .ope-text {
       display: block;
       margin-top: px2rem(16);
     }
     .ope-right {
-      border-right: px2rem(3) solid #eaeaea;
+      border-right: px2rem(2) solid #eaeaea;
     }
     .ope-bottom {
-      border-bottom: px2rem(3) solid #eaeaea;
+      border-bottom: px2rem(2) solid #eaeaea;
     }
   }
   .two-column-entry-list {
