@@ -28,7 +28,7 @@ $.get('/', async ctx => {
 
 $.get('/create', async ctx => {
 
-	ctx.body = await loginAndRegByOpenid("zxczxczxc2");
+	ctx.body = await loginAndRegByOpenid("obsnanfksds-asdf-asfdasdfs");
 });
 
 /**
@@ -90,7 +90,7 @@ $.get('/loginbycode', async ctx => {
 /**
  * post
  * @param 'nickname headurl 两个，有传就更新'
- * @return ''
+ * @return '{ok: 1, nickname: "xxx", headurl: "xxx"}'
  */
 $.post('/setheadname', async ctx => {
 	try {
