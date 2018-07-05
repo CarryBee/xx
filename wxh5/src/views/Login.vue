@@ -18,6 +18,7 @@
   </div>
 </template>
 <script>
+import { makeAccessWXUrl } from '../common/utils'
 export default {
   name: 'login',
   data () {
@@ -38,7 +39,7 @@ export default {
     }
   },
   created () {
-    let wxUrl = utils.makeAccessWXUrl('snsapi_userinfo')
+    let wxUrl = makeAccessWXUrl('snsapi_userinfo')
     location.href = wxUrl
   },
   mounted () {

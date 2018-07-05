@@ -11,15 +11,19 @@
     </div>
     <div class="record-list-wrapper">
       <div class="record-list">
-        <div class="item flex-box jc-sb f-26" v-for="index in 14">
-          <div class="time">2018-05-05 <span>刷卡人</span></div>
+        <div class="item flex-box jc-sb f-26" v-for="index in 14" :key="index">
+          <div class="time">2018-05-05 <span>{{ key }}刷卡人</span></div>
           <div class="record">收益<span>+12.2</span></div>
         </div>
       </div>
     </div>
   </div>
 </template>
-<script></script>
+<script>
+export default {
+
+}
+</script>
 <style lang="scss" scoped="">
   @import "../style/application.scss";
   .user-header {
