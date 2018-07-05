@@ -3,11 +3,11 @@
     <div class="header">
       <div class="user-header flex-box jc-ce ai-c">
         <div class="head">
-          <img src="http://thirdwx.qlogo.cn/mmopen/QZH5X1HZYwYlLy5M2qkib5sLmIUqW6bG2oYnY3lkXiaUA6Clj4qpRyJxUphfsaWo5y6jrB9jKb44BGIxZ5cibyamrOR0SXzREgM/132" alt="">
+          <img :src="userInfo.headimgurl" alt="">
         </div>
         <div class="user-info">
-          <div class="name">chao (ง •̀_•́)ง ✧</div>
-          <div class="id">ID:34787(186*****102)</div>
+          <div class="name">{{userInfo.nickname || '未授权登录'}}</div>
+          <div class="id">ID:{{userInfo.unid || ''}}</div>
         </div>
       </div>
       <div class="header-nav flex-box">
@@ -72,10 +72,16 @@
 
 </template>
 <script>
+import {mapGetters} from 'vuex'
 export default {
   name: 'userInfo',
   data () {
     return {}
+  },
+  computed: {
+    ...mapGetters({
+      userInfo: 'userInfo'
+    })
   },
   async created () {
     // let loginResStr = localStorage.getItem('loginRes')
