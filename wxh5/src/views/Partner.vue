@@ -47,7 +47,7 @@
 <script>
 import bannerAdList from '@/components/bannerAdList'
 export default {
-  name: 'home',
+  name: 'partner',
   data () {
     return {
       headerBannerList: [{

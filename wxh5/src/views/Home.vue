@@ -15,7 +15,7 @@
           <div class="award-num">100.00</div>
         </div>
         <div class="button-award flex-box ai-c jc-ce">
-          <div class="card-record my-info-btn"><router-link to="cartRecord"><div class="record-font">我的刷卡记录</div></router-link></div>
+          <div class="card-record my-info-btn"><router-link to="cartRecord"><div class="record-font">我的收益明细</div></router-link></div>
         </div>
       </div>
     </div>
@@ -39,7 +39,7 @@
       <div class="operation-row flex-box">
         <div class="operation-cell ope-right flex-1">
           <i class="iconfont icon-money2 ope-icon" style="color:#ff9800"></i>
-          <span class="ope-text">收益明细</span>
+          <span class="ope-text">刷卡记录</span>
         </div>
         <div class="operation-cell ope-right flex-1">
           <i class="iconfont icon-prog ope-icon" style="color:#4caf50"></i>
