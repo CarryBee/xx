@@ -37,10 +37,7 @@ export default {
       smsRequestTimes: 0
     }
   },
-  created () {
-    let wxUrl = utils.makeAccessWXUrl('snsapi_userinfo')
-    location.href = wxUrl
-  },
+  created () {},
   mounted () {
   },
   methods: {

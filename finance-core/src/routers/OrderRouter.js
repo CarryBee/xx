@@ -70,17 +70,79 @@ $.get('/addorder', async ctx => {
     }
 });
 
-$.get('/payorder', async ctx => {
-    // 根据订单 id 进行事务并对钱包的扣除
+// 发起支付[订单]与[升级]与[充值]
 
-    // 并且标志订单为完成
+//=========================================================
+
+
+/**
+ * 
+ * @param {String} userid 用户名，可以从token来
+ * @param {String} orderid 订单预付单的ID
+ */
+async function payorder(userid, orderid) {
+    const order = await OrderModule.getUnpaidOrderByID(orderid); // 获取未支付订单
+    
+    let inv = new Invoice();// 校验格式
+    inv.userid = userid;
+    inv.minus = order.allprice; // 扣费用
+    inv.freemach = order.freemach; // 扣额度
+    const invoices = [inv]; // 默认只有一单
+    
+    await finRouter.run({
+        path: "#testrecharge",
+        invoices: invoices
+    });
+    return await OrderModule.setPayOrder(orderid);// 并且标志订单为完成    
+}
+$.get('/payorder', async ctx => {  // (正常模式) 钱包有余额，购物直接扣
+    // 根据订单 id 进行事务并对钱包的扣除
+    try {
+        const userid = "one.userid5";
+        const orderid = "5b27e08d1e3410194300f462"; // 订单预付单的ID
+        const res = await payorder(userid, orderid);// 并且标志订单为完成
+        ctx.body = ERO(0, "支付订单", res);
+    } catch(e) {
+        ctx.body = ERO(501, "支付订单", "支付失败", e.message);
+    }
 });
 
-
-$.get('/payvip', async ctx => {
+// 无需创建升级单，直接传目标级别过来计算即可
+/**
+ * 
+ * 合伙人 5
+ * 超级合伙人 6
+ * 团队合伙人 7
+ * @param {String} userid 用户名，可以从token来
+ * @param {String} aimlevel 级别，目标级别
+ * 
+ */
+async function payvip(userid, aimlevel) {
+    const diff = 12; // 得到差价
+    let inv = new Invoice();// 校验格式
+    inv.userid = userid;
+    inv.minus = diff; // 扣费用
+    const invoices = [inv];
     // 根据身份计算价格进行事务并对钱包的扣除
+    await finRouter.run({
+        path: "#testrecharge",
+        invoices: invoices
+    });
+    // 并且改变用户标志，执行到此证明扣费正常
+    return await UserModule.setUserLevel({_id:userid}, aimlevel);
+}
+$.get('/payvip', async ctx => {  // (正常模式) 钱包有余额，升级直接扣
+    try {
+        const aimlevel = 3;
+        const diff = 12; // 得到差价
+        const userid = "one.userid5";
 
-    // 并且改变用户标志
+        // 并且改变用户标志，执行到此证明扣费正常
+        const res = await payvip(userid, aimlevel);
+        ctx.body = ERO(0, "升级账户", res);
+    } catch(e) {
+        ctx.body = ERO(501, "升级账户", "升级失败", e.message);
+    }
 });
 
 
@@ -91,19 +153,32 @@ $.get('/payvip', async ctx => {
  * 三个入口
  * 
  */
-$.get('/rechange', async ctx => {
+$.get('/rechange', async ctx => {// (充值正常模式) 额外驱动 
 
-    // 拿到回调后增加对应钱包的钱，（+）
+    const body = {
+        rechange: "ok",
+        payorder: "ok",
+        payvip: "ok"
+    }
 
-    // 如果有订单编号，则执行 payorder 的扣款逻辑
-
-    // 如果有升级编号，则执行 payvip 的扣款逻辑操作
-
+    // 拿到回调后增加对应钱包的钱，（+）{userid:"karonl", event:"rechange", params:undefined, amount:100}
+    ctx.body.rechange = "ok";
+    // 如果有订单编号，则执行 payorder 的扣款逻辑 {userid:"karonl", event:"payorder", params:{orderid:"222sfasdf"}, amount:100}
+    let event = "";
+    if(event == "payorder") {
+        payorder();
+        ctx.body.payorder = "ok";
+    }
+    // 如果有升级编号，则执行 payvip 的扣款逻辑 {userid:"karonl", event:"payvip", params:{aimlevel:12}, amount:100}
+    if(event == "payvip") {
+        payvip();
+        ctx.body.payvip = "ok";
+    }
 });
 
 /**
  * 
- * 扣费测试
+ * 充值/扣费测试
  */
 $.get('/testpay', async ctx => {
     try {
@@ -111,18 +186,16 @@ $.get('/testpay', async ctx => {
         // 校验格式
         let inv = new Invoice();
         inv.userid = "one.userid5";
-        inv.minus = -12.23;
-        invoices.push(inv);
-
-        inv = new Invoice();
-        inv.userid = "one.userid4";
-        inv.plusnum = 12.23;
+        inv.minus = 12.23;
         invoices.push(inv);
         
+        let begin = new Date().getTime();
         const res = await finRouter.run({
             path: "#testrecharge",
             invoices: invoices
         });
+        let end = new Date().getTime();
+        console.log("花费："+(end-begin)/1000+"秒");
         // console.log(res.ok); // 事务状态
         // ctx.body = res.ok;
         ctx.body = res.ok;

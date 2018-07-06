@@ -18,7 +18,7 @@ const OrderSchema = new mongoose.Schema({
 });
 
 // 本身的格式测试
-OrderSchema.methods.check = async function() {
+OrderSchema.methods.check = async function() { // 有问题即终止
     this.pay = false; // 未付款
     this.publishtime = new Date(); // 创建时间，订单时间
     if(!this.user) throw new Error("无法关联购买用户"); // 无法关联到谁买的

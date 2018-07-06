@@ -12,15 +12,15 @@ module.exports = class Invoice {
 
     set plusnum(val = 0) {
         val = parseFloat(val).toFixed(2);
-        if(val >= 0 && val < 1000000) {
+        if(val >= 0 && val < 10000) {
             this.amount = val;
         } else throw new Error("amount is NaN");
     }
 
     set minus(val = 0) {
         val = parseFloat(val).toFixed(2);
-        if(val <= 0 && val > -1000000) {
-            this.amount = val;
+        if(val >= 0 && val < 10000) {
+            this.amount = val * -1;
         } else throw new Error("amount is NaN");
     }
 }

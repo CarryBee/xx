@@ -74,7 +74,7 @@ class UserModule {
 			user = await UserModule.findUpShao(user, userinfo);
 
 			// userinfo 每个人的免费机子数
-			user.freemach = userinfo.freemach || 2;
+			// user.freemach = userinfo.freemach || 2;
 
 			// nickname 默认名字
 			user.nickname = userinfo.nickname || '微信用户';
@@ -97,7 +97,12 @@ class UserModule {
 		const user = new User(one);
 		if(name) user.nickname = name;
 		if(head) user.headurl = head;
-		return await user.save();
+		const res = await user.save();
+		return {
+			ok: 1,
+			nickname: res.nickname,
+			headurl: res.headurl
+		}
 	}
 
 	// 搜索自己的上级扫码（扫一扫）成员，推荐人 upshao
@@ -158,7 +163,8 @@ class UserModule {
 			if(!one) throw new Error("用户不存在");
 
 			let user = new User(one);
-			user.level = level;
+			if(user.level && level <= user.level) throw new Error("无需升级" + level);
+			user.level = level; // 从普通人升级
 			const res = await user.save();
 			if(res) return "success";
 			else throw new Error("升级失败");

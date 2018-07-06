@@ -1,0 +1,3 @@
+export default {
+  'SET_PRODUCT_ORDER_DATA': 'SET_PRODUCT_ORDER_DATA'
+}

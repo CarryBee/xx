@@ -18,12 +18,14 @@ finRouter.set(async (ctx, next) => {
         await conn.beginTransaction();
         return;
     })
-    await next();
+    await next(); // 主调用线
 }, ctx => {
     // 完成事务
+    console.log(ctx);
     ctx.conn.commit();
-}, ctx => {
+}, (err, ctx) => {
     // 回滚
+    console.log(err);
     console.log("重置");
     ctx.conn.rollback();
 });
@@ -31,6 +33,10 @@ finRouter.set(async (ctx, next) => {
 // 充值
 finRouter.use("#recharge", async (ctx, next) => {
 
+    console.log("#recharge");
+    console.log("=",ctx.req);
+
+    
     let num = parseFloat("10.2222");
     if(num > 0 && num < 1000000) {
         await ctx.conn.query('select * from user_ficts where id=1 lock in share mode;');
@@ -38,18 +44,24 @@ finRouter.use("#recharge", async (ctx, next) => {
         console.log("affectedRows", bb.affectedRows);
         const ye = await ctx.conn.query('select * from user_ficts where id=1 lock in share mode;');
         console.log(ye[0].recharge);
-        await next();
+        
     } else throw new Error("is not float");
+    
+    await next();
+    return "a";
 });
 
 // 提现
 finRouter.use("#reduce", async (ctx, next) => {
-    const aa = await ctx.conn.query('select * from coinset where id=3 lock in share mode;'); // 默认情况下有写入队列
-    //console.log(aa[0].names);
-    const len = aa[0].names + "c";
-    const bb = await ctx.conn.query('update coinset set names = "'+len+'" where id=3;');;
+    console.log("#reduce");
+    console.log("=",ctx.req);
+    
+    const num = 1;
+    const bb = await ctx.conn.query('update user_ficts set reduce = reduce - ? where id=1;', num);
     console.log("affectedRows", bb.affectedRows);
+ 
     await next();
+    return "b";
 });
 
 // 返现
@@ -86,10 +98,13 @@ async function b() {
             invoices.push(one);
         }
         
-        const res = await finRouter.run({
+        const res = await finRouter.run([{
             path: "#recharge",
             invoices: invoices
-        });
+        },{
+            path: "#reduce",
+            invoices: invoices
+        }]);
         console.log(res.ok); // 事务状态
     } catch (e) {
         console.log("err:", e);

@@ -20,7 +20,8 @@ class ParamsBox {
     }
     
     post() {
-        let body = this.ctx.request.body;
+        if(!this.ctx.request) throw new Error("ctx.post params is null");
+        const body = this.ctx.request.body;
         if(!body) throw new Error("ctx.post params is null");
         // { ss: 'ss' }
         return body;

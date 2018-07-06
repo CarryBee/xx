@@ -7,6 +7,7 @@ const HR = require("../tools/handleRes");
 const {Stuff, Machine} = require("../UserdataBaseTool");
 const $ = new Router();
 const UserModule = require("../modules/UserModule");
+const ParamsBox = require("../tools/ParamsBox");
 const OAuth = require('co-wechat-oauth');
 const wxApi = new OAuth('wx6f8322dd012ed875', 'd76c5dd2f636241c6ecc99806e1943c3');
 
@@ -27,17 +28,19 @@ $.get('/', async ctx => {
 
 $.get('/create', async ctx => {
 
-	ctx.body = await LoginAndRegByOpenid("zxczxczxc2");
+	ctx.body = await loginAndRegByOpenid("obsnanfksds-asdf-asfdasdfs");
 });
 
-/*
-	主要登录入口
+/**
+ *
+ * 主要登录入口，带注册
+ *
 */
 // 通过微信，静默登录注册全流程
-async function LoginAndRegByOpenid(openid) {
+async function loginAndRegByOpenid(openid) {
 	try {
 		let userinfo = await UserModule.getWXUserInfo(openid);
-		if(!userinfo) { // 用户不存在
+		if(!userinfo) { // 用户不存在, 可以 openid 与 电话号码注册
 			userinfo = await UserModule.createUser({
 				openid: openid
 			});
@@ -51,26 +54,53 @@ async function LoginAndRegByOpenid(openid) {
 		user.openid = userinfo.openid; // 额外绑定
 		user.phone = userinfo.phone; // 额外绑定
 
+		user.nickname = userinfo.nickname; // 微信名称
+		user.headurl = userinfo.headurl; // 头像
+
 		return user;
 	} catch(e) {
 		throw {message: ERO(501, "创建用户", "失败", e.message)};
 	}
 }
 
-/*
-	主要登录入口
+/**
+ *
+ * 主要登录入口，带注册
+ *
 */
 // 通过手机，静默登录注册全流程
 async function LoginAndRegByPhone(phone) {
 	// 以后使用
 }
 
+/**
+ *
+ *  主要登录入口，不带注册
+ *
+ */
+async function LoginByQRCode(scancode) {
+	// 检测到二维码关联的账户，并且读取进行登录
+}
+
+$.get('/loginbycode', async ctx => {
+
+});
+
 // 更改头像
+/**
+ * post
+ * @param 'nickname headurl 两个，有传就更新'
+ * @return '{ok: 1, nickname: "xxx", headurl: "xxx"}'
+ */
 $.post('/setheadname', async ctx => {
 	try {
+		const entity = new ParamsBox(ctx);
+		const user = entity.getCurrentUser().userid;
+		const post = entity.post();
+
 		let res = await UserModule.setHeadName({
-			_id: '5b20013a16515ba2bc86bcc5'
-		}, '微信用户', 'http://header');
+			_id: user
+		}, post.nickname, post.headurl);
 		ctx.body = ERO(0, "更新头像", res);
 	} catch(e) {
 		ctx.body = ERO(501, "更新头像", "失败", e.message);
@@ -141,7 +171,6 @@ $.get('/bindmachine', async ctx => {
  * 登录失败返回 微信相关信息
  */
 $.get('/loginWithCode', async (ctx, next) => {
-  console.log('loginWithCode', ctx.query.code)
   let code = ctx.query.code
   if (!code) {
     throw {message: '没有code参数'}
@@ -150,12 +179,14 @@ $.get('/loginWithCode', async (ctx, next) => {
     let wxInfo = await wxApi.getUserByCode(code)
     let openId = wxInfo.openid
     console.log('wxInfo' , code, wxInfo)
-    let loginRes = await LoginAndRegByOpenid(openId)
+    let loginRes = await loginAndRegByOpenid(openId)
     ctx.body = HR({
-      data: loginRes
+      data: {
+        loginRes,
+        ...wxInfo
+      }
     })
   } catch (err) {
-    console.error(err)
     throw {message: '登陆失败' ,data: err}
   }
 })

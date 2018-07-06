@@ -7,7 +7,14 @@ import Partner from './views/Partner'
 import Login from './views/Login'
 import cardRecord from './views/cardRecord'
 import myShareLink from './views/myShareLink'
+import ShopIndex from './views/ShopIndex'
 import Wxredirect from './views/Wxredirect'
+import ShopProductDetail from './views/ShopProductDetail'
+import OrderConfirm from './views/order/orderConfirm'
+import Recharge from './views/recharge'
+import myProduct from './views/myProduct'
+import Cashier from './views/Cashier'
+import PartnerIncome from './views/PartnerIncome'
 
 Vue.use(Router)
 
@@ -49,6 +56,21 @@ export default new Router({
       }
     },
     {
+      path: '/shopIndex',
+      name: 'shopIndex',
+      component: ShopIndex
+    },
+    {
+      path: '/shopProductDetail/:productId',
+      name: 'shopProductDetail',
+      component: ShopProductDetail
+    },
+    {
+      path: '/order/orderConfirm',
+      name: 'orderConfirm',
+      component: OrderConfirm
+    },
+    {
       path: '/login',
       name: 'login',
       component: Login,
@@ -63,6 +85,26 @@ export default new Router({
       meta: {
         isShowBottomNav: false
       }
+    },
+    {
+      path: '/recharge',
+      name: 'recharge',
+      component: Recharge
+    },
+    {
+      path: '/myProduct',
+      name: 'myProduct',
+      component: myProduct
+    },
+    {
+      path: '/cashier',
+      name: 'cashier',
+      component: Cashier
+    },
+    {
+      path: '/income',
+      name: 'income',
+      component: PartnerIncome
     }
   ],
 })

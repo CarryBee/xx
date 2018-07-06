@@ -1,6 +1,7 @@
+'use strict'
 // 金融模块，控制钱包的充值与花费
+
 const Loop = require("../tools/financebox/Loop");
-const Invoice = require("../tools/financebox/Invoice");
 const FinanceBaseTool = require("../FinanceBaseTool");
 const finRouter = new Loop();
 
@@ -22,7 +23,7 @@ finRouter.set(async (ctx, next) => {
 // 测试充值
 finRouter.use("#testrecharge", async (ctx, next) => {
   
-    for(let invo of ctx.invoices) {
+    for(let invo of ctx.req.invoices) { // 当前上下文
         const bb = await ctx.conn.query('select * from user_ficts where userid = ? for update;', invo.userid);
         if(!bb || bb.length < 1)
             await ctx.conn.query('insert into user_ficts (userid) values (?);', invo.userid);
@@ -33,12 +34,19 @@ finRouter.use("#testrecharge", async (ctx, next) => {
         else
             pakcsql = 'set recharge = recharge + ' + invo.amount;
 
-        aa = await ctx.conn.query('update user_ficts '+pakcsql+' where userid = ?;', invo.userid);
+        let aa = await ctx.conn.query('update user_ficts '+pakcsql+' where userid = ?;', invo.userid);
         console.log(aa);
 
+        const cc = await ctx.conn.query('select * from user_ficts where userid = ?;', invo.userid);
+        let am = cc[0].recharge + cc[0].reduce;
+        if(am < 0) throw new Error("余额不足"); 
     }
     
     await next();
+});
+
+finRouter.use("#payorder", async (ctx, next) => {
+
 });
 
 // 充值
