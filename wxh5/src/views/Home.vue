@@ -132,6 +132,7 @@ export default {
     background-image: url("https://jjb-static.com/Public/image/Index/bg.png");
     padding: px2rem(30);
     .award-title {
+      font-size: px2rem(26);
       display: inline;
     }
     .button-award {
@@ -180,6 +181,7 @@ export default {
     }
     .ope-text {
       display: block;
+      font-size: px2rem(26);
       margin-top: px2rem(16);
     }
     .ope-right {
