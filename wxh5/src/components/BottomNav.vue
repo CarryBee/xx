@@ -5,19 +5,19 @@
         <i class="iconfont icon-tab1 bot-icon"></i>
         <div class="bot-title">我的刷卡</div>
       </div>
-    </router-link> |
+    </router-link>
     <router-link class="flex-1" to="/partner">
       <div>
         <i class="iconfont icon-tab2 bot-icon"></i>
         <div class="bot-title">合伙人</div>
       </div>
-    </router-link> |
+    </router-link>
     <router-link class="flex-1" to="/shopIndex">
       <div>
         <i class="iconfont icon-tab3 bot-icon"></i>
         <div class="bot-title">Pos商城</div>
       </div>
-    </router-link> |
+    </router-link>
     <router-link class="flex-1" to="/userInfo">
       <div>
         <i class="iconfont icon-tab4 bot-icon"></i>
