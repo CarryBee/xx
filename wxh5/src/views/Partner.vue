@@ -1,18 +1,15 @@
 <template>
   <div class="home page">
-    <div class="header-banner">
-      <img :src="headerBannerList[0].img" alt="">
-      <div class="title position-center f-40 t-white">合伙人广告</div>
+    <div class="header">
+      <i class="iconhead iconfont icon-money3"></i>
+      <div class="reward-wrapper flex-box">
+        <div class="sum-award flex-box flex-direction-column flex-1 ai-c jc-ce">
+          <div class="award-title">合伙人收益</div>
+          <div class="award-num">1208.03</div>
+          <div class="record-font">LV2 超级合伙人</div>
+        </div>
+      </div>
     </div>
-    <!--<div class="header">-->
-      <!--<div class="reward-wrapper flex-box">-->
-        <!--&lt;!&ndash;<div class="award-rule">奖励说明</div>&ndash;&gt;-->
-        <!--<div class="sum-award flex-box flex-direction-column flex-1 ai-c jc-ce">-->
-          <!--<div class="award-num">0.00</div>-->
-          <!--<div class="award-title">我的收益</div>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
     <div class="header-nav flex-box">
       <div class="my-machine header-nav-btn flex-box flex-direction-column flex-1 ai-c jc-ce">
         <router-link to="/income">
@@ -34,11 +31,11 @@
     <div class="content">
       <div class="entry-btn-list flex-box"></div>
       <banner-ad-list :adList="bannerAdList"></banner-ad-list>
-      <div class="two-column-entry-list flex-box flex-wrap jc-sb">
-        <div class="entry-item flex-box ai-c jc-ce">业务入口</div>
-        <div class="entry-item flex-box ai-c jc-ce">业务入口</div>
-        <div class="entry-item flex-box ai-c jc-ce">业务入口</div>
-        <div class="entry-item flex-box ai-c jc-ce">业务入口</div>
+      <div class="banner">
+        <div class="operation-title">推广收益规则</div>
+        <img src="@/assets/banner1.png" />
+        <div class="operation-title">交易收益规则</div>
+        <img src="@/assets/banner2.png" />
       </div>
     </div>
   </div>
@@ -60,9 +57,6 @@ export default {
       }, {
         img: 'https://jjb-static.com/Public/image/Index/bg.png',
         title: '升级为合伙人'
-      }, {
-        img: 'https://jjb-static.com/Public/image/Index/bg.png',
-        title: '合伙人收益规则'
       }]
     }
   },
@@ -79,11 +73,19 @@ export default {
   .header-banner {
     position: relative;
   }
+  .iconhead {
+    position: absolute;
+    left: px2rem(510);
+    font-size: px2rem(300);
+    color: #ead837;
+    z-index: 1;
+  }
   .header {
     position: relative;
-    height: px2rem(320);
-    background: #f8ea00;
-    /*box-shadow: px2rem(-1) px2rem(-7) px2rem(20) px2rem(5) #888888;*/
+    overflow: hidden;
+    height: px2rem(300);
+    background: #ffeb3b;
+    box-shadow: px2rem(-1) px2rem(-7) px2rem(20) px2rem(5) #888888;
   }
   .header-nav {
     padding: px2rem(10) px2rem(50);
@@ -103,16 +105,38 @@ export default {
     line-height: px2rem(60);
   }
   }
+  .operation-title {
+    font-size: px2rem(26);
+    color: #000000;
+    padding: px2rem(12) px2rem(24);
+    border-bottom: px2rem(2) solid #eaeaea;
+  }
   .reward-wrapper {
+    position: relative;
+    z-index: 2;
     padding: px2rem(80) px2rem(40) px2rem(40) px2rem(40);
-  .award-num {
-    font-size: px2rem(80);
+    .award-title {
+      line-height: px2rem(26);
+      font-size: px2rem(26);
+    }
+    .award-num {
+      line-height: px2rem(80);
+      font-size: px2rem(70);
+    }
+    .award-rule {
+      position: absolute;
+      top: px2rem(20);
+      right: px2rem(20);
+    }
   }
-  .award-rule {
-    position: absolute;
-    top: px2rem(20);
-    right: px2rem(20);
-  }
+  .record-font {
+    font-size: px2rem(26);
+    margin-top: px2rem(10);
+    padding: px2rem(8) px2rem(22) px2rem(8) px2rem(22);
+    border: px2rem(2) solid #ffd452;
+    border-radius: 25px;
+    background: #3e3e3e;
+    color: #ffd452;
   }
   .content {
     padding: px2rem(20);
