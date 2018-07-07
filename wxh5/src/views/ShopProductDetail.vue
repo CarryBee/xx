@@ -14,7 +14,9 @@
 export default {
   data () {
     return {
-      productDetail: {}
+      productDetail: {
+        productDetailImg: ['https://upload-images.jianshu.io/upload_images/2022163-9a667247649a5cd4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/417']
+      }
     }
   },
   methods: {

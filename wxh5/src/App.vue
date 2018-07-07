@@ -28,7 +28,7 @@ export default {
   color: #2c3e50;
   font-size: px2rem(24);
   box-sizing: border-box;
-  padding-bottom: px2rem(80);
+  padding-bottom: px2rem(110);
   min-height: 100vh;
   background: #f5f5f5;
   img {
