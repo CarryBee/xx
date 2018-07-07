@@ -114,7 +114,7 @@ async function runApp () {
       // location.href = '/#/login'
       console.log('router', router)
       let wxUrl = UTILS.makeAccessWXUrl({
-        reUrl: location.origin + '/#' + router.path
+        reUrl: location.origin + '/#' + router.currentRoute.path
       })
       location.href = wxUrl
       return false
