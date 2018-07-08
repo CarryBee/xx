@@ -11,6 +11,12 @@
           <div class="name f-30">{{userInfo.nickname || '未授权登录'}}</div>
           <div class="id">超级合伙人</div>
         </div>
+        <div class="qrcode-ctrl flex-box flex-direction-column t-white">
+          <router-link to="/myShareLink/myShareOption">
+            <i class="iconfont icon-qrcode2 f-70 ta-c"></i>
+            <div class="title">生成推广码</div>
+          </router-link>
+        </div>
       </div>
     </div>
 
@@ -72,11 +78,11 @@
     <div class="content">
       <div class="entry-btn-list flex-box"></div>
       <banner-ad-list :adList="bannerAdList"></banner-ad-list>
-      <div class="two-column-entry-list flex-box flex-wrap jc-sb">
-        <div class="entry-item flex-box ai-c jc-ce">业务入口</div>
-        <div class="entry-item flex-box ai-c jc-ce">业务入口</div>
-        <div class="entry-item flex-box ai-c jc-ce">业务入口</div>
-        <div class="entry-item flex-box ai-c jc-ce">业务入口</div>
+      <div class="banner">
+        <div class="operation-title">推广收益规则</div>
+        <img src="@/assets/banner1.png" />
+        <div class="operation-title">交易收益规则</div>
+        <img src="@/assets/banner2.png" />
       </div>
     </div>
   </div>
@@ -99,9 +105,6 @@ export default {
       }, {
         img: 'https://jjb-static.com/Public/image/Index/bg.png',
         title: '升级为合伙人'
-      }, {
-        img: 'https://jjb-static.com/Public/image/Index/bg.png',
-        title: '合伙人收益规则'
       }]
     }
   },
@@ -120,6 +123,13 @@ export default {
   .header-banner {
     position: relative;
   }
+  .iconhead {
+    position: absolute;
+    left: px2rem(510);
+    font-size: px2rem(300);
+    color: #ead837;
+    z-index: 1;
+  }
   .header-info {
     position: relative;
     height: px2rem(250);
@@ -132,6 +142,54 @@ export default {
     .income-wrapper {
       color: #fff;
     }
+    .qrcode-ctrl {
+      border-left: px2rem(2) solid #fff;
+      margin: 0 px2rem(20);
+      padding: 0 px2rem(20);
+    }
+  }
+  .header-nav-title {
+    height: px2rem(45);
+    line-height: px2rem(45);
+  }
+  .header-nav-btn {
+    padding-top: px2rem(20);
+    /*border-left: 1px solid #dddddd;*/
+    /*border-right: 1px solid #dddddd;*/
+    line-height: px2rem(60);
+  }
+  .operation-title {
+    font-size: px2rem(26);
+    color: #000000;
+    padding: px2rem(12) px2rem(24);
+    border-bottom: px2rem(2) solid #eaeaea;
+  }
+  .reward-wrapper {
+    position: relative;
+    z-index: 2;
+    padding: px2rem(80) px2rem(40) px2rem(40) px2rem(40);
+    .award-title {
+      line-height: px2rem(26);
+      font-size: px2rem(26);
+    }
+    .award-num {
+      line-height: px2rem(80);
+      font-size: px2rem(70);
+    }
+    .award-rule {
+      position: absolute;
+      top: px2rem(20);
+      right: px2rem(20);
+    }
+  }
+  .record-font {
+    font-size: px2rem(26);
+    margin-top: px2rem(10);
+    padding: px2rem(8) px2rem(22) px2rem(8) px2rem(22);
+    border: px2rem(2) solid #ffd452;
+    border-radius: 25px;
+    background: #3e3e3e;
+    color: #ffd452;
   }
   .content {
     margin-top: px2rem(-80);
