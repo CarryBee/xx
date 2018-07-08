@@ -1,13 +1,11 @@
 <template>
   <div class="shopIndex">
-    <div class="user-header flex-box jc-ce ai-c">
-      <div class="head">
-        <img :src="userInfo.headimgurl" alt="">
+    <div class="user-header flex-box jc-ce ai-c" style="align-items: center;">
+      <div class="flex-box flex-1 t-orange">
+        <div class="flex-box count jc-ce">钱包余额 201</div>
       </div>
-      <div class="user-info">
-        <div class="name">{{userInfo.nickname || '未授权登录'}}</div>
-        <div class="id">我的返现：201</div>
-        <div class="id">我的消费记录 ></div>
+      <div class="flex-box flex-1 t-orange">
+        <div class="count ">免费额度 2</div>
       </div>
     </div>
     <banner-ad-list :adList="bannerAdList"></banner-ad-list>
@@ -63,19 +61,15 @@ export default {
   .user-header {
     position: relative;
     color: #fff;
-    background-image: url("https://jjb-static.com/Public/image/Index/bg.png");
-    background-size: cover;
-    background-position: center;
-    box-shadow: px2rem(-1) px2rem(-7) px2rem(20) px2rem(5) #888888;
-    width: 100%;
-    height: px2rem(220);
+    background:#fff;
+    padding: px2rem(20);
+    font-size: px2rem(34);
+    height: auto;
     margin-bottom: px2rem(20);
-    .head {
-      height: px2rem(110);
-      width: px2rem(110);
-      border-radius: 50%;
-      overflow: hidden;
-      margin-right: px2rem(20);
+    border-bottom: px2rem(2) solid #eaeaea;
+    .count {
+      display: inline;
+      align-items: center;
     }
   }
   .banner-ad-list {

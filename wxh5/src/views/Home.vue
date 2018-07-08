@@ -164,7 +164,7 @@ export default {
     .operation-title {
       font-size: px2rem(34);
       color: #000;
-      padding: px2rem(12) px2rem(24);
+      padding: px2rem(20) px2rem(24);
     }
     .operation-row {
       height: auto;
