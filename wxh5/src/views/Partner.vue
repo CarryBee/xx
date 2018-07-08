@@ -9,6 +9,12 @@
             <div class="award-num">1208.03</div>
           </div>
         </div>
+        <div class="qrcode-ctrl flex-box flex-direction-column t-white">
+          <a>
+            <i class="iconfont icon-detail f-50 ta-c"></i>
+            <div class="title"></div>
+          </a>
+        </div>
       </div>
     </div>
 
@@ -157,13 +163,25 @@ export default {
     background-size: cover;
     padding:0 px2rem(20);
     padding-top: px2rem(70);
+    .user-header {
+      position: relative;
+      height: px2rem(180);
+      padding-left: px2rem(70);
+      .head {
+        height: px2rem(110);
+        width: px2rem(110);
+        border-radius: 50%;
+        overflow: hidden;
+        margin-right: px2rem(20);
+        border: px2rem(5) solid rgba(255, 255, 255, 0.3);
+      }
+    }
     .income-wrapper {
       color: #fff;
     }
     .qrcode-ctrl {
-      border-left: px2rem(2) solid #fff;
-      margin: 0 px2rem(20);
-      padding: 0 px2rem(20);
+      width: px2rem(50);
+      margin-left: px2rem(20);
     }
   }
   .header-nav-title {
@@ -214,18 +232,6 @@ export default {
     height: px2rem(120);
     background: #f5f5f5;
   }
-  }
-  .user-header {
-    position: relative;
-    height: px2rem(180);
-    .head {
-      height: px2rem(110);
-      width: px2rem(110);
-      border-radius: 50%;
-      overflow: hidden;
-      margin-right: px2rem(20);
-      border: px2rem(5) solid rgba(255, 255, 255, 0.3);
-    }
   }
   .recommend-list {
     position: relative;
