@@ -128,7 +128,7 @@ export default {
     background-image: url("../assets/trianglify.png");
     background-size: cover;
     padding:0 px2rem(20);
-    padding-top: px2rem(80);
+    padding-top: px2rem(70);
     .income-wrapper {
       color: #fff;
     }
