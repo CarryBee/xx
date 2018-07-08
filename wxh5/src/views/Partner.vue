@@ -4,6 +4,13 @@
     <div class="header-info flex-box jc-ce">
 
       <div class="user-header flex-box jc-ce ai-c">
+        <div class="reward-wrapper flex-box">
+          <div class="sum-award flex-box flex-direction-column flex-1 ai-c jc-ce">
+            <div class="award-title">合伙人收益</div>
+            <div class="award-num">1208.03</div>
+          </div>
+        </div>
+        <!--
         <div class="head">
           <img :src="userInfo.headimgurl" alt="">
         </div>
@@ -17,6 +24,7 @@
             <div class="title">生成推广码</div>
           </router-link>
         </div>
+        -->
       </div>
     </div>
 
@@ -166,8 +174,7 @@ export default {
   }
   .reward-wrapper {
     position: relative;
-    z-index: 2;
-    padding: px2rem(80) px2rem(40) px2rem(40) px2rem(40);
+    color: #fff;
     .award-title {
       line-height: px2rem(26);
       font-size: px2rem(26);
@@ -175,11 +182,6 @@ export default {
     .award-num {
       line-height: px2rem(80);
       font-size: px2rem(70);
-    }
-    .award-rule {
-      position: absolute;
-      top: px2rem(20);
-      right: px2rem(20);
     }
   }
   .record-font {
