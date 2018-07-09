@@ -1,11 +1,10 @@
 <template>
   <div class="shopIndex">
-    <div class="user-header flex-box jc-ce ai-c" style="align-items: center;">
-      <div class="flex-box flex-1 t-orange">
-        <div class="flex-box count jc-ce">钱包余额 201</div>
-      </div>
-      <div class="flex-box flex-1 t-orange">
-        <div class="count ">免费额度 2</div>
+    <div class="user-header flex-box ai-c" >
+      <div class="flex-1 flex-box">
+        <div class="count flex-1">钱包余额<span class="num t-orange">201</span></div>
+        <div class="split"></div>
+        <div class="count flex-1">免费额度<span class="num t-orange">2</span></div>
       </div>
     </div>
     <banner-ad-list :adList="bannerAdList"></banner-ad-list>
@@ -20,6 +19,8 @@
 <script>
 import bannerAdList from '@/components/bannerAdList'
 import productListItem from '@/components/productListItem'
+import pic from '@/assets/product.jpg'
+import trianglify from '@/assets/banner3.jpg'
 import {mapGetters} from 'vuex'
 export default {
   name: 'shopIndex',
@@ -27,14 +28,23 @@ export default {
     return {
       productList: [{
         productId: '1',
-        productName: '通刷 V12,2018韩国chic春夏季新款简约高腰长裤k091',
+        productName: '通刷 V12 (激活两台人工返现)',
+        desp: '在基础的机器返现之上，app进行返现，加入合伙人更能享受更低费率',
         price: '120',
         returnPrice: '130',
-        productDetailImg: '//yddhhoss.rfyiding.com/566432321642_Main_8643861286_1042280853?x-oss-process=style/productPic_thumbnail'
+        productDetailImg: pic
+      },
+      {
+        productId: '1',
+        productName: '通通刷 V12 (激活两台人工返现)',
+        desp: '在基础的机器返现之上，app进行返现，加入合伙人更能享受更低费率',
+        price: '120',
+        returnPrice: '130',
+        productDetailImg: pic
       }],
       bannerAdList: [{
-        img: 'https://jjb-static.com/Public/image/Index/bg.png',
-        title: '押金规则说明'
+        img: trianglify,
+        title: '激活奖励规则'
       }]
     }
   },
@@ -60,16 +70,22 @@ export default {
   @import "../style/application.scss";
   .user-header {
     position: relative;
-    color: #fff;
     background:#fff;
     padding: px2rem(20);
-    font-size: px2rem(34);
+    font-size: px2rem(26);
     height: auto;
     margin-bottom: px2rem(20);
     border-bottom: px2rem(2) solid #eaeaea;
+    .split {
+      width: px2rem(2);
+      background: #eaeaea;
+      height: px2rem(40);
+    }
+    .num {
+      padding-left: px2rem(8);
+    }
     .count {
-      display: inline;
-      align-items: center;
+      text-align: center;
     }
   }
   .banner-ad-list {
