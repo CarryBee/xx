@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'sihui';  /* project id 728294 */
-  src: url('//at.alicdn.com/t/font_728294_zi381qiwxdc.eot');
-  src: url('//at.alicdn.com/t/font_728294_zi381qiwxdc.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_728294_zi381qiwxdc.woff') format('woff'),
-  url('//at.alicdn.com/t/font_728294_zi381qiwxdc.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_728294_zi381qiwxdc.svg#sihui') format('svg');
+  src: url('//at.alicdn.com/t/font_728294_t4ewwlsf4o.eot');
+  src: url('//at.alicdn.com/t/font_728294_t4ewwlsf4o.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_728294_t4ewwlsf4o.woff') format('woff'),
+  url('//at.alicdn.com/t/font_728294_t4ewwlsf4o.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_728294_t4ewwlsf4o.svg#sihui') format('svg');
 }
 
 .iconfont{
@@ -13,6 +13,9 @@
   -webkit-font-smoothing: antialiased;
   -webkit-text-stroke-width: 0.2px;
   -moz-osx-font-smoothing: grayscale;
+}
+.icon-withdraw:before {
+  content: '\e612';
 }
 .icon-detail:before {
   content: '\e618';

@@ -1,39 +1,41 @@
 <template>
   <div class="userinfo page">
     <div class="header">
-      <div class="user-header flex-box jc-ce ai-c">
-        <div class="head">
-          <img :src="userInfo.headimgurl" alt="">
+      <div class="header-info jc-ce ai-c">
+        <div class="user-header flex-box">
+          <div class="head"><img :src="headicon" alt=""></div>
+          <div class="info">
+            <div class="flex-box">
+              <div class="name">{{userInfo.nickname || '未授权登录'}}</div>
+              <span class="level-icon">超级合伙人</span>
+              <span class="level-icon">代理商</span>
+            </div>
+            <div class="uid">ID：{{userInfo.unid || '000000'}}</div>
+          </div>
         </div>
-        <div class="user-info">
-          <div class="name">{{userInfo.nickname || '未授权登录'}}</div>
-          <div class="id">ID:{{userInfo.unid || ''}}</div>
+        <div class="button-ctrl flex-box">
+          <i class="iconfont icon-withdraw ope-icon" style="color:#ff9800"></i>
+          <span class="desp">点击提现</span>
         </div>
       </div>
-      <div class="header-nav flex-box">
-        <div class="my-machine header-nav-btn flex-box flex-direction-column flex-1 ai-c jc-ce">
-          <router-link to="/myProduct">
-            <div class="header-nav-icon flex-box ai-c jc-ce"><i class="iconfont icon-machine f-55"></i></div>
-            <div class="header-nav-title">
-              我的机器
-            </div>
-          </router-link>
+    </div>
+
+    <div class="recommend-info flex-box flex-direction-column jc-ce">
+      <div class="recommend-sum flex-1 ta-c f-30">
+        <div class="recommend-title">推荐下线分布</div>
+      </div>
+      <div class="recommend-detail flex-1 flex-box jc-ce">
+        <div class="detail-info ta-c flex-1">
+          <div class="count f-35 t-orange">4</div>
+          <div class="title">普通用户数</div>
         </div>
-        <div class="my-machine header-nav-btn flex-box flex-direction-column flex-1 ai-c jc-ce">
-          <router-link to="/myShareLink/myShareOption">
-            <div class="header-nav-icon flex-box ai-c jc-ce"><i class="iconfont icon-qrcode f-55"></i></div>
-            <div class="header-nav-title">
-              我的推广码
-            </div>
-          </router-link>
+        <div class="detail-info ta-c flex-1">
+          <div class="count f-35 t-orange">2+3</div>
+          <div class="title">合伙人数</div>
         </div>
-        <div class="my-machine header-nav-btn flex-box flex-direction-column flex-1 ai-c jc-ce">
-          <router-link to="/cashier">
-            <div class="header-nav-icon flex-box ai-c jc-ce"><i class="iconfont icon-recharge f-55"></i></div>
-            <div class="header-nav-title">
-              充值/提现
-            </div>
-          </router-link>
+        <div class="detail-info ta-c flex-1">
+          <div class="count f-35 t-orange">9</div>
+          <div class="title">总用户数</div>
         </div>
       </div>
     </div>
@@ -73,10 +75,13 @@
 </template>
 <script>
 import {mapGetters} from 'vuex'
+import headicon from '@/assets/head.png'
 export default {
   name: 'userInfo',
   data () {
-    return {}
+    return {
+      headicon: headicon
+    }
   },
   computed: {
     ...mapGetters({
@@ -109,6 +114,30 @@ export default {
 </script>
 <style lang="scss" scoped="">
   @import "../style/application.scss";
+  .recommend-info {
+    position: relative;
+    padding: px2rem(34) px2rem(60);
+    margin: px2rem(20) px2rem(20) px2rem(0) px2rem(20);
+    background: #fff;
+    border-radius: px2rem(10);
+    .recommend-tip {
+      position: absolute;
+      color: #bdbdbd;
+      font-style: italic;
+      right: px2rem(10);
+      top: px2rem(10);
+    }
+    .recommend-title {
+      font-size: px2rem(34);
+      padding-bottom: px2rem(14);
+    }
+    .recommend-sum {
+      margin-bottom: px2rem(20);
+    }
+    .detail-info {
+      padding: 0 px2rem(0);
+    }
+  }
   .userinfo.page {
     background: #f5f5f5;
     height: 100%;
@@ -116,18 +145,64 @@ export default {
   .header {
     background: #fff;
   }
-  .user-header {
+  .header-info {
     position: relative;
-    background: #fff;
-    width: 100%;
-    height: px2rem(180);
-    .head {
-      height: px2rem(110);
-      width: px2rem(110);
-      border-radius: 50%;
-      overflow: hidden;
-      margin-right: px2rem(20);
+    box-shadow: px2rem(-1) px2rem(-7) px2rem(20) px2rem(5) #888888;
+    overflow: hidden;
+    height: auto;
+    .user-header {
+      position: relative;
+      margin-left: px2rem(40);
+      padding: px2rem(40) px2rem(20);
+      padding-top: px2rem(60);
+      .head {
+        height: px2rem(110);
+        width: px2rem(110);
+        overflow: hidden;
+        margin-right: px2rem(40);
+        border: px2rem(1) solid #ff9800;
+      }
+      .info {
+        padding-top: px2rem(2);
+        .name {
+          font-size: px2rem(30);
+          font-weight: 600;
+        }
+        .uid {
+          padding-top: px2rem(5);
+          font-size: px2rem(28);
+        }
+      }
     }
+    .split {
+      width: px2rem(2);
+      background: #fff;
+      height: px2rem(120);
+    }
+    .button-ctrl {
+      border-top: px2rem(2) solid #eaeaea;
+      padding-left: px2rem(60);
+      .ope-icon {
+        line-height: px2rem(90);
+        font-size: px2rem(45);
+      }
+      .desp {
+        padding-left: px2rem(20);
+        line-height: px2rem(90);
+        font-size: px2rem(30);
+      }
+    }
+  }
+
+  .level-icon {
+    font-size: px2rem(21);
+    display: inline;
+    margin-left: px2rem(8);
+    padding: 0.06667rem 0.16rem 0.06667rem 0.16rem;
+    border: 0.02667rem solid #ffd452;
+    border-radius: px2rem(14);
+    background: #5d5d5d;
+    color: #ffd146;
   }
 
   .header-nav {
@@ -152,14 +227,16 @@ export default {
   }
 
   .user-btn-list {
-  .item {
-    height: px2rem(110);
-    padding: 0 px2rem(20);
-    margin-bottom: px2rem(12);
-    background: #fff;
-  }
-  .info {
-    margin-left: px2rem(10);
-  }
+    margin-top: px2rem(20);
+    border-bottom: px2rem(2) solid #eaeaea;
+    .item {
+      height: px2rem(100);
+      padding: 0 px2rem(20);
+      background: #fff;
+      border-top: px2rem(2) solid #eaeaea;
+    }
+    .info {
+      margin-left: px2rem(10);
+    }
   }
 </style>
