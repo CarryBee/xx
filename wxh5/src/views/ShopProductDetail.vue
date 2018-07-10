@@ -11,11 +11,12 @@
   </div>
 </template>
 <script>
+import trianglify from '@/assets/pic.jpg'
 export default {
   data () {
     return {
       productDetail: {
-        productDetailImg: ['https://upload-images.jianshu.io/upload_images/2022163-9a667247649a5cd4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/417']
+        productDetailImg: [trianglify]
       }
     }
   },
@@ -50,12 +51,14 @@ export default {
 }
 .product-ctrl {
   position: fixed;
-  bottom: px2rem(80);
+  bottom: px2rem(130);
   width: 100%;
   .buy-btn {
-    width: 100%;
-    height: px2rem(60);
-    line-height: px2rem(60);
+    font-size: px2rem(30);
+    height: px2rem(70);
+    line-height: px2rem(70);
+    border-radius: px2rem(10);
+    margin: px2rem(20);
     text-align: center;
     background: #f8ea00;
   }

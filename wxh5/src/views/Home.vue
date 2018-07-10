@@ -8,15 +8,16 @@
         <i class="iconfont icon-horn horn"></i>
         <marquee class="flex-1">账户 1552****727 返现100元</marquee>
       </div>
-      <div class="reward-wrapper flex-box">
-        <!--<div class="award-rule">奖励说明</div>-->
-        <div class="real-award flex-box flex-1 ai-c jc-ce">
-          <div class="award-title">返现收益</div>
-          <div class="award-num">100.00</div>
-        </div>
-        <div class="button-award flex-box ai-c jc-ce">
-          <div class="card-record my-info-btn"><router-link to="cartRecord"><div class="record-font">我的收益明细</div></router-link></div>
-        </div>
+    </div>
+
+    <div class="reward-wrapper flex-box" :style="banner">
+      <!--<div class="award-rule">奖励说明</div>-->
+      <div class="real-award flex-box flex-1 ai-c jc-ce">
+        <div class="award-title">刷卡返现</div>
+        <div class="award-num">102.10</div>
+      </div>
+      <div class="button-award flex-box ai-c jc-ce">
+        <div class="card-record my-info-btn"><router-link to="cartRecord"><div class="record-font">收益明细</div></router-link></div>
       </div>
     </div>
 
@@ -69,10 +70,12 @@
 
 <script>
 import bannerAdList from '@/components/bannerAdList'
+import trianglify from '@/assets/banner3.jpg'
 export default {
   name: 'home',
   data () {
     return {
+      banner: 'background-image:url(' + trianglify + ')',
       bannerAdList: [{
         img: 'https://jjb-static.com/Public/image/Index/bg.png',
         title: '新手须知'
@@ -129,8 +132,13 @@ export default {
     }
   }
   .reward-wrapper {
-    background-image: url("https://jjb-static.com/Public/image/Index/bg.png");
+    /*background-image: url("./img/banner3.db0c11a6.jpg");*/
+    background-repeat: no-repeat;
+    background-size: cover;
     padding: px2rem(30);
+    color: #fff;
+    border-radius: px2rem(20);
+    margin: px2rem(20);
     .award-title {
       font-size: px2rem(26);
       display: inline;
@@ -158,13 +166,12 @@ export default {
     }
   }
   .operation-buttons {
-    margin-top: px2rem(20);
     background: #fff;
     border-bottom: px2rem(2) solid #eaeaea;
     .operation-title {
       font-size: px2rem(34);
       color: #000;
-      padding: px2rem(12) px2rem(24);
+      padding: px2rem(20) px2rem(24);
     }
     .operation-row {
       height: auto;
@@ -202,10 +209,10 @@ export default {
   .record-font {
     font-size: px2rem(26);
     display: inline;
-    padding: px2rem(8) px2rem(12) px2rem(8) px2rem(12);
+    padding: px2rem(5) px2rem(12) px2rem(5) px2rem(12);
     border: px2rem(2) solid #ffd452;
     border-radius: 8px;
-    background: #3c3c3c;
+    /*background: #3c3c3c;*/
     color: #ffd452;
   }
 </style>

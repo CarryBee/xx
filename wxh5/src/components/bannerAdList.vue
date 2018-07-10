@@ -1,6 +1,6 @@
 <template>
   <div class="banner-ad-list flex-box flex-direction-column ai-c jc-ce">
-    <div class="item" v-for="(item, index) in adList">
+    <div class="item" v-for="(item, index) in adList" :key="index">
       <div class="content">
         <div class="banner">
           <!--<img src="https://jjb-static.com/Public/image/Index/bg.png" alt="">-->
@@ -12,15 +12,15 @@
   </div>
 </template>
 <script>
-  export default {
-    name: 'bannderAdList',
-    props: {
-      adList: {
-        type: Array,
-        default: []
-      }
+export default {
+  name: 'bannderAdList',
+  props: {
+    adList: {
+      type: Array,
+      default: () => []
     }
   }
+}
 </script>
 <style lang="scss" scoped="">
 @import "../style/application.scss";

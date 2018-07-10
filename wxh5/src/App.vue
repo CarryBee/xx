@@ -26,11 +26,11 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  font-size: px2rem(24);
+  font-size: px2rem(26);
   box-sizing: border-box;
   padding-bottom: px2rem(110);
   min-height: 100vh;
-  background: #f5f5f5;
+  background: #f2f2f2;
   img {
     display: block;
     width: 100%;

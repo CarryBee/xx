@@ -12,5 +12,10 @@ export default {
     setUserInfo ({commit}, userInfo) {
       commit(mutationTypes.SET_USERINFO, userInfo)
     }
+  },
+  getters: {
+    userInfo: state => {
+      return state.userInfo
+    }
   }
 }

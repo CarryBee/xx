@@ -35,9 +35,7 @@ export default new Router({
       path: '/userInfo',
       name: 'userInfo',
       component: UserInfo,
-      meta: {
-        needLogin: true
-      }
+      meta: {}
     },
     {
       path: '/cartRecord',

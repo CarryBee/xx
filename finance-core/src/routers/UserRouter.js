@@ -182,7 +182,7 @@ $.get('/loginWithCode', async (ctx, next) => {
     let loginRes = await loginAndRegByOpenid(openId)
     ctx.body = HR({
       data: {
-        loginRes,
+        ...loginRes,
         ...wxInfo
       }
     })
