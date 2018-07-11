@@ -50,11 +50,13 @@
         </div>
       </div>
 
-      <div class="item flex-box jc-sb ai-c">
-        <div class="title">我的订单</div>
-        <div class="right flex-box">
+      <router-link :to="{path: '/OrderList'}">
+        <div class="item flex-box jc-sb ai-c">
+          <div class="title">我的订单</div>
+          <div class="right flex-box">
+          </div>
         </div>
-      </div>
+      </router-link>
 
       <div class="item flex-box jc-sb ai-c">
         <div class="title">我的业绩</div>
