@@ -15,6 +15,7 @@ import Recharge from './views/recharge'
 import myProduct from './views/myProduct'
 import Cashier from './views/Cashier'
 import PartnerIncome from './views/PartnerIncome'
+import OrderList from './views/OrderList'
 
 Vue.use(Router)
 
@@ -103,6 +104,11 @@ export default new Router({
       path: '/income',
       name: 'income',
       component: PartnerIncome
+    },
+    {
+      path: '/orderList',
+      name: 'orderList',
+      component: OrderList
     }
   ],
 })
