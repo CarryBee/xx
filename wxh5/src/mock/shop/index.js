@@ -15,7 +15,8 @@ let apiList = {
           price: '120',
           returnPrice: '130',
           productSid: 'sewe122',
-          productDetailImg: ['//yddhhoss.rfyiding.com/566432321642_Main_8643861286_1042280853?x-oss-process=style/productPic_thumbnail']
+          productDetailImg: ['/img/product.500f8864.jpg'],
+          thumbImg: '/img/product.500f8864.jpg',
         }]
       })
     }
@@ -33,10 +34,11 @@ let apiList = {
           productName: '通刷 V12,2018韩国chic春夏季新款简约高腰长裤k091',
           price: '1234',
           returnPrice: '1234',
+          thumbImg: '/img/product.500f8864.jpg',
           productDetailImg: [
-            '//img13.360buyimg.com/imgzone/jfs/t22165/348/1390079210/299594/432e1052/5b274900N486ff3f7.jpg.dpg',
-            '//yddhhoss.rfyiding.com/566432321642_Main_8643861286_1042280853',
-            '//yddhhoss.rfyiding.com/566432321642_Main_8643861286_1042280853'
+            '/img/product.500f8864.jpg',
+            '/img/product.500f8864.jpg',
+            '/img/product.500f8864.jpg'
           ]
         }
       })

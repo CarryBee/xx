@@ -1,7 +1,7 @@
 <template>
   <div class="item flex-box jc-sb f-26" @click="goToProduct">
     <div class="product-img-wrapper">
-      <img :src="item.productDetailImg" alt="">
+      <img :src="item.thumbImg" alt="">
     </div>
     <div class="product-info flex-box flex-1 flex-direction-column jc-sb">
       <div class="rows title">{{item.productName}}</div>

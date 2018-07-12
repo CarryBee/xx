@@ -93,7 +93,7 @@ export default {
   }
   .confirm-btn {
     position: fixed;
-    bottom: px2rem(80);
+    bottom: px2rem(110);
     left: 0;
     width: 100%;
     height: px2rem(80);

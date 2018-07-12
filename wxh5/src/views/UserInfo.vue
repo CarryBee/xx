@@ -10,12 +10,19 @@
               <span class="level-icon">超级合伙人</span>
               <span class="level-icon">代理商</span>
             </div>
-            <div class="uid">ID：{{userInfo.unid || '000000'}}</div>
+            <div class="flex-box uidbox">
+              <div class="uid">ID：{{userInfo.unid || '000000'}}</div>
+            </div>
           </div>
         </div>
-        <div class="button-ctrl flex-box">
-          <i class="iconfont icon-withdraw ope-icon" style="color:#ff9800"></i>
-          <span class="desp">点击提现</span>
+        <div class="button-ctrl flex-box jc-sb ai-c">
+          <div class="flex-box">
+            <i class="iconfont icon-withdraw ope-icon" style="color:#ff9800"></i>
+            <span class="desp">点击提现</span>
+          </div>
+          <div class="numb flex-box">
+            <div class="detail">¥ 0.00</div>
+          </div>
         </div>
       </div>
     </div>
@@ -42,30 +49,31 @@
 
     <div class="user-btn-list">
 
-      <div class="item flex-box jc-sb ai-c">
-        <div class="title">我的余额</div>
-        <div class="right flex-box">
-          <div class="detail">0.00</div>
-          <div class="info">元</div>
-        </div>
+      <div class="item flex-box ai-c">
+        <i class="iconfont icon-qrcode2 icon" style="color:#3f51b5"></i>
+        <div class="title flex-box">我的二维码</div>
       </div>
 
-      <div class="item flex-box jc-sb ai-c">
-        <div class="title">我的订单</div>
-        <div class="right flex-box">
-        </div>
+      <div class="item flex-box ai-c">
+        <i class="iconfont icon-part icon" style="color:#4caf50"></i>
+        <div class="title flex-box">升级合伙人</div>
       </div>
 
-      <div class="item flex-box jc-sb ai-c">
-        <div class="title">我的业绩</div>
-        <div class="right flex-box">
+      <router-link :to="{path: '/OrderList'}">
+        <div class="item flex-box ai-c">
+          <i class="iconfont icon-order icon" style="color:#e08d12"></i>
+          <div class="title flex-box">我的订单</div>
         </div>
+      </router-link>
+
+      <div class="item flex-box ai-c">
+        <i class="iconfont icon-money2 icon" style="color:#607d8b"></i>
+        <div class="title flex-box">我的钱包</div>
       </div>
 
-      <div class="item flex-box jc-sb ai-c">
-        <div class="title">帮助</div>
-        <div class="right flex-box">
-        </div>
+      <div class="item flex-box ai-c">
+        <i class="iconfont icon-help icon" style="color:#a868b3"></i>
+        <div class="title flex-box">帮助</div>
       </div>
 
     </div>
@@ -168,9 +176,11 @@ export default {
           font-size: px2rem(30);
           font-weight: 600;
         }
-        .uid {
-          padding-top: px2rem(5);
-          font-size: px2rem(28);
+        .uidbox {
+          margin-top: px2rem(6);
+          .uid {
+            font-size: px2rem(28);
+          }
         }
       }
     }
@@ -182,6 +192,7 @@ export default {
     .button-ctrl {
       border-top: px2rem(2) solid #eaeaea;
       padding-left: px2rem(60);
+      padding-right: px2rem(60);
       .ope-icon {
         line-height: px2rem(90);
         font-size: px2rem(45);
@@ -189,6 +200,9 @@ export default {
       .desp {
         padding-left: px2rem(20);
         line-height: px2rem(90);
+        font-size: px2rem(30);
+      }
+      .numb {
         font-size: px2rem(30);
       }
     }
@@ -230,10 +244,16 @@ export default {
     margin-top: px2rem(20);
     border-bottom: px2rem(2) solid #eaeaea;
     .item {
-      height: px2rem(100);
-      padding: 0 px2rem(20);
+      height: px2rem(110);
+      padding: 0 px2rem(40);
       background: #fff;
       border-top: px2rem(2) solid #eaeaea;
+      .icon {
+        font-size:0.6rem;
+      }
+      .title {
+        padding-left: px2rem(10);
+      }
     }
     .info {
       margin-left: px2rem(10);
