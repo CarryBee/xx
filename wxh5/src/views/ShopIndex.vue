@@ -32,7 +32,7 @@ export default {
         desp: '在基础的机器返现之上，app进行返现，加入合伙人更能享受更低费率',
         price: '120',
         returnPrice: '130',
-        productDetailImg: pic
+        thumbImg: pic
       },
       {
         productId: '1',
@@ -40,7 +40,7 @@ export default {
         desp: '在基础的机器返现之上，app进行返现，加入合伙人更能享受更低费率',
         price: '120',
         returnPrice: '130',
-        productDetailImg: pic
+        thumbImg: pic
       }],
       bannerAdList: [{
         img: trianglify,

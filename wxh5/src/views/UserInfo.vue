@@ -59,10 +59,12 @@
         <div class="title flex-box">升级合伙人</div>
       </div>
 
-      <div class="item flex-box ai-c">
-        <i class="iconfont icon-order icon" style="color:#e08d12"></i>
-        <div class="title flex-box">我的订单</div>
-      </div>
+      <router-link :to="{path: '/OrderList'}">
+        <div class="item flex-box ai-c">
+          <i class="iconfont icon-order icon" style="color:#e08d12"></i>
+          <div class="title flex-box">我的订单</div>
+        </div>
+      </router-link>
 
       <div class="item flex-box ai-c">
         <i class="iconfont icon-money2 icon" style="color:#607d8b"></i>
