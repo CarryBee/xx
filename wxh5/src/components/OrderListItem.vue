@@ -1,33 +1,108 @@
 </<template>
     <div class="order-item">
-        <div class="item"></div>
+        <div class="item-title flex-box jc-sb ai-c">
+          <div class="item-no">5xxxxc5218b4ff184d833d82</div>
+          <div class="item-pay">已付款</div>
+        </div>
+        <div class="item-snaps flex-box flex-direction-column">
+            <div class="snap flex-box">
+                <div class="image">image</div>
+                <div class="other">
+                  <div class="title">title</div>
+                  <div class="info">brand 10</div>
+                  <div class="price">￥101.1234(￥0 优惠额度)</div>
+                </div>
+            </div>
+            <div class="snap flex-box">
+                <div class="image">image</div>
+                <div class="other">
+                  <div class="title">title</div>
+                  <div class="info">brand 10</div>
+                  <div class="price">￥101.1234</div>
+                </div>
+            </div>
+        </div>
+        <div class="item-info flex-box jc-sb ai-c">
+            <div class="time">2018-7-13 00:12</div>
+            <div class="order">
+                <div class="allprice">￥1101.23</div>
+                <div class="freemach">免费2台</div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
-export default { // 订单item，包含订单里面的多个snap物品
-    data() {
-        return {
-            pay: false,
-            snap: [{
-                _id: '5b27dc5218b4ff184d833d82', // 商品快照的id
-                title: 'title', // 商品标题
-                text: 'text', // 商品文字描述
-                price: 101.1234, // 商品标价，如果有真实价格，则可以划线划掉。没优惠券时都显示这个价格
-                actualprice: 0, // 商品真实价格，两个价格不一样证明用了优惠券，可以标注
-                usefreemach: true, // 是否使用了优惠额度
-                rate: 10,
-                brand: 'brand', // 产家
-                productDetailImg: '/img/product.500f8864.jpg',
-                content: ['/img/product.500f8864.jpg'], // 显示图片
-                createtime: '2018-06-18T16:22:42.915Z', // 显示创建时间
-                __v: 0
-            }]
+export default {
+  // 订单item，包含订单里面的多个snap物品
+  data() {
+    return {
+      pay: false,
+      snap: [
+        {
+          _id: '5b27dc5218b4ff184d833d82', // 商品快照的id
+          title: 'title', // 商品标题
+          text: 'text', // 商品文字描述
+          price: 101.1234, // 商品标价，如果有真实价格，则可以划线划掉。没优惠券时都显示这个价格
+          actualprice: 0, // 商品真实价格，两个价格不一样证明用了优惠券，可以标注
+          usefreemach: true, // 是否使用了优惠额度
+          rate: 10,
+          brand: 'brand', // 产家
+          productDetailImg: '/img/product.500f8864.jpg',
+          content: ['/img/product.500f8864.jpg'], // 显示图片
+          createtime: "2018-06-18T16:22:42.915Z", // 显示创建时间
+          __v: 0
         }
+      ],
+      allprice: 100,
+      freemach: 1,
+      _id: "5xxxxc5218b4ff184d833d82"
     }
+  }
 }
 </script>
 
-<style>
-    @import "../style/application.scss";
+<style lang="scss" scoped="">
+@import "../style/application.scss";
+.order-item {
+  .item-title {
+    .item-no {
+
+    }
+    .item-pay {
+
+    }
+  }
+  .item-snaps {
+    .snap {
+      .image {
+
+      }
+      .other {
+        .title {
+
+        }
+        .info {
+
+        }
+        .price {
+
+        }
+      }
+    }
+    .item-info {
+      .time {
+
+      }
+      .order {
+        .allprice {
+
+        }
+        .freemach {
+
+        }
+      }
+    }
+  }
+}
 </style>

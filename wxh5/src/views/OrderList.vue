@@ -1,5 +1,6 @@
 <template>
   <div class="order-list">
+    <order-list-item></order-list-item>
     <template v-for="(item, index) in orderList">
       <div :key="index">
         <div class="item flex-box jc-sb f-26" v-for="(snapItem, index2) in item.snap" :key="index2">
@@ -25,6 +26,7 @@
   </div>
 </template>
 <script>
+import OrderListItem from '@/components/OrderListItem'
 export default {
   data () {
     return {
@@ -65,6 +67,9 @@ export default {
     }
   },
   methods: {
+  },
+  components: {
+    OrderListItem
   }
 }
 </script>
