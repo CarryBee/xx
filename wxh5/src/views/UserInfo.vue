@@ -3,7 +3,7 @@
     <div class="header">
       <div class="header-info jc-ce ai-c">
         <div class="user-header flex-box">
-          <div class="head"><img :src="headicon" alt=""></div>
+          <div class="head"><img :src="userInfo.headimgurl || headicon" alt=""></div>
           <div class="info">
             <div class="flex-box">
               <div class="name">{{userInfo.nickname || '未授权登录'}}</div>
@@ -20,8 +20,8 @@
             <i class="iconfont icon-withdraw ope-icon" style="color:#ff9800"></i>
             <span class="desp">点击提现</span>
           </div>
-          <div class="numb flex-box">
-            <div class="detail">¥ 0.00</div>
+          <div class="numb t-orange flex-box">
+            <div class="detail">¥ 102.10 + 1208.03</div>
           </div>
         </div>
       </div>
@@ -59,11 +59,9 @@
         <div class="title flex-box">升级合伙人</div>
       </div>
 
-      <router-link :to="{path: '/OrderList'}">
-        <div class="item flex-box ai-c">
+      <router-link class="item flex-box ai-c" :to="{path: '/OrderList'}">
           <i class="iconfont icon-order icon" style="color:#e08d12"></i>
           <div class="title flex-box">我的订单</div>
-        </div>
       </router-link>
 
       <div class="item flex-box ai-c">

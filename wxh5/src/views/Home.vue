@@ -26,7 +26,7 @@
       <div class="operation-row flex-box">
         <div class="operation-cell ope-right flex-1">
           <i class="iconfont icon-commend ope-icon" style="color:#673ab7"></i>
-          <span class="ope-text">推荐列表</span>
+          <span class="ope-text">我推荐的人</span>
         </div>
         <div class="operation-cell ope-right flex-1">
           <i class="iconfont icon-machine2 ope-icon" style="color:#2196f3"></i>

@@ -31,6 +31,7 @@ export default {
     let res = await this.REQAPI.getProductDetail({productId})
     this.productDetail = res.data.data
     console.log('this.productDetail', this.productDetail)
+    this.productDetail.productDetailImg = [trianglify]
   }
 }
 </script>

@@ -6,7 +6,7 @@
     <div class="product-info flex-box flex-1 flex-direction-column jc-sb">
       <div class="rows title">{{item.productName}}</div>
       <div class="rows desp">{{item.desp}}</div>
-      <div class="rows">费率<span class="t-orange num">0.60%</span></div>
+      <div class="rows">最低费率<span class="t-orange num">0.48%</span></div>
       <div class="rows">价格<span class="t-orange price">￥{{item.price}}</span></div>
     </div>
   </div>
