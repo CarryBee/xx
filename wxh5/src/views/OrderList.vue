@@ -1,20 +1,23 @@
 <template>
   <div class="order-list">
-    <template v-for="item in orderList">
-      <div class="item flex-box jc-sb f-26" v-for="(snapItem, index) in item.snap" :key="index">
-        <div class="product-img-wrapper">
-          <img :src="snapItem.productDetailImg" alt="">
-        </div>
-        <div class="product-info flex-box flex-1 flex-direction-column jc-sb">
-          <div class="rows title">{{snapItem.title}}</div>
-          <div class="rows desp">{{snapItem.text}}</div>
-          <div class="rows">费率<span class="t-orange num">0.60%</span></div>
-          <div class="rows flex-box jc-sb">
-            <div class="left">
-              <span>价格</span><span class="t-orange price">￥{{snapItem.price}}</span>
-            </div>
-            <div class="right">
-              <span class="order-status t-orange f-24">已付款</span>
+    <order-list-item></order-list-item>
+    <template v-for="(item, index) in orderList">
+      <div :key="index">
+        <div class="item flex-box jc-sb f-26" v-for="(snapItem, index2) in item.snap" :key="index2">
+          <div class="product-img-wrapper">
+            <img :src="snapItem.productDetailImg" alt="">
+          </div>
+          <div class="product-info flex-box flex-1 flex-direction-column jc-sb">
+            <div class="rows title">{{snapItem.title}}</div>
+            <div class="rows desp">{{snapItem.text}}</div>
+            <div class="rows">费率<span class="t-orange num">0.60%</span></div>
+            <div class="rows flex-box jc-sb">
+              <div class="left">
+                <span>价格</span><span class="t-orange price">￥{{snapItem.price}}</span>
+              </div>
+              <div class="right">
+                <span class="order-status t-orange f-24">已付款</span>
+              </div>
             </div>
           </div>
         </div>
@@ -23,6 +26,7 @@
   </div>
 </template>
 <script>
+import OrderListItem from '@/components/OrderListItem'
 export default {
   data () {
     return {
@@ -63,6 +67,9 @@ export default {
     }
   },
   methods: {
+  },
+  components: {
+    OrderListItem
   }
 }
 </script>
