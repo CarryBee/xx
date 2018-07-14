@@ -5,7 +5,6 @@
       <div class="item-pay t-orange">已付款</div>
     </div>
     <div class="item-snaps flex-box flex-direction-column">
-
       <div class="snap flex-box" v-for="(snapItem, index) in item.snap" :key="index">
         <div class="left">
           <div class="product-img-wrapper">
@@ -17,7 +16,7 @@
             <div class="title f-28 t-black">{{snapItem.title}}</div>
             <div class="info f-26 t-9-grey">{{snapItem.text}}</div>
           </div>
-          <div class="price f-24"><span class="snap-price t-orange">￥{{snapItem.price}}</span>(￥0 优惠额度)</div>
+          <div class="price f-24 flex-1"><span class="snap-price t-orange">￥{{snapItem.price}}</span>(￥0 优惠额度)</div>
         </div>
       </div>
 
@@ -56,13 +55,12 @@ export default {
   border-bottom: px2rem(2) solid #eaeaea;
   .item-title {
     height: px2rem(80);
-    border-bottom: px2rem(2) solid #eaeaea;
+    border-bottom: px2rem(3) solid #eaeaea;
     padding: 0px px2rem(30);
     .item-no {}
     .item-pay {}
   }
   .item-info {
-    border-top: px2rem(2) solid #eaeaea;
     min-height: px2rem(80);
     padding: 0px px2rem(30);
     .time {}
@@ -74,30 +72,30 @@ export default {
     }
   }
   .item-snaps {
-    padding-bottom: px2rem(30);
+    padding: 0 px2rem(30) px2rem(20) px2rem(30);
     .snap {
-      padding: 0 px2rem(30);
       margin-top: px2rem(20);
-      background: #f9f9f9;
+      background: #f7f7f7;
       .product-img-wrapper {
-        height: px2rem(150);
-        width: px2rem(150);
+        height: px2rem(120);
+        width: px2rem(120);
         img {
           width: 100%;
           height: 100%;
-          border-radius: px2rem(10);
-          background: #f9f9f9;
+          background: #f7f7f7;
         }
       }
-      .other {
-        padding-left: px2rem(20);
-        .title {}
-        .info {}
+      .right {
+        padding: px2rem(10);
+        .other {
+          padding-left: px2rem(10);
+        }
       }
-      .price {}
-      .snap-price {
-        padding-left: px2rem(20);
-        padding-right: px2rem(10);
+      .price {
+        padding-left: px2rem(10);
+        .snap-price {
+          padding-right: px2rem(10);
+        }
       }
     }
   }
