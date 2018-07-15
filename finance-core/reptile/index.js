@@ -1,13 +1,13 @@
 
 const FinanceBaseTool = require("../src/FinanceBaseTool");
-const TongfuFlow = require("./TongfuFlow");
+const TongShuaFlow = require("./TongShuaFlow");
 /**
  * 
- * TongfuFlowRun
- * Tongfu版本爬虫与数据获取
+ * TongShuaFlowRun
+ * TongShua版本爬虫与数据获取
  * 
  */
-async function TongfuFlowRun() {
+async function TongShuaFlowRun() {
     try {
         await FinanceBaseTool.start(); // 启动 MySQL
         const dip = new FinanceBaseTool().getSqlDisposer();
@@ -16,7 +16,7 @@ async function TongfuFlowRun() {
          * 读取通付的数据
          */
         let begin = new Date().getTime();
-        let res = await TongfuFlow.run(); // 所有数据
+        let res = await TongShuaFlow.run(); // 加载所有数据 ： 核心
         let end = new Date().getTime();
         // console.log(res);
         console.log("总耗时" + (end-begin)/1000 + "秒");
@@ -42,4 +42,4 @@ async function TongfuFlowRun() {
         console.log("Tongfu版本爬虫过程：" + e);
     }
 }
-TongfuFlowRun();
+TongShuaFlowRun();
