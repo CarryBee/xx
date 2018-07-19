@@ -12,7 +12,7 @@ export default {
   created () {
     this.code = utils.getQueryString('code') || '没有code'
     this.wxUrl = utils.makeAccessWXUrl({
-      reUrl: location.origin + '/#/'
+      reUrl: location.origin + '/#/wxRedirect'
     })
     location.href = this.wxUrl
   },
