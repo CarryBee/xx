@@ -2,7 +2,7 @@
   <div class="home">
     <div class="header">
       <div class="banner">
-        <img src="@/assets/banner.png" />
+        <img style="height:40px;" src="@/assets/banner.png" />
       </div>
       <div class="tips-banner flex-box">
         <i class="iconfont icon-horn horn"></i>
