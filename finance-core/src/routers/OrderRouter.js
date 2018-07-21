@@ -8,15 +8,16 @@ const finRouter = require("../modules/FinRouter");
 const Invoice = require("../tools/financebox/Invoice");
 
 const jv = require("../tools/jwtcontrol");
-const tenpay = require("tenpay")
+const tenpay = require("tenpay");
+const config = require('../config.js');
 
 const tenpayConfig = {
-  appid: 'wx6f8322dd012ed875',
-  mchid: '微信商户号',
-  partnerKey: '微信支付安全密钥',
+  appid: config.appid,
+  mchid: config.mchid,
+  partnerKey: config.partnerKey,
   // pfx: require('fs').readFileSync('证书文件路径'),
-  notify_url: 'http://wx.sihuipay.com/api/order/rechange',
-  spbill_create_ip: 'IP地址'
+  notify_url: config.notify_url,
+  spbill_create_ip: config.spbill_create_ip
 }
 const tenpayApi = new tenpay(tenpayConfig);
 
@@ -187,20 +188,29 @@ $.get('/rechange', async ctx => {// (充值正常模式) 额外驱动
     }
 });
 
-$.post('/unifiedOrder', async ctx => {
+/**
+ * 充值接口，统一下单接口
+ */
+$.post('/payRecharge', async ctx => {
   let token = ctx.headers.logintoken
+  console.log('ctx', );
   let tokenInfo = jv.vtoken(token)
-  console.log('tokenInfo', tokenInfo)
-  let openid = tokenInfo.token
+  let openid = tokenInfo.openid
+  let price = parseInt(ctx.request.body.price)
+  if (!price) { throw '没有输入金额'}
   let params = {
     out_trade_no: 'test_unified_001',
-    body: '测试商品',
-    total_fee: 0.01,
+    body: '商城充值',
+    total_fee: price,
     openid
   }
+  let unifiedOrderRes = await tenpayApi.unifiedOrder(params)
+  // const sandboxAPI = await tenpay.sandbox(tenpayConfig);
+  // let unifiedOrderRes = await sandboxAPI.unifiedOrder(params)
+  console.log('unifiedOrderRes', unifiedOrderRes)
   ctx.body = HR({
     data: {
-      params
+      unifiedOrderRes
     }
   })
 })

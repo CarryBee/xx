@@ -31,10 +31,14 @@
 export default {
   methods: {
     async charge () {
-      this.$toasted.show('尚未开放充值')
-      // TODO: 创建充值订单，拉起微信支付, 应该接入两个接口
-      let res = await this.REQAPI.unifiedOrder()
-      console.log('unifiedOrder', res)
+      try {
+        let res = await this.REQAPI.payRecharge()
+        if (res.data.data.code !== '200') {
+          this.$toasted.show(res.data.message)
+        }
+      } catch (e) {
+        this.$toasted.show('接口异常')
+      }
     }
   }
 }

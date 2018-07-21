@@ -33,7 +33,7 @@ export async function getMyProduct () {
   return res
 }
 
-export async function unifiedOrder () {
-  let res = await http.post(API.unifiedOrder, {})
+export async function payRecharge () {
+  let res = await http.post(API.payRecharge, {})
   return res
 }
