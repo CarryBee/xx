@@ -196,13 +196,15 @@ $.post('/payRecharge', async ctx => {
   console.log('ctx', );
   let tokenInfo = jv.vtoken(token)
   let openid = tokenInfo.openid
-  let price = parseInt(ctx.request.body.price)
-  if (!price) { throw '没有输入金额'}
+  let amount = parseInt(ctx.request.body.amount)
+  if (!amount) { throw '没有输入金额'}
   let params = {
     out_trade_no: 'test_unified_001',
     body: '商城充值',
-    total_fee: price,
-    openid
+    total_fee: amount,
+    amount,
+    event: 'rechange',
+    ...openid
   }
   let unifiedOrderRes = await tenpayApi.unifiedOrder(params)
   // const sandboxAPI = await tenpay.sandbox(tenpayConfig);
