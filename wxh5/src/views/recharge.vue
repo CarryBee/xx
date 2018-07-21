@@ -14,7 +14,7 @@
         <div class="title">充值金额</div>
         <div class="right flex-box">
           <div class="detail">
-            <input class="f-28 ta-r" type="number" placeholder="请输入充值金额">
+            <input class="f-28 ta-r" type="number" v-model.number="price" placeholder="请输入充值金额">
           </div>
           <div class="info">元</div>
         </div>
@@ -29,15 +29,21 @@
 </template>
 <script>
 export default {
+  data () {
+    return {
+      price: ''
+    }
+  },
   methods: {
     async charge () {
+      console.log('this.price', this.price)
       try {
-        let res = await this.REQAPI.payRecharge()
-        if (res.data.data.code !== '200') {
-          this.$toasted.show(res.data.message)
-        }
+        let res = await this.REQAPI.payRecharge({
+          price: this.price
+        })
+        this.$toasted.show('充值成功')
       } catch (e) {
-        this.$toasted.show('接口异常')
+        this.$toasted.show(e.data.message || '接口异常')
       }
     }
   }
