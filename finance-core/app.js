@@ -32,11 +32,7 @@ app.use(cors({origin: "*"})); // 完全开放域
   *  }
   * }
 **/
-// 路由
-const UserRouter = require("./src/routers/UserRouter");
-const StuffRouter = require("./src/routers/StuffRouter");
-const OrderRouter = require("./src/routers/OrderRouter");
-const QcodeRouter = require("./src/routers/QcodeRouter");
+
 // 统一的处理
 // 非业务接口code：{200: 操作成功，404 接口不存在, -1: token 过期或校验失败, '500': '其他错误'}
 let handleCode = {'200': '操作成功','404': '接口不存在', '-1': 'token过期或校验失败', '500': '系统异常'}
@@ -95,10 +91,18 @@ $.get('/success', async ctx => {
 
 });
 
+// 路由
+const UserRouter = require("./src/routers/UserRouter");
+const StuffRouter = require("./src/routers/StuffRouter");
+const OrderRouter = require("./src/routers/OrderRouter");
+const QcodeRouter = require("./src/routers/QcodeRouter");
+const TenpayRouter = require("./src/routers/TenpayRouter");
+
 $.use('/user', UserRouter);
 $.use('/stuff', StuffRouter);
 $.use('/order', OrderRouter);
 $.use('/qcode', QcodeRouter);
+$.use('/tenpay', TenpayRouter);
 app.use($.routes());
 app.use(serve(`${__dirname}/static`));
 (async function(){
