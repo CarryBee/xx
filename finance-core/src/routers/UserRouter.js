@@ -49,10 +49,10 @@ async function loginAndRegByOpenid(openid) {
 			userid: userinfo._id,
 			level: userinfo.level // 用户等级
 		};
-		user.token = jv.sign(user); // JWT签名
 		user.unid = userinfo.unid;
 		user.openid = userinfo.openid; // 额外绑定
 		user.phone = userinfo.phone; // 额外绑定
+    user.token = jv.sign(user); // JWT签名
 
 		user.nickname = userinfo.nickname; // 微信名称
 		user.headurl = userinfo.headurl; // 头像

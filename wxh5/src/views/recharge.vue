@@ -30,9 +30,11 @@
 <script>
 export default {
   methods: {
-    charge () {
+    async charge () {
       this.$toasted.show('尚未开放充值')
       // TODO: 创建充值订单，拉起微信支付, 应该接入两个接口
+      let res = await this.REQAPI.unifiedOrder()
+      console.log('unifiedOrder', res)
     }
   }
 }

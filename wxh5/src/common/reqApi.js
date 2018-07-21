@@ -32,3 +32,8 @@ export async function getMyProduct () {
   let res = await http.post(API.getMyProduct, {})
   return res
 }
+
+export async function unifiedOrder () {
+  let res = await http.post(API.unifiedOrder, {})
+  return res
+}
