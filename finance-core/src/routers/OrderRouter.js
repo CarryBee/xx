@@ -8,9 +8,21 @@ const finRouter = require("../modules/FinRouter");
 const Invoice = require("../tools/financebox/Invoice");
 
 const jv = require("../tools/jwtcontrol");
+const tenpay = require("tenpay");
+const config = require('../config.js');
+
+const tenpayConfig = {
+  appid: config.appid,
+  mchid: config.mchid,
+  partnerKey: config.partnerKey,
+  // pfx: require('fs').readFileSync('证书文件路径'),
+  notify_url: config.notify_url,
+  spbill_create_ip: config.spbill_create_ip
+}
+const tenpayApi = new tenpay(tenpayConfig);
 
 // 创建订单
-/* 
+/*
 进入结算页面，把用户选择的商品id数组，或者单个商品id传入。
 返回：
 {
@@ -23,18 +35,18 @@ const jv = require("../tools/jwtcontrol");
             "price": 101.1234,  // 商品标价，如果有真实价格，则可以划线划掉。没优惠券时都显示这个价格
 			"actualprice": 0,  // 商品真实价格，两个价格不一样证明用了优惠券，可以标注
 			"usefreemach": true, // 是否使用了优惠额度
-            "rate": 10,  
-            "brand": "brand", // 产家 
+            "rate": 10,
+            "brand": "brand", // 产家
             "content": [ ],  // 显示图片
             "createtime": "2018-06-18T16:22:42.915Z", // 显示创建时间
             "__v": 0
         }
-    ], 
+    ],
     "_id": "5b27dc5218b4ff184d833d83",  // 订单id，点击确认支付，支付的时候传入
     "user": "5b2543b9e17d86de098a4821",  // 用户id
     "allprice": 0,  // 需要扣除的整体价格，前端显示要扣的金钱，用了优惠券，变成0
     "freemach": 1,  // 使用的优惠券的张数，前端显示用的额度，消耗1张
-    "__v": 0, 
+    "__v": 0,
     "publishtime": "2018-06-18T16:22:42.932Z"
 }
 */
@@ -43,11 +55,11 @@ const jv = require("../tools/jwtcontrol");
 下单失败，缺货时候的返回，一般缺货会出现在商品买单时候商品删除，基本不可能出现
 
 {
-    "errCode": 501, 
-    "errmsg": "商品缺货", 
-    "name": "创建订单", 
+    "errCode": 501,
+    "errmsg": "商品缺货",
+    "name": "创建订单",
     "content": {
-        "_id": "5b26980d4f2b66ff144caf9f",  
+        "_id": "5b26980d4f2b66ff144caf9f",
         "msg": "商品缺货"
     }
 }
@@ -55,7 +67,7 @@ const jv = require("../tools/jwtcontrol");
 $.get('/addorder', async ctx => {
 	try{
 		const list = ["5b2698084f2b66ff144caf9b", "5b26980d4f2b66ff144caf9c"];
-		
+
 		const order = new OrderModule("5b2543b9e17d86de098a4821", list);
 		const res = await order.createByList();
 		ctx.body = ERO(0, "创建订单", res);
@@ -66,7 +78,7 @@ $.get('/addorder', async ctx => {
 		} else {
 			ctx.body = ERO(501, "创建订单", "系统错误", e.message);
 		}
-        
+
     }
 });
 
@@ -76,24 +88,24 @@ $.get('/addorder', async ctx => {
 
 
 /**
- * 
+ *
  * @param {String} userid 用户名，可以从token来
  * @param {String} orderid 订单预付单的ID
  */
 async function payorder(userid, orderid) {
     const order = await OrderModule.getUnpaidOrderByID(orderid); // 获取未支付订单
-    
+
     let inv = new Invoice();// 校验格式
     inv.userid = userid;
     inv.minus = order.allprice; // 扣费用
     inv.freemach = order.freemach; // 扣额度
     const invoices = [inv]; // 默认只有一单
-    
+
     await finRouter.run({
         path: "#testrecharge",
         invoices: invoices
     });
-    return await OrderModule.setPayOrder(orderid);// 并且标志订单为完成    
+    return await OrderModule.setPayOrder(orderid);// 并且标志订单为完成
 }
 $.get('/payorder', async ctx => {  // (正常模式) 钱包有余额，购物直接扣
     // 根据订单 id 进行事务并对钱包的扣除
@@ -109,13 +121,13 @@ $.get('/payorder', async ctx => {  // (正常模式) 钱包有余额，购物直
 
 // 无需创建升级单，直接传目标级别过来计算即可
 /**
- * 
+ *
  * 合伙人 5
  * 超级合伙人 6
  * 团队合伙人 7
  * @param {String} userid 用户名，可以从token来
  * @param {String} aimlevel 级别，目标级别
- * 
+ *
  */
 async function payvip(userid, aimlevel) {
     const diff = 12; // 得到差价
@@ -148,19 +160,19 @@ $.get('/payvip', async ctx => {  // (正常模式) 钱包有余额，升级直�
 
 // 微信支付通知，回调函数
 /**
- * 
+ *
  * 微信支付回调
  * 三个入口
- * 
+ *
  */
-$.get('/rechange', async ctx => {// (充值正常模式) 额外驱动 
+$.get('/rechange', async ctx => {// (充值正常模式) 额外驱动
 
     const body = {
         rechange: "ok",
         payorder: "ok",
         payvip: "ok"
     }
-
+    console.log('rechange', ctx)
     // 拿到回调后增加对应钱包的钱，（+）{userid:"karonl", event:"rechange", params:undefined, amount:100}
     ctx.body.rechange = "ok";
     // 如果有订单编号，则执行 payorder 的扣款逻辑 {userid:"karonl", event:"payorder", params:{orderid:"222sfasdf"}, amount:100}
@@ -177,7 +189,33 @@ $.get('/rechange', async ctx => {// (充值正常模式) 额外驱动
 });
 
 /**
- * 
+ * 充值接口，统一下单接口
+ */
+$.post('/payRecharge', async ctx => {
+  let token = ctx.headers.logintoken
+  console.log('ctx', );
+  let tokenInfo = jv.vtoken(token)
+  let openid = tokenInfo.openid
+  let price = parseInt(ctx.request.body.price)
+  if (!price) { throw '没有输入金额'}
+  let params = {
+    out_trade_no: 'test_unified_001',
+    body: '商城充值',
+    total_fee: price,
+    openid
+  }
+  let unifiedOrderRes = await tenpayApi.unifiedOrder(params)
+  // const sandboxAPI = await tenpay.sandbox(tenpayConfig);
+  // let unifiedOrderRes = await sandboxAPI.unifiedOrder(params)
+  console.log('unifiedOrderRes', unifiedOrderRes)
+  ctx.body = HR({
+    data: {
+      unifiedOrderRes
+    }
+  })
+})
+/**
+ *
  * 充值/扣费测试
  */
 $.get('/testpay', async ctx => {
@@ -188,7 +226,7 @@ $.get('/testpay', async ctx => {
         inv.userid = "one.userid5";
         inv.minus = 12.23;
         invoices.push(inv);
-        
+
         let begin = new Date().getTime();
         const res = await finRouter.run({
             path: "#testrecharge",

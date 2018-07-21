@@ -66,7 +66,7 @@ async function loginWithCode (code) {
   let loginRes = await reqApi.loginWithCode(code)
   store.dispatch('SET_USERINFO', loginRes)
   localStorage.setItem('loginRes', JSON.stringify(loginRes.data.data))
-  axios.defaults.headers.common['loginToken'] = loginRes.auth || ''
+  axios.defaults.headers.common['loginToken'] = loginRes.token || ''
   return true
 }
 
@@ -83,7 +83,7 @@ async function runApp () {
     try {
       loginRes = JSON.parse(loginResStr)
       store.dispatch('setUserInfo', loginRes)
-      axios.defaults.headers.common['loginToken'] = loginRes.auth || ''
+      axios.defaults.headers.common['loginToken'] = loginRes.token || ''
       return false
     } catch (err) {}
   }

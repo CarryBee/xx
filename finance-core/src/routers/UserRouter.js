@@ -9,7 +9,8 @@ const $ = new Router();
 const UserModule = require("../modules/UserModule");
 const ParamsBox = require("../tools/ParamsBox");
 const OAuth = require('co-wechat-oauth');
-const wxApi = new OAuth('wx6f8322dd012ed875', 'd76c5dd2f636241c6ecc99806e1943c3');
+const config = require('../config')
+const wxApi = new OAuth(config.appid, config.scret);
 
 const jv = require("../tools/jwtcontrol");
 
@@ -49,10 +50,10 @@ async function loginAndRegByOpenid(openid) {
 			userid: userinfo._id,
 			level: userinfo.level // 用户等级
 		};
-		user.token = jv.sign(user); // JWT签名
 		user.unid = userinfo.unid;
 		user.openid = userinfo.openid; // 额外绑定
 		user.phone = userinfo.phone; // 额外绑定
+    user.token = jv.sign(user); // JWT签名
 
 		user.nickname = userinfo.nickname; // 微信名称
 		user.headurl = userinfo.headurl; // 头像
