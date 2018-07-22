@@ -17,36 +17,38 @@ const tenpayConfig = {
 }
 const tenpayApi = new tenpay(tenpayConfig);
 
-
 //================  微信统一预付单接口  ================
 async function tenpayParams(out_trade_no, event, amount, user, params) {
-  const openid = user.openid;
   const userid = user.userid;
   const level = user.level;
+  const product = {
+    rechange: "钱包充值",
+    payorder: "线上购物",
+    payvip: "合伙人业务"
+  }
 
   // 一大堆校验机制
   if (!amount || amount < 0) { throw new Error('无效支付金额'); }
   if (!userid || !level) { throw new Error('无效用户'); }
-  if (!openid) { throw new Error('非微信用户无法使用微信充值'); }
+  // if (!openid) { throw new Error('非微信用户无法使用微信充值'); }
   if (["rechange", "payorder", "payvip"].indexOf(event) === -1) {
     throw new Error('非允许支付业务类型');
   }
   const invo = new Invoice();
-  invo.plusnum = amount;
+  invo.plusnum = amount; // 正数范围检验
   amount = invo.amount;
   // 一大堆校验机制
   const attach = { // 自定义参数，支付微信回调时候要用
-    event,
-    openid,
-    userid,
-    level,
-    amount,
-    ...params
+    event, // 区分渠道
+    userid, // 充值要用
+    level, // 升级要用
+    amount, // 记录日志要用
+    ...params // 订单和升级要用
   };
 
   const payConfig = {
     out_trade_no: out_trade_no,
-    body: '四汇金融充值购物服务:' + event,
+    body: '四汇金融云平台服务:' + product[event],
     total_fee: amount,
     attach
   }
@@ -121,14 +123,18 @@ $.post('/payvip', async ctx => {
  * 三种模式入口
  *
  */
-$.get('/weixintenpaycallback', async ctx => {// (充值正常模式) 额外驱动
+$.post('/weixintenpaycallback', tenpayApi.middleware(), async ctx => { // (充值正常模式) 额外驱动
+
+  const message = ctx.request.weixin; // 返回内容
+  const openid = message.openid;
+  const order_id = message.out_trade_no;
+  const attach = JSON.parse(message.attach);
 
   const body = {
     rechange: "ok",
     payorder: "ok",
     payvip: "ok"
   }
-  console.log('rechange', ctx)
   // 拿到回调后增加对应钱包的钱，（+）{userid:"karonl", event:"rechange", amount:100}
   ctx.body.rechange = "ok";
   // 如果有订单编号，则执行 payorder 的扣款逻辑 {userid:"karonl", event:"payorder", orderid:"222sfasdf" }
@@ -142,6 +148,8 @@ $.get('/weixintenpaycallback', async ctx => {// (充值正常模式) 额外驱�
     payvip();
     ctx.body.payvip = "ok";
   }
+
+  ctx.reply('错误消息' || '');
 });
 
 //================  微信支付回调函数入口  ================
