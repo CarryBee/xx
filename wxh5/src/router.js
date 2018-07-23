@@ -90,12 +90,18 @@ export default new Router({
     {
       path: '/recharge',
       name: 'recharge',
-      component: Recharge
+      component: Recharge,
+      meta: {
+        needLogin: true
+      }
     },
     {
       path: '/myProduct',
       name: 'myProduct',
-      component: myProduct
+      component: myProduct,
+      meta: {
+        needLogin: true
+      }
     },
     {
       path: '/cashier',

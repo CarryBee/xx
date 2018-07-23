@@ -26,6 +26,7 @@ OrderSchema.methods.check = async function() { // 有问题即终止
     if(this.allprice == undefined) throw new Error("订单失效");   // 无效的价格
     const num = this.allprice.toFixed(2);
     if(num < 0 || num > 10000) throw new Error("价格异常"); // 价格超过边界
+    if(num == 0) this.pay = true; // 默认支付完成
     this.allprice = num;
     if(this.freemach == undefined) throw new Error("订单失效");  // 无效的优惠
     if(this.freemach < 0 || this.freemach > 10) throw new Error("额度异常");  // 优惠数超过边界

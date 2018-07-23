@@ -1,4 +1,5 @@
 'use strict'
+// 总后台授权登录时候要使用
 const Router = require("koa-router");
 // const WOauth = require("../tools/WXOauth");
 // const QcodeMoudle = require("../modules/QcodeModule");

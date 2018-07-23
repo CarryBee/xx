@@ -9,7 +9,7 @@ const $ = new Router();
 const UserModule = require("../modules/UserModule");
 const ParamsBox = require("../tools/ParamsBox");
 const OAuth = require('co-wechat-oauth');
-const config = require('../config')
+const config = require('../config');
 const wxApi = new OAuth(config.appid, config.scret);
 
 const jv = require("../tools/jwtcontrol");

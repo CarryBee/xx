@@ -14,7 +14,7 @@
         <div class="title">充值金额</div>
         <div class="right flex-box">
           <div class="detail">
-            <input class="f-28 ta-r" type="number" v-model.number="price" placeholder="请输入充值金额">
+            <input class="f-28 ta-r" type="number" v-model.number="amount" placeholder="请输入充值金额">
           </div>
           <div class="info">元</div>
         </div>
@@ -31,7 +31,7 @@
 export default {
   data () {
     return {
-      price: ''
+      amount: ''
     }
   },
   methods: {
@@ -39,7 +39,7 @@ export default {
       console.log('this.price', this.price)
       try {
         let res = await this.REQAPI.payRecharge({
-          price: this.price
+          amount: this.amount
         })
         this.$toasted.show('充值成功')
       } catch (e) {
