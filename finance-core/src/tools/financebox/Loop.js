@@ -17,7 +17,6 @@ module.exports = class Loop {
     }
 
     use (path, fn) {
-        // 判断
         if(typeof path === 'string') {
             const dip = async function(ctx, next) {
                 if(ctx.req && ctx.req.path && ctx.req.path == path) {
