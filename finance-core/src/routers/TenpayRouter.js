@@ -28,6 +28,7 @@ async function tenpayParams(out_trade_no, event, amount, user, params) {
   }
 
   // 一大堆校验机制
+  if (amount !== undefined && amount !== null && amount == 0) { throw new Error('无需支付'); }
   if (!amount || amount < 0) { throw new Error('无效支付金额'); }
   if (!userid || !level) { throw new Error('无效用户'); }
   // if (!openid) { throw new Error('非微信用户无法使用微信充值'); }
