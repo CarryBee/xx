@@ -7,21 +7,13 @@
                       <img src="@/assets/logo.png" />
                     </div>
                     <div class="layout-nav">
-                        <menu-item name="1">
-                            <Icon type="ios-navigate"></Icon>
-                            Item 1
-                        </menu-item>
-                        <menu-item name="2">
-                            <Icon type="ios-keypad"></Icon>
-                            Item 2
-                        </menu-item>
                         <menu-item name="3">
                             <Icon type="ios-analytics"></Icon>
-                            Item 3
+                            karonl
                         </menu-item>
                         <menu-item name="4">
                             <Icon type="ios-paper"></Icon>
-                            Item 4
+                            退出登录
                         </menu-item>
                     </div>
                 </Menu>
@@ -83,7 +75,7 @@ export default {
   height: 30px;
 }
 .layout-nav{
-    width: 420px;
+    width: 220px;
     margin: 0 auto;
     margin-right: 20px;
 }
