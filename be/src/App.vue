@@ -9,7 +9,7 @@
                     <div class="layout-nav">
                         <menu-item name="3">
                             <Icon type="ios-analytics"></Icon>
-                            karonl
+                            admin
                         </menu-item>
                         <menu-item name="4">
                             <Icon type="ios-paper"></Icon>
